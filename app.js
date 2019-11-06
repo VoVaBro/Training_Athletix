@@ -1,13 +1,21 @@
 const express = require ('express');
 const {PORT} = require ('./settings/config');
 const path = require("path");
+const exphbs  = require('express-handlebars');
 
 const app = express();
 
+// Handlebars Middleware
+app.engine('handlebars', exphbs({
+    defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
+
+// Static folder
 app.use(express.static(path.join(__dirname,"public")));
 
 app.get('/', (req, res) =>{
-        res.send('hello');
+        res.render("index",{layout: false});
     });
 
 
