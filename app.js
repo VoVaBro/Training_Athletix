@@ -1,5 +1,5 @@
 const express = require ('express');
-const {PORT} = require ('./sittings/config');
+const {PORT} = require ('./settings/config');
 
 const app = express();
 
