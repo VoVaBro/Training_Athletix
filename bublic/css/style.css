@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;
+    overflow:hidden;
+    background-color: black;
+}
+/* Utility Classes */
+.main-video{
+    position: relative;
+    height: 100vh;
+    display: block;
+    width: 100vw;
+    -webkit-transform: scaleX(1.5);
+    -moz-transform: scaleX(1.72);
+}
+/* Showcase */
+#showcase {
+    color: #fff;
+}
+#showcase .logo span {
+    color: 	#FF004D;
+}
+#showcase .logo {
+    font-size: 2rem;
+    margin-top: 1.5%;
+}
+#showcase .showcase-content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+    /* Overlay */
+    position: absolute;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.1);
+}
+#showcase ul {
+    display: flex;
+    list-style: none;
+    margin-top: 82vh;
+
+}
+#showcase ul a{
+    color: #f4f4f4;
+    text-decoration: none;
+    margin: 0.8rem 4rem;
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+#showcase ul a:hover{
+    color: #FF004D;
+}
+
