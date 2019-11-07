@@ -1,0 +1,36 @@
+
+
+<div class="signUp">
+    <link  href="/css/signup.css" rel="stylesheet">
+    <div class="class-header">Регистрация</div>
+    <p>Пожалуйста заполните все поля для создания нового пользователя</p>
+<div  class="card-body">
+    <form action="/signup" method="post">
+        <div class="container">
+            <label for="email"><b>Name</b></label>
+            <input type="text" placeholder="Введите имя" name="name" required>
+
+            <label for="email"><b>Email</b></label>
+            <input type="text" placeholder="Введите Email" name="email" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Введите пароль" name="psw" required>
+
+            <label for="psw-repeat"><b>Repeat Password</b></label>
+            <input type="password" placeholder="Повтороно введите пароль" name="psw-repeat" required>
+
+            <label>
+                <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
+            </label>
+
+            <div>
+                <button onclick="window.location.href='/'" class="cancelbtn">Back to home</button>
+                <button type="submit" class="signupbtn">Sign Up</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+<!-- НАДО БУДЕТ ДОБАВИТЬ FORGOT PASSWORD И ВООСТАНОВЛЕНИЕ ПАРОЛЯ -->
+
