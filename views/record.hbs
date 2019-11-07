@@ -6,11 +6,41 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            margin-top: 20px;
+        }
+        .timeDiv {
+            background: green;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            height: 50px;
+            width: 50px;
+            margin: 5px;
+            border-radius: 10%;
+        }
+        .activeTimeDiv {
+            border: 2px solid red;
+        }
+        .busyTimeDiv {
+            background: red;
+            color: white;
+        }
+    </style>
 </head>
-<input type="date" id="calendar">
-
 <body>
 
-    <script src="/js/record.js"></script>
+    <form method="post" action="/record">
+        <input type="date" id="calendar" name="calendar">
+        <div class="container"></div>
+        <p class="out"></p>
+        <input type="hidden" name="recordTime" id="recordTime">
+
+        <script src="/js/record.js"></script>
+        <button type="submit">Записаться</button>
+    </form>
 </body>
 </html>
