@@ -6,10 +6,31 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            margin-top: 20px;
+        }
+        .timeDiv {
+            background: green;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            height: 50px;
+            width: 50px;
+            margin: 5px;
+            border-radius: 10%;
+        }
+        .activeTimeDiv {
+            border: 2px solid red;
+        }
+    </style>
 </head>
-<input type="date" id="calendar">
-
 <body>
+    <input type="date" id="calendar">
+    <div class="container"></div>
+    <p class="out"></p>
 
     <script src="/js/record.js"></script>
 </body>
