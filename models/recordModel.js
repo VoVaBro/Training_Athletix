@@ -13,6 +13,10 @@ const recordSchema = new Schema({
     date:{
         type: Date,
         default: Date.now
+    },
+    dateTraining: {
+        type: String,
+        required: true
     }
 });
 

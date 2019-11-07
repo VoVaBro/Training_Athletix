@@ -25,13 +25,22 @@
         .activeTimeDiv {
             border: 2px solid red;
         }
+        .busyTimeDiv {
+            background: red;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <input type="date" id="calendar">
-    <div class="container"></div>
-    <p class="out"></p>
 
-    <script src="/js/record.js"></script>
+    <form method="post" action="/record">
+        <input type="date" id="calendar" name="calendar">
+        <div class="container"></div>
+        <p class="out"></p>
+        <input type="hidden" name="recordTime" id="recordTime">
+
+        <script src="/js/record.js"></script>
+        <button type="submit">Записаться</button>
+    </form>
 </body>
 </html>
