@@ -18,6 +18,11 @@ app.get('/', (req, res) =>{
         res.render("index",{layout: false});
     });
 
+// Не успел создать роутер
+app.get('/record', (req, res) =>{
+    res.render("record",{layout: false});
+});
+
 
 app.listen(PORT, () => console.log(`server start on port ${PORT}`));
 
