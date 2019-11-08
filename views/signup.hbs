@@ -5,26 +5,29 @@
     <div class="class-header">Регистрация</div>
     <p>Пожалуйста заполните все поля для создания нового пользователя</p>
 <div  class="card-body">
-    <form action="/signup" method="post">
+    {{#if error}}
+        <p>{{emailError}}</p>
+        {{/if}}
+    <form action="/signup" method="POST">
         <div class="container">
-            <label for="email"><b>Name</b></label>
-            <input type="text" placeholder="Введите имя" name="name" required>
+            <label for="name"><b>Name</b></label>
+            <input type="name" placeholder="Введите имя" name="name" class="validate" required>
 
             <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="Введите Email" name="email" required>
+            <input type="email" placeholder="Введите Email" name="email" class="validate" required>
 
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Введите пароль" name="psw" required>
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Введите пароль" name="password" class="validate" required>
 
-            <label for="psw-repeat"><b>Repeat Password</b></label>
-            <input type="password" placeholder="Повтороно введите пароль" name="psw-repeat" required>
+            <label for="confirm"><b>Repeat Password</b></label>
+            <input type="password" placeholder="Повтороно введите пароль" name="confirm" required>
 
             <label>
                 <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
             </label>
 
             <div>
-                <button onclick="window.location.href='/'" class="cancelbtn">Back to home</button>
+                <button onclick="window.location.href='/'" class="cancelbtn">Back</button>
                 <button type="submit" class="signupbtn">Sign Up</button>
             </div>
         </div>
