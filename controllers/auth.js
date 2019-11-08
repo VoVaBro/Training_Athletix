@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
                     password: hash
             });
                 newUser.save().then(() => console.log('user saved')).catch(err => console.log(err));
-               res.redirect('/') //login
+               res.redirect('/signin')
             });
         }
     }catch (e) {
