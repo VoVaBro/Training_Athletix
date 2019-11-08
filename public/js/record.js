@@ -1,14 +1,15 @@
 let calendar = document.querySelector('#calendar');
 let container = document.querySelector('.container');
-let out = document.querySelector('.out');
+
 
 renderTimeDivs();
 
 document.addEventListener("DOMContentLoaded",function () {
-    calendar.valueAsDate=new Date();
+    calendar.valueAsDate = new Date();
     renderBusyDivs();
 
 });
+
 calendar.addEventListener("change",function () {
     if (this.value!=='') {
         renderBusyDivs();
@@ -31,7 +32,7 @@ function renderTimeDivs () {
    let date2 = new Date();
    date2.setTime(date1.getTime());
 
-   for (let i=0;i<countTraining;i++) {
+   for (let i = 0;i < countTraining; i++) {
        let timeDiv = document.createElement("div");
        timeDiv.classList.add("timeDiv");
 
@@ -44,7 +45,7 @@ function renderTimeDivs () {
        timeDiv.addEventListener("click", function () {
            let tempAllDivs = document.querySelectorAll(".timeDiv");
 
-           tempAllDivs.forEach(el=>{
+           tempAllDivs.forEach(el => {
                if (el.classList.contains("activeTimeDiv")) {
                    el.classList.remove("activeTimeDiv");
                }
@@ -65,8 +66,8 @@ function renderBusyDivs() {
     let currentValue = calendar.value.toString();
 
     fetch(`/record/${currentValue}`,{method:"get"})
-        .then(res=>res.json())
-        .then(result=>{
+        .then(res => res.json())
+        .then(result => {
             let tempDivs = document.querySelectorAll(".timeDiv");
 
             tempDivs.forEach(el=>{
@@ -75,7 +76,7 @@ function renderBusyDivs() {
                 }
             });
 
-            for (let j=0;j<result.length;j++) {
+            for (let j = 0;j < result.length; j++) {
 
                 let tempArr = result[j].recordTime.split("-");
 
