@@ -15,7 +15,6 @@ calendar.addEventListener("change",function () {
     }
 });
 
-
 function renderTimeDivs () {
    const startTime = "09:00";
    const countTraining = 7;
@@ -62,7 +61,6 @@ function renderTimeDivs () {
 
 }
 
-
 function renderBusyDivs() {
     let currentValue = calendar.value.toString();
 
@@ -80,7 +78,7 @@ function renderBusyDivs() {
             for (let j=0;j<result.length;j++) {
 
                 let tempArr = result[j].recordTime.split("-");
-                
+
                 for (let i = 0; i < tempDivs.length; i++) {
                     if (tempDivs[i].time === tempArr[0].trim()) {
 
