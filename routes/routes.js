@@ -11,7 +11,8 @@ router.post('/signin', signin);
 router.get('/signup', (req, res) => {
     res.render('signup', {
         layout: false,
-        error: req.flash('emailError')});
+        error: req.flash('error')
+    });
 });
 
 router.get('/', (req, res) =>{

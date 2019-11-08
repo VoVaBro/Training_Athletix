@@ -1,13 +1,14 @@
 const mongoose = require ('mongoose');
 const User = require ('../models/Users/userModel');
 const bcrypt = require ('bcrypt');
-
+const jwt = require ('jsonwebtoken');
+const { secret } = require('../settings/config').jwt;
 
 exports.signup = async (req, res) => {
     try {
         const user = await User.findOne({email: req.body.email});
         if (user){
-            req.flash('emailError', 'email has already exist')
+            req.flash('error', 'Такой email уже используется');
             res.status(500).redirect('/signup')
         }
         if (!user){
@@ -28,5 +29,25 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     req.session.isAuthenticated = true;
-
+    try {
+        const user = await User.findOne({email: req.body.email});
+        if (!user){
+            req.flash('msg', 'Пользователь не найден')
+        }
+        if (user){
+            const isValid = await bcrypt.compare(req.body.password, user.password);
+            if (!isValid){
+                req.flash('error', 'Неверный пароль');
+                res.redirect('/signig')
+            }
+            if (isValid) {
+                const token = jwt.sign ({_id:user.id, secret});
+                res.header('auth-token', token).send('token:', token)
+            } else {
+                res.status(401).json({msg: 'auth failed'})
+            }
+        }
+    }catch (e) {
+        console.log(e)
+    }
 };

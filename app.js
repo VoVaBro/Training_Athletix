@@ -1,5 +1,6 @@
 const express = require ('express');
 const {PORT, MONGO_URI} = require ('./settings/config');
+const { secret } = require ('./settings/config').session;
 const path = require('path');
 const bodyParser = require ('body-parser');
 const exphbs  = require('express-handlebars');
@@ -7,13 +8,15 @@ const mongoose = require ('mongoose');
 const flash = require ('connect-flash');
 const session = require ('express-session');
 const varMid = require ('./middleware/variables');
+const cookieParser = require ('cookie-parser');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
-app.use(flash());
+
 
 const routes = require ('./routes/routes');
 const recordRouter = require("./routes/_del");
@@ -26,12 +29,13 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname,'public')));
 app.use(session({
-    secret: 'some secret value',
+    secret: secret,
     resave: false,
     saveUninitialized: false,
     cookie: { secret: true }
 }));
 
+app.use(flash());
 app.use(varMid);
 
 app.use('/', routes);

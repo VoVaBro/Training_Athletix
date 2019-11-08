@@ -3,5 +3,8 @@ module.exports = {
     PORT: 3000,
     jwt: {
         secret: 'nobodycanusethisapp'
+    },
+    session: {
+        secret: '123bjk12b3jk1bv2jh'
     }
 };

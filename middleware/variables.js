@@ -1,4 +1,4 @@
-exports.isAuth = (req, res, next) => {
-    res.locals = req.session.isAuthenticated;
+module.exports = function(req, res, next) {
+    res.locals.isAuth = req.session.isAuthenticated;
     next()
 };
