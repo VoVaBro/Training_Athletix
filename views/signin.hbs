@@ -1,0 +1,35 @@
+
+<div class="signIn">
+    <link  href="/css/signin.css" rel="stylesheet">
+    <div class="card-body">Авторизация</div>
+    <div class="card-login">
+        <div class="err">
+        {{#if error}}
+       <p>{{error}}</p>
+        {{/if}}
+    </div>
+    <form action="/signin" method="POST">
+    <div class="imgcontainer">
+      <img src="" alt="Avatar" class="avatar">
+    </div>
+    <div class="container">
+      <label for="email"><b>Email</b></label>
+      <input type="email" placeholder="Enter Username" name="email" required>
+
+      <label for="password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" required>
+
+      <button type="submit">Login</button>
+
+    </div>
+
+      <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="window.location.href='/'" class="cancelbtn">Cancel</button>
+      <span class="forg-passord">Forgot <a href="#"> password?</a></span>
+    </div>
+  </form>
+    </div>
+</div>
+</div>
+
+<!-- НАДО БУДЕТ ДОБАВИТЬ FORGOT PASSWORD И ВООСТАНОВЛЕНИЕ ПАРОЛЯ -->
