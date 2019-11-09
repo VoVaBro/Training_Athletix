@@ -1,13 +1,11 @@
 let calendar = document.querySelector('#calendar');
 let container = document.querySelector('.container');
 
-
 renderTimeDivs();
 
 document.addEventListener("DOMContentLoaded",function () {
     calendar.valueAsDate = new Date();
     renderBusyDivs();
-
 });
 
 calendar.addEventListener("change",function () {
@@ -43,18 +41,19 @@ function renderTimeDivs () {
        date1.setMilliseconds(1.5 * 60 * 60 * 1000);
 
        timeDiv.addEventListener("click", function () {
-           let tempAllDivs = document.querySelectorAll(".timeDiv");
+           if (!this.classList.contains("busyTimeDiv")) {
+               let tempAllDivs = document.querySelectorAll(".timeDiv");
 
-           tempAllDivs.forEach(el => {
-               if (el.classList.contains("activeTimeDiv")) {
-                   el.classList.remove("activeTimeDiv");
-               }
-           });
+               tempAllDivs.forEach(el => {
+                   if (el.classList.contains("activeTimeDiv")) {
+                       el.classList.remove("activeTimeDiv");
+                   }
+               });
 
-           this.classList.add("activeTimeDiv");
+               this.classList.add("activeTimeDiv");
 
-           document.querySelector("#recordTime").value = this.innerText;
-
+               document.querySelector("#recordTime").value = this.innerText;
+           }
        });
 
        container.appendChild(timeDiv);
@@ -90,3 +89,6 @@ function renderBusyDivs() {
             }
         })
 }
+
+
+

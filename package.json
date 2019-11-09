@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/VoVaBro/Training_Atrhletix#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
@@ -29,7 +30,5 @@
     "mongoose": "^5.7.8",
     "nodemon": "^1.19.4"
   },
-  "devDependencies": {
-    "bcrypt": "^3.0.6"
-  }
+  "devDependencies": {}
 }
