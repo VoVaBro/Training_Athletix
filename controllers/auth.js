@@ -28,23 +28,26 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = async (req, res) => {
-    req.session.isAuthenticated = true;
     try {
         const user = await User.findOne({email: req.body.email});
+        req.session.user = user;
+        req.session.isAuthenticated = true;
+        req.session.save(err => {
+            if (err) throw err
+        });
         if (!user){
-            req.flash('msg', 'Пользователь не найден')
-        }
-        if (user){
+            req.flash('error', 'Пользователь не найден');
+            res.redirect('/signig')
+        } else {
             const isValid = await bcrypt.compare(req.body.password, user.password);
-            if (!isValid){
+            if (!isValid) {
                 req.flash('error', 'Неверный пароль');
-                res.redirect('/signig')
-            }
-            if (isValid) {
-                const token = jwt.sign ({_id:user.id, secret});
-                res.header('auth-token', token).send('token:', token)
+                res.redirect('/signin')
             } else {
-                res.status(401).json({msg: 'auth failed'})
+                const token = jwt.sign ({_id:user.id}, secret);
+                res.header('auth-token', token);
+                res.redirect('/');
+                console.log('авторизаци прошла успешно');
             }
         }
     }catch (e) {

@@ -7,9 +7,17 @@ const { signup, signin } = require ('../controllers/auth');
 router.post('/signup', signup);
 router.post('/signin', signin);
 
+
 //GET
 router.get('/signup', (req, res) => {
     res.render('signup', {
+        layout: false,
+        error: req.flash('error')
+    });
+});
+
+router.get('/signin', (req, res) => {
+    res.render('signin', {
         layout: false,
         error: req.flash('error')
     });
