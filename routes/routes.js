@@ -1,5 +1,6 @@
 const router = require ('express').Router();
 const { signup, signin } = require ('../controllers/auth');
+const adminController = require("../controllers/admin");
 
 
 //POST
@@ -7,6 +8,7 @@ const { signup, signin } = require ('../controllers/auth');
 router.post('/signup', signup);
 router.post('/signin', signin);
 
+router.post('/admin', adminController.addTraining);
 
 //GET
 router.get('/signup', (req, res) => {
