@@ -39,7 +39,7 @@ app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname,'public')));
 
 //Sessions
-app.use(session({
+const sess = {
     secret: secret,
     resave: false,
     saveUninitialized: false,
@@ -48,20 +48,14 @@ app.use(session({
         secret: true,
         maxAge:  180 * 60 * 100
     }
-}));
+}
+
+app.use(session(sess))
 app.use(flash());
 app.use(varMid);
 
-
 //Routes
-app.use('/', require ('./routes/routes'));
+app.use('/', require('./routes/routes'));
 app.use('/record', require("./routes/_del"));
-
-
-
-
-
-
-
 
 
