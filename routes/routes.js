@@ -1,12 +1,18 @@
 const router = require ('express').Router();
-const { signup, signin, logout } = require ('../controllers/auth');
-const verify = require ('../middleware/verifyToken');
+
+const { signup, signin } = require ('../controllers/auth');
+
+const adminController = require("../controllers/admin");
+
+const isAuth = require ('../middleware/isAuth');
+
 
 //POST
 router.post('/signup', signup);
 router.post('/signin', signin);
-router.post('/logout', logout);
+// router.post('/logout', logout);
 
+router.post('/admin', adminController.addTraining);
 
 //GET
 router.get('/signup', (req, res) => {
@@ -35,12 +41,16 @@ router.get('/', (req, res) =>{
     res.render("index",{layout: false});
 });
 
-router.get('/admin', verify, (req, res) =>{
+router.get('/admin', isAuth, (req, res) =>{
     res.render("admin",{layout: false});
 });
 
 router.get('/logout', (req, res) =>{
-    res.render("index",{layout: false});
+
+    req.session.destroy(err => {
+        if (err) throw err
+    });
+    res.redirect('/')
 });
 
 module.exports = router;

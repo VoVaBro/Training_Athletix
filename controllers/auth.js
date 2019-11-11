@@ -55,9 +55,11 @@ exports.signin = async (req, res) => {
     }
 };
 
-exports.logout = (req, res) => {
-  req.session.destroy(err => {
-      throw err
-  });
-  res.redirect('/')
-};
+// exports.logout = (req, res) => {
+//     console.log(req.session);
+//     req.logout();
+//   req.session.destroy(err => {
+//       throw err
+//   });
+//   res.redirect('/')
+// };
