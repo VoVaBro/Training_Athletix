@@ -7,12 +7,12 @@ const exphbs  = require('express-handlebars');
 const mongoose = require ('mongoose');
 const flash = require ('connect-flash');
 const session = require ('express-session');
-const varMid = require ('./middleware/variables');
+const isAuth = require ('./middleware/isAuth');
 const cookieParser = require ('cookie-parser');
 const MongoSessionStore = require ('connect-mongo')(session);
-
 const app = express();
 
+//DB
 mongoose.connect(MONGO_URI,
     {
         useNewUrlParser: true,
@@ -24,25 +24,22 @@ mongoose.connect(MONGO_URI,
         app.listen(PORT, () => console.log(`server start on port ${PORT}`));
     }).catch(err => console.log('Error:', err ));
 
+//body/cookie parser
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
-
-
-const routes = require ('./routes/routes');
-const recordRouter = require("./routes/_del");
 
 // Handlebars Middleware
 app.engine('hbs', exphbs({
     defaultLayout: 'main'
 }));
-
-
-
 app.set('view engine', 'hbs');
+
+//Static folders
 app.use(express.static(path.join(__dirname,'public')));
-app.use(session({
+
+//Sessions
+const sess = {
     secret: secret,
     resave: false,
     saveUninitialized: false,
@@ -51,19 +48,13 @@ app.use(session({
         secret: true,
         maxAge:  180 * 60 * 100
     }
-}));
+}
 
+app.use(session(sess))
 app.use(flash());
-app.use(varMid);
 
-app.use('/', routes);
-app.use('/record',recordRouter);
-
-
-
-
-
-
-
+//Routes
+app.use('/', require('./routes/routes'));
+app.use('/record', isAuth, require("./routes/_del"));
 
 

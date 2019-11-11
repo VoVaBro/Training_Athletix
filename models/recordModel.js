@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const recordSchema = new Schema({
     user: {
-        type: String,
-        default: 'Guest'
+        type: Schema.Types.ObjectId,
+        required: false
     },
     recordTime: {
         type: String,
