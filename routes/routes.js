@@ -9,6 +9,11 @@ router.post('/signin', signin);
 
 //GET
 router.get('/signup', verify, (req, res) => {
+    if (req.session.user) {
+        res.redirect('/');
+        return
+    }
+
     res.render('signup', {
         layout: false,
         error: req.flash('error')
@@ -16,6 +21,11 @@ router.get('/signup', verify, (req, res) => {
 });
 
 router.get('/signin',  (req, res) => {
+    if (req.session.user) {
+        res.redirect('/');
+        return
+    }
+
     res.render('signin', {
         layout: false,
         error: req.flash('error')

@@ -7,7 +7,7 @@ const exphbs  = require('express-handlebars');
 const mongoose = require ('mongoose');
 const flash = require ('connect-flash');
 const session = require ('express-session');
-const varMid = require ('./middleware/variables');
+const isAuth = require ('./middleware/isAuth');
 const cookieParser = require ('cookie-parser');
 const MongoSessionStore = require ('connect-mongo')(session);
 const app = express();
@@ -52,10 +52,9 @@ const sess = {
 
 app.use(session(sess))
 app.use(flash());
-app.use(varMid);
 
 //Routes
 app.use('/', require('./routes/routes'));
-app.use('/record', require("./routes/_del"));
+app.use('/record', isAuth, require("./routes/_del"));
 
 
