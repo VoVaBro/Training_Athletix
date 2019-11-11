@@ -40,7 +40,7 @@ exports.signin = async (req, res) => {
                 res.redirect('/signin')
             } else {
                 const token = jwt.sign ({_id:user.id}, secret, {expiresIn: "3h"});
-                res.session.header('Authorization', token);
+                res.session.header['Authorization'] = token;
                 req.session.user = user;
                 req.session.isAuthenticated = true;
                 req.session.save(err => {
