@@ -41,6 +41,7 @@ router.post('/', (req, res) => {
         })
     } else {
             const newRecord = {
+                user: req.session.user,
                 recordTime: req.body.recordTime,
                 dateTraining: req.body.calendar
             };
