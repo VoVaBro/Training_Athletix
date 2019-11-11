@@ -50,7 +50,7 @@ const sess = {
     }
 }
 
-app.use(session(sess))
+app.use(session(sess));
 app.use(flash());
 
 //Routes
