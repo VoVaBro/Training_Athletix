@@ -46,7 +46,6 @@ exports.signin = async (req, res) => {
                 req.session.save(err => {
                     if (err) throw err
                 });
-
                 console.log('авторизаци прошла успешно');
                 res.redirect('/');
             }
