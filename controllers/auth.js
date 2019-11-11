@@ -30,22 +30,22 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
     try {
         const user = await User.findOne({email: req.body.email});
-        req.session.user = user;
-        req.session.isAuthenticated = true;
-        req.session.save(err => {
-            if (err) throw err
-        });
         if (!user){
             req.flash('error', 'Пользователь не найден');
-            res.redirect('/signig')
+            res.redirect('/signin')
         } else {
             const isValid = await bcrypt.compare(req.body.password, user.password);
             if (!isValid) {
                 req.flash('error', 'Неверный пароль');
                 res.redirect('/signin')
             } else {
-                const token = jwt.sign ({_id:user.id}, secret);
-                res.header('auth-token', token);
+                const token = jwt.sign ({_id:user.id}, secret, {expiresIn: "3h"});
+                res.header('Authorization', token);
+                req.session.user = user;
+                req.session.isAuthenticated = true;
+                req.session.save(err => {
+                if (err) throw err
+                });
                 res.redirect('/');
                 console.log('авторизаци прошла успешно');
             }
