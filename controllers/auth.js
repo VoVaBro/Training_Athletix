@@ -3,6 +3,7 @@ const User = require ('../models/Users/userModel');
 const bcrypt = require ('bcrypt');
 const jwt = require ('jsonwebtoken');
 const { secret } = require('../settings/config').jwt;
+const crypto = require ('crypto-random-string');
 
 exports.signup = async (req, res) => {
     try {
@@ -55,11 +56,26 @@ exports.signin = async (req, res) => {
     }
 };
 
-// exports.logout = (req, res) => {
-//     console.log(req.session);
-//     req.logout();
-//   req.session.destroy(err => {
-//       throw err
-//   });
-//   res.redirect('/')
-// };
+exports.reset = (req, res) => {
+    try {
+        crypto.randomBytes(32, async (err, buffer) => {
+            if (err){
+                throw err
+            }
+            const secret = buffer.toString('hash');
+            const candidate =  await User.findOne({email: req.body.email});
+
+            if (!candidate){
+                req.flash('error', 'Пользователь не найден, попробуйте ввести email снова');
+                res.redirect ('/resetPass')
+            } else {
+                candidate.secretMsg = secret;
+                candidate.secretMsgExp = Date.now() + 60 * 60 * 1000;
+                await candidate.save()
+                //send msg on email
+            }
+        })
+    } catch (err) {
+        if (err) throw err;
+    }
+};
