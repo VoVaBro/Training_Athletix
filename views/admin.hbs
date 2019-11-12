@@ -70,6 +70,10 @@
             text-align: center;
             margin-top: 15px;
         }
+        .div-add {
+            border: 2px solid #000;
+            margin-top: 2rem;
+        }
     </style>
 </head>
 <body>
@@ -80,8 +84,10 @@
 {{/each}}
     <input type="date" id="calendar" name="calendar">
 
+
     <div class="container">
         <div class="btn-add"><p>+</p></div>
+        <div class="spinner-border" style="width: 3rem; height: 3rem; display: none" role="status"></div>
     </div>
     <div class="div-add">
         <label class="timeLabel" for="time">Время начала первого события</label>
@@ -91,9 +97,13 @@
             <option value="1">Тренировка</option>
             <option value="0">Другое</option>
         </select>
+        <br>
+        <label for="time">Продолжительность события</label>
+        <input type="time" id="timeDuration" value="01:30">
     </div>
     <br>
-    <button class="btn-sand">Отправить</button>
+    <button class="btn-sand">Сохранить</button>
+    <button class="btn-remove">Удалить</button>
 
     <script src="/js/admin.js"></script>
 

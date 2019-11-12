@@ -46,4 +46,12 @@ router.get('/admin',  (req, res) =>{
     res.render("admin",{layout: false});
 });
 
+router.get('/admin/:id', adminController.loadTraining);
+
+//PUT
+router.put('/admin/:id', adminController.editTraining);
+
+//DElETE
+router.delete('/admin/:date',adminController.removeTraining);
+
 module.exports = router;
