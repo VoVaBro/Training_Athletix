@@ -1,9 +1,11 @@
+require ('dotenv').config();
+const secret = process.env.jwtSecret;
 const mongoose = require ('mongoose');
 const User = require ('../models/Users/userModel');
 const bcrypt = require ('bcrypt');
 const jwt = require ('jsonwebtoken');
-const { secret } = require('../settings/config').jwt;
 const crypto = require ('crypto-random-string');
+
 
 exports.signup = async (req, res) => {
     try {
@@ -40,7 +42,7 @@ exports.signin = async (req, res) => {
                 req.flash('error', 'Неверный пароль');
                 res.redirect('/signin')
             } else {
-                const token = jwt.sign ({_id:user.id}, secret, {expiresIn: "3h"});
+                const token = jwt.sign ({_id:user.id}, secret , {expiresIn: "3h"});
                 req.session.headers = {};
                 req.session.headers['Authorization'] = token;
                 req.session.isAuthenticated = true;

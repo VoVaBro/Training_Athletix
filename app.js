@@ -18,7 +18,7 @@ const app = express();
 
 
 //DB
-mongoose.connect(MONGO_URI,
+mongoose.connect(process.env.MONGO_URI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -26,7 +26,7 @@ mongoose.connect(MONGO_URI,
     })
     .then(() => {
         console.log('DB connected');
-        app.listen(PORT, () => console.log(`server start on port ${PORT}. ${process.env.GRIT}`));
+        app.listen(process.env.PORT, () => console.log(`server start on port ${process.env.PORT}. ${process.env.GRIT}`));
     }).catch(err => console.log('Error:', err ));
 
 //body/cookie parser
@@ -45,7 +45,7 @@ app.use(express.static(path.join(__dirname,'public')));
 
 //Sessions
 const sess = {
-    secret: secret,
+    secret: process.env.sessionSecret,
     resave: false,
     saveUninitialized: false,
     store: new MongoSessionStore ({ mongooseConnection: mongoose.connection }),

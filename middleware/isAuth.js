@@ -1,5 +1,6 @@
+require ('dotenv').config();
 const jwt = require ('jsonwebtoken');
-const { secret } = require ('../settings/config').jwt;
+const secret = process.env.jwtSecret;
 
 module.exports = async function(req, res, next) {
     try {
