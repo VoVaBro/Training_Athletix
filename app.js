@@ -1,7 +1,5 @@
 require('dotenv').config();
 const express = require ('express');
-const {PORT, MONGO_URI} = require ('./settings/config');
-const { secret } = require ('./settings/config').session;
 const path = require('path');
 const bodyParser = require ('body-parser');
 const exphbs  = require('express-handlebars');
