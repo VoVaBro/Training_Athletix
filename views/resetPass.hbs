@@ -1,7 +1,7 @@
 
 
 <div class="signUp">
-    <link  href="/css/signup.css" rel="stylesheet">
+    <link  href="/css/reset.css" rel="stylesheet">
     <div class="class-header">Восстановление пароля</div>
 <div class="card-body">
         {{#if error}}
@@ -9,22 +9,17 @@
         {{/if}}
     <form action="/reset" method="POST">
         <div class="container">
-            <label for="name"><b>Name</b></label>
-            <input type="name" placeholder="Введите имя" name="name" class="validate" required>
 
             <label for="email"><b>Email</b></label>
             <input type="email" placeholder="Введите Email" name="email" class="validate" required>
+            <button type="submit" class="signupbtn">Send msg on email</button>
 
-            <label for="password"><b>New password</b></label>
-            <input type="password" placeholder="Введите новый пароль" name="password" class="validate" required>
-
-            <label for="confirm"><b>Repeat new password</b></label>
-            <input type="password" placeholder="Повтороно введите новый пароль" name="confirm" required>
-
+            <label for="secret"><b>Secret token</b></label>
+            <input type="secret" placeholder="Введите ключ, из email" name="secret" class="validate" required>
 
             <div>
                 <button onclick="window.location.href='/'" class="cancelbtn">Back</button>
-                <button type="submit" class="signupbtn">Sign Up</button>
+                <button type="submit" class="signupbtn">Delet password</button>
             </div>
         </div>
     </form>

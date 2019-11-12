@@ -9,7 +9,6 @@ const session = require ('express-session');
 const isAuth = require ('./middleware/isAuth');
 const cookieParser = require ('cookie-parser');
 const MongoSessionStore = require ('connect-mongo')(session);
-const randomString = require ('randomstring');
 const app = express();
 
 
