@@ -48,7 +48,7 @@ const sess = {
     store: new MongoSessionStore ({ mongooseConnection: mongoose.connection }),
     cookie: {
         secret: true,
-        maxAge:  180 * 60 * 100
+        maxAge:  null /*180 * 60 * 100*/
     }
 };
 
