@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require ('express');
 const {PORT, MONGO_URI} = require ('./settings/config');
 const { secret } = require ('./settings/config').session;
@@ -14,6 +15,8 @@ const randomString = require ('randomstring');
 const app = express();
 
 
+
+
 //DB
 mongoose.connect(MONGO_URI,
     {
@@ -23,7 +26,7 @@ mongoose.connect(MONGO_URI,
     })
     .then(() => {
         console.log('DB connected');
-        app.listen(PORT, () => console.log(`server start on port ${PORT}`));
+        app.listen(PORT, () => console.log(`server start on port ${PORT}. ${process.env.GRIT}`));
     }).catch(err => console.log('Error:', err ));
 
 //body/cookie parser
