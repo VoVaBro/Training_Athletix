@@ -10,7 +10,9 @@ const session = require ('express-session');
 const isAuth = require ('./middleware/isAuth');
 const cookieParser = require ('cookie-parser');
 const MongoSessionStore = require ('connect-mongo')(session);
+const randomString = require ('randomstring');
 const app = express();
+
 
 //DB
 mongoose.connect(MONGO_URI,
@@ -48,9 +50,9 @@ const sess = {
         secret: true,
         maxAge:  180 * 60 * 100
     }
-}
+};
 
-app.use(session(sess))
+app.use(session(sess));
 app.use(flash());
 
 //Routes

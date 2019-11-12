@@ -17,7 +17,9 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    secretMsg: String,
+    secretMsgExp: Date
 });
 
 module.exports = mongoose.model('User', UserSchema);
