@@ -23,8 +23,8 @@
             justify-content: center;
             text-align: center;
             align-items: center;
-            height: 100px;
-            width: 100px;
+            height: 105px;
+            width: 105px;
             margin: 5px;
             border-radius: 10%;
         }
@@ -41,16 +41,17 @@
     {{#each errors}}
         <div class="alert alert-danger">{{text}}</div>
     {{else}}
-
     {{/each}}
     <form method="post" action="/record">
         <input type="date" id="calendar" name="calendar">
-        <div class="container"></div>
-        <p class="out"></p>
-        <input type="hidden" name="recordTime" id="recordTime">
-
-        <button type="submit">Записаться</button>
-        <script src="/js/record.js"></script>
+        <br>
+        <div class="spinner-border" style="width: 3rem; height: 3rem; display: none" role="status"></div>
+        <div class="container">
+            <h1 class="containerH1"></h1>
+        </div>
     </form>
+    <br>
+    <button class="btn-signUp">Записаться</button>
+    <script src="/js/record.js"></script>
 </body>
 </html>

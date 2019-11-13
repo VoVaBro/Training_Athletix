@@ -7,7 +7,7 @@ let timePicker = document.querySelector("#time");
 let btnSand = document.querySelector('.btn-sand');
 let btnRemove = document.querySelector('.btn-remove');
 let spinner = document.querySelector(".spinner-border");
-let timeDuration = document.querySelector("#timeDuration")
+let timeDuration = document.querySelector("#timeDuration");
 let timerBtnAddSmall;
 let date1;
 let date2;
@@ -63,7 +63,6 @@ function addTimeDiv (isTraining,duration) {
 
                 let tempCurrent = this;
                 btnAddSmall.addEventListener("click", function () {
-                    console.log("LeftClick");
                     addTimeDiv(select.value,timeDuration.duration);
                     container.insertBefore(timeDiv,this);
 
@@ -111,7 +110,6 @@ function addTimeDiv (isTraining,duration) {
 
 
                 btnAddSmall.addEventListener("click", function () {
-                    console.log("RightClick");
                     addTimeDiv(select.value,timeDuration.duration);
                     container.insertBefore(timeDiv,this);
 
@@ -144,8 +142,6 @@ function addTimeDiv (isTraining,duration) {
 
                 });
             } else {
-                console.log("delete");
-
                 let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
                 let tempThis = this;
                 if (tempArr.length===1) {
@@ -215,7 +211,8 @@ btnRemove.addEventListener("click", function () {
             .then(res => res.json())
             .then(res => {
                 res.forEach(el => {
-                    renderAlert(el);
+                    renderAlert(el,1);
+                    renderTimeDivs();
                 })
             })
     }
@@ -265,7 +262,8 @@ btnSand.addEventListener('click',function () {
                         .then(res => res.json())
                         .then(res => {
                             res.forEach(el => {
-                                renderAlert(el);
+                                renderAlert(el,1);
+                                renderTimeDivs();
                             });
                         })
                 } else {
@@ -279,14 +277,14 @@ btnSand.addEventListener('click',function () {
                         .then(res => res.json())
                         .then(res => {
                             res.forEach(el => {
-                                renderAlert(el);
+                                renderAlert(el,1);
+                                renderTimeDivs();
                             });
                         })
                 }
             });
-
     } else {
-        renderAlert("Для сохранения у тренировки должна быть дата и события");
+        renderAlert("Для сохранения у тренировки должна быть дата и события",0);
     }
 
 });
@@ -375,7 +373,7 @@ function getStartTime(startValue) {
     }
 }
 
-function renderAlert(obj) {
+function renderAlert(obj,bool) {
     let tempTxt = "";
     if (typeof (obj) === "object") {
         obj.forEach(el => {
@@ -387,7 +385,11 @@ function renderAlert(obj) {
     }
     let tempDiv = document.createElement("div");
     tempDiv.classList.add("alert");
-    tempDiv.classList.add("alert-danger");
+    if (bool) {
+        tempDiv.classList.add("alert-success");
+    } else {
+        tempDiv.classList.add("alert-danger");
+    }
     tempDiv.innerText = tempTxt;
     document.body.insertBefore(tempDiv,container);
     setTimeout(function () {

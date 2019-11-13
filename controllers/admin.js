@@ -47,7 +47,7 @@ exports.editTraining = (req, res) => {
 };
 
 exports.removeTraining = (req, res) => {
-    Training.remove({
+    Training.deleteOne({
         "dateTraining" : req.params.date
     })
         .then( () => {
