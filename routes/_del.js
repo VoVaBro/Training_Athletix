@@ -16,13 +16,19 @@ router.get('/', (req,res) =>{
 });
 
 router.get('/:id', (req, res) => {
-    Record.find({
-        "dateTraining" : req.params.id
-    })
-        .then(result => {
-            res.jsonp([result,req.session.user]);
+    if (req.params.id === "all") {
+        Record.find({})
+            .then(result => {
+                res.jsonp([result, req.session.user]);
+            })
+    } else {
+        Record.find({
+            "dateTraining": req.params.id
         })
-
+            .then(result => {
+                res.jsonp([result, req.session.user]);
+            })
+    }
 });
 
 router.post('/', (req, res) => {
@@ -45,6 +51,34 @@ router.post('/', (req, res) => {
 
     });
 
+router.delete('/:id', (req, res) => {
+    Record.deleteOne({
+        "_id" : req.params.id
+    })
+        .then( () => {
+            res.jsonp([{text : "Расписание на тренировку удалено", bool : 1}]);
+        })
+        .catch(err => {
+            if (err){
+                res.jsonp([{text : "Ошибка, обновите страницу и попробуйте удалить запись", bool : 0}]);
+            }
+        })
 
+});
+
+router.put(`/:id`, (req,res) => {
+    Record.findOne({
+        "_id" : req.params.id
+    })
+        .then(result => {
+                result.recordTime = req.body.recordTime;
+                result.save();
+        })
+        .catch(err => {
+            if (err) {
+                res.jsonp([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+            }
+        })
+});
 
 module.exports = router;

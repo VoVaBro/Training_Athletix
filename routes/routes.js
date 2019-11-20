@@ -52,6 +52,9 @@ router.get('/admin', isAuth, (req, res) =>{
 
 router.get('/admin/:id', adminController.loadTraining);
 
+router.get('/getUser/:id', adminController.loadUser);
+
+
 //PUT
 router.put('/admin/:id', adminController.editTraining);
 

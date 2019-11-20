@@ -1,4 +1,5 @@
 const Training = require("../models/trainingModel");
+const User = require ('../models/Users/userModel');
 const mongoose = require('mongoose');
 
 exports.addTraining = (req,res) => {
@@ -20,7 +21,7 @@ exports.addTraining = (req,res) => {
         new Training(newTraining)
             .save()
             .then(training => {
-                res.status(201).jsonp(["Расписание сохранено"]);
+                res.status(201).jsonp([{text : "Расписание сохранено", bool : 1}]);
             })
     }
 };
@@ -39,9 +40,20 @@ exports.editTraining = (req, res) => {
         "dateTraining" : req.params.id
     })
         .then(result => {
-            result.timetable = req.body.timetable;
-            result.save();
-            res.jsonp(["Расписание перезаписано"]);
+            if (req.body.onEdit !== undefined) {
+                result.onEdit = req.body.onEdit;
+                result.save();
+                res.jsonp([{text : "onEdit = true", bool : 1}]);
+            } else {
+                result.timetable = req.body.timetable;
+                result.save();
+                res.jsonp([{text : "Расписание сохранено", bool : 1}]);
+            }
+        })
+        .catch(err => {
+            if (err) {
+                res.jsonp([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+            }
         })
 
 };
@@ -51,6 +63,15 @@ exports.removeTraining = (req, res) => {
         "dateTraining" : req.params.date
     })
         .then( () => {
-            res.jsonp(["Расписание удалено"]);
+            res.jsonp([{text : "Расписание удалено", bool : 1}]);
+        })
+};
+
+exports.loadUser = (req, res) => {
+    User.findOne({
+        "_id" : req.params.id
+    })
+        .then(result => {
+            res.jsonp(result);
         })
 };

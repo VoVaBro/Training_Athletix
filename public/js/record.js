@@ -10,14 +10,12 @@ let startTime;
 
 
 document.addEventListener("DOMContentLoaded",function () {
-    calendar.valueAsDate = new Date();
+    calendar.value = getStrDate();
     renderTimeDivs();
-    // renderBusyDivs();
 });
 
 calendar.addEventListener("change",function () {
     if (this.value!=='') {
-        // renderBusyDivs();
         renderTimeDivs();
     }
 });
@@ -62,27 +60,58 @@ btnSignUp.addEventListener("click", function () {
                 if (tempIsBusy === true) {
                     tempErrArr.push({text : "У вас уже есть запись на тренировку для этой даты, чтобы записаться на дополнительную тренировку пожалуйста свяжитесь с тренером", bool : 0});
                 }
-                if ((tempCounter === 0) && (!tempIsBusy)) {
-                    const newRecord = {
-                        dateTraining: dateTraining,
-                        recordTime: recordTime
-                    };
-                    fetch("/record", {
-                        method: "post",
-                        body: JSON.stringify(newRecord),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                        .then(res => res.json())
-                        .then(res => {
-                            renderAlert(res);
-                            renderTimeDivs();
-                        })
-                } else {
-                    renderAlert(tempErrArr);
-                }
 
+                fetch(`/admin/${dateTraining}`, {method: "get"})
+                    .then(res => res.json())
+                    .then(result => {
+                        let tempArrTimeDiv = document.querySelectorAll(".timeDiv");
+                        let tempResult = result[0].timetable.filter(el => {
+                            return el.isTraining ===true;
+                        });
+
+                        let boolEdit = false;
+                        if (tempResult.length === tempArrTimeDiv.length) {
+                            tempArrTimeDiv.forEach( (el,index) => {
+                                if (el.time !== tempResult[index].time) {
+                                    boolEdit = true;
+                                } else {
+                                    if (el.duration !== tempResult[index].duration) {
+                                        boolEdit = true;
+                                    }
+                                }
+                            });
+                        } else {
+                            tempErrArr.push({text : "Расписание тренировок было изменено, вы можете записаться на удобное Вам время", bool : 0});
+                        }
+                        if (boolEdit) {
+                            tempErrArr.push({text : "Расписание тренировок было изменено, вы можете записаться на удобное Вам время", bool : 0});
+                        }
+                        if (result[0].onEdit) {
+                            tempErrArr.push({text : "Расписание в данный момент редакитуется, пожалуйста проверьте расписание позже", bool : 0});
+                        }
+                        if (tempErrArr.length < 1) {
+                            const newRecord = {
+                                dateTraining: dateTraining,
+                                recordTime: recordTime
+                            };
+                            fetch("/record", {
+                                method: "post",
+                                body: JSON.stringify(newRecord),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(res => res.json())
+                                .then(res => {
+                                    renderAlert(res);
+                                    renderTimeDivs();
+                                })
+                        } else {
+                            renderAlert(tempErrArr);
+                            renderTimeDivs();
+                        }
+
+                    });
             })
 
     }
@@ -96,14 +125,21 @@ function renderTimeDivs() {
     });
 
     let currentValue = calendar.value;
-    if (currentValue !== "") {
+    let tempNewArr = currentValue.split("-");
+    let tempNewDate0 = new Date();
+    tempNewDate0.setHours(0,0,0,0);
+    let tempNewDate1 = new Date(tempNewArr[0],tempNewArr[1]-1,tempNewArr[2]);
+
+    if (currentValue !== "" && tempNewDate0.getTime() <= tempNewDate1.getTime()) {
         spinner.style.display = "inline-block";
+        btnSignUp.style.display = "none";
         containerH1.innerText = "";
 
         fetch(`/admin/${currentValue}`, {method: "get"})
             .then(res => res.json())
             .then(result => {
-                if (result.length > 0) {
+                if (result.length > 0 && result[0].onEdit === false) {
+                    btnSignUp.style.display = "inline-block";
                     boolRenderBusy = true;
                     getStartTime(result[0].timetable[0].time);
                     for (let i = 0; i < result[0].timetable.length; i++) {
@@ -118,7 +154,11 @@ function renderTimeDivs() {
                         }
                     });
                 } else {
-                    containerH1.innerText = `На ${currentValue} расписания нет`;
+                    if (result.length > 0 && result[0].onEdit === true) {
+                        containerH1.innerText = `Расписание на ${currentValue} в данный момент редакитуется, пожалуйста проверьте расписание позже`;
+                    } else {
+                        containerH1.innerText = `На ${currentValue} расписания нет`;
+                    }
                 }
 
             })
@@ -130,6 +170,10 @@ function renderTimeDivs() {
                 }
             })
 
+    } else {
+        // renderAlert([{text : "Выберите актуальную дату для просмотра расписания", bool : 0}]);
+        containerH1.innerText = `Выберите актуальную дату для просмотра расписания`;
+        btnSignUp.style.display = "none";
     }
 }
 
@@ -179,10 +223,10 @@ function addTimeDiv (isTraining,duration) {
 }
 
 function renderAlert(obj) {
-    // let tempArr = document.querySelectorAll(".alert");
-    // tempArr.forEach(el => {
-    //     el.remove();
-    // });
+    let tempArr = document.querySelectorAll(".alert");
+    tempArr.forEach(el => {
+        el.remove();
+    });
 
     obj.forEach(el => {
         let tempDiv = document.createElement("div");
@@ -199,53 +243,6 @@ function renderAlert(obj) {
         },10000)
     });
 }
-
-// function renderTimeDivs () {
-//    const startTime = "09:00";
-//    const countTraining = 7;
-//    let arrStartTime = startTime.split(":");
-//    let hours = Number(arrStartTime[0]);
-//    let min = Number(arrStartTime[1]);
-//    let date1 = new Date();
-//
-//    date1.setHours(hours);
-//    date1.setMinutes(min);
-//    date1.setSeconds(0);
-//    date1.setMilliseconds(0);
-//
-//    let date2 = new Date();
-//    date2.setTime(date1.getTime());
-//
-//    for (let i = 0;i < countTraining; i++) {
-//        let timeDiv = document.createElement("div");
-//        timeDiv.classList.add("timeDiv");
-//
-//        date2.setMilliseconds(1.5 * 60 * 60 * 1000);
-//        timeDiv.innerText=`${date1.getHours()<10?`0${date1.getHours()}`:`${date1.getHours()}`}:${date1.getMinutes()<10?`0${date1.getMinutes()}`:`${date1.getMinutes()}`} - ${date2.getHours()<10?`0${date2.getHours()}`:`${date2.getHours()}`}:${date2.getMinutes()<10?`0${date2.getMinutes()}`:`${date2.getMinutes()}`}`;
-//
-//        timeDiv.time=`${date1.getHours()<10?`0${date1.getHours()}`:`${date1.getHours()}`}:${date1.getMinutes()<10?`0${date1.getMinutes()}`:`${date1.getMinutes()}`}`;
-//        date1.setMilliseconds(1.5 * 60 * 60 * 1000);
-//
-//        timeDiv.addEventListener("click", function () {
-//            if (!this.classList.contains("busyTimeDiv")) {
-//                let tempAllDivs = document.querySelectorAll(".timeDiv");
-//
-//                tempAllDivs.forEach(el => {
-//                    if (el.classList.contains("activeTimeDiv")) {
-//                        el.classList.remove("activeTimeDiv");
-//                    }
-//                });
-//
-//                this.classList.add("activeTimeDiv");
-//
-//                document.querySelector("#recordTime").value = this.innerText;
-//            }
-//        });
-//
-//        container.appendChild(timeDiv);
-//    }
-//
-// }
 
 function renderBusyDivs() {
     let currentValue = calendar.value;
@@ -268,6 +265,16 @@ function renderBusyDivs() {
         })
 }
 
+function getStrDate() {
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    let today = year + "-" + month + "-" + day;
+    return today
+}
 
 
 
