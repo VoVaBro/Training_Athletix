@@ -7,6 +7,7 @@ let timePicker = document.querySelector("#time");
 let btnSand = document.querySelector('.btn-sand');
 let btnRemove = document.querySelector('.btn-remove');
 let btnEdit = document.querySelector('.btn-edit');
+let btnSuccessModal = document.querySelector('#btn-success-modal');
 let spinner = document.querySelector(".spinner-border");
 let timeDuration = document.querySelector("#timeDuration");
 let timerBtnAddSmall;
@@ -15,16 +16,45 @@ let date2;
 let timeDiv;
 let startTime;
 let delArr = [];
+let onEdit = false;
+
+//modal
+let modalEl;
+let modalOpen = true;
+let modalSuccess = false;
+
+$('#myModal').on('hidden.bs.modal', function () {
+    if (modalSuccess) {
+        modalOpen = false;
+        modalEl.click();
+    }
+    modalSuccess = false;
+});
+btnSuccessModal.addEventListener("click", function () {
+    modalSuccess = true;
+});
+
 
 btnAdd.addEventListener("click",function () {
+    if (onEdit) {
+        if (modalOpen) {
+            $('#myModal').modal('show');
+        }
+        if (!modalOpen) {
+            if (date1===undefined) {
+                getStartTime(timePicker.value);
+            }
 
-    if (date1===undefined) {
-        getStartTime(timePicker.value);
+            addTimeDiv(select.value,timeDuration.duration);
+
+            container.insertBefore(timeDiv,btnAdd);
+        }
+        //modal
+        modalEl = this;
+        modalOpen = true;
+    } else {
+        renderAlert([{text: "Для добавления событий, пожалуйста, войдите в режим редактирования"}]);
     }
-
-    addTimeDiv(select.value,timeDuration.duration);
-
-    container.insertBefore(timeDiv,btnAdd);
 });
 
 function addTimeDiv (isTraining,duration) {
@@ -280,7 +310,25 @@ btnRemove.addEventListener("click", function () {
             .then(res => res.json())
             .then(res => {
                     renderAlert(res);
-                    renderTimeDivs();
+            })
+            .catch(err => {
+                if (err) {
+                    renderAlert([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+                }
+            })
+            .then( () => {
+                fetch(`/recordDelAll/${currentValue}`, {
+                    method : "delete"
+                })
+                    .then(res => res.json())
+                    .then( () => {
+                        renderTimeDivs();
+                    })
+                    .catch(err => {
+                        if (err) {
+                            renderAlert([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+                        }
+                    })
             })
     }
 });
@@ -332,18 +380,18 @@ btnSand.addEventListener('click',function () {
                                 renderTimeDivs();
                         })
                 } else {
-                    fetch(`/admin/${currentValue}`, {
-                        method: "put",
-                        body: JSON.stringify({timetable: arrTimeDivs}),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                        .then(res => res.json())
-                        .then( el => {
-                                renderAlert(el);
-                                renderTimeDivs();
-                        })
+                    // fetch(`/admin/${currentValue}`, {
+                    //     method: "put",
+                    //     body: JSON.stringify({timetable: arrTimeDivs}),
+                    //     headers: {
+                    //         'Content-Type': 'application/json'
+                    //     }
+                    // })
+                    //     .then(res => res.json())
+                    //     .then( el => {
+                    //             renderAlert(el);
+                    //             renderTimeDivs();
+                    //     })
                 }
             });
     } else {
@@ -352,31 +400,35 @@ btnSand.addEventListener('click',function () {
 
 });
 
+function createBtnEditCancel() {
+
+    let currentValue = calendar.value;
+    let btnCancel = document.createElement("button");
+    btnCancel.classList.add("btn-Cancel");
+    btnCancel.innerText = "Отменить изменения";
+    btnCancel.addEventListener("click", function () {
+        fetch(`/admin/${currentValue}`, {
+            method: "put",
+            body: JSON.stringify({onEdit: false}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then( () => {
+                renderTimeDivs();
+                this.remove();
+                btnEdit.innerText = "Редактировать";
+                onEdit = false;
+            });
+    });
+    document.body.insertBefore(btnCancel, btnEdit);
+}
+
 btnEdit.addEventListener("click", function () {
     let currentValue = calendar.value;
 
     if (btnEdit.innerText === "Редактировать") {
         delArr = [];
-        btnRemove.style.display = "none";
-        btnSand.style.display = "none";
-        this.innerText = "Сохранить изменения";
-        let btnCancel = document.createElement("button");
-        btnCancel.classList.add("btn-Cancel");
-        btnCancel.innerText = "Отменить изменения";
-        btnCancel.addEventListener("click", function () {
-            fetch(`/admin/${currentValue}`, {
-                method: "put",
-                body: JSON.stringify({onEdit: false}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            renderTimeDivs();
-            this.remove();
-            btnEdit.innerText = "Редактировать";
-            btnSand.style.display = "inline-block";
-        });
-        document.body.insertBefore(btnCancel, btnEdit);
 
         fetch(`/admin/${currentValue}`, {
             method: "put",
@@ -384,7 +436,15 @@ btnEdit.addEventListener("click", function () {
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        })
+            .then( () => {
+                renderTimeDivs();
+            })
+            .catch( err => {
+                if (err) {
+                    renderAlert([{text : "Произошла ошибка, попробуйте позже"}]);
+                }
+            });
     } else if (btnEdit.innerText === "Сохранить изменения") {
         let errorArr = [];
 
@@ -412,8 +472,10 @@ btnEdit.addEventListener("click", function () {
                             }
                         })
                             .then(res => res.json())
-                            .then( el => {
-                                renderAlert(el);
+                            .catch(err => {
+                                if (err) {
+                                    renderAlert(err);
+                                }
                             })
                     }
                 });
@@ -423,7 +485,12 @@ btnEdit.addEventListener("click", function () {
                 //Формирование массива timetable
             let tempArrTimetable = document.querySelectorAll(".timeDiv");
             if (tempArrTimetable.length < 1){
-                btnRemove.click();
+                let tempConfirm = confirm("Вы действительно хотите удалить расписание?");
+                if (tempConfirm) {
+                    btnRemove.click();
+                } else {
+                    renderTimeDivs();
+                }
             } else {
                 let arrTimeDivs=[];
                 let tempBool;
@@ -438,7 +505,7 @@ btnEdit.addEventListener("click", function () {
                 let currentValue = calendar.value;
                 fetch(`/admin/${currentValue}`, {
                     method: "put",
-                    body: JSON.stringify({timetable: arrTimeDivs}),
+                    body: JSON.stringify({timetable: arrTimeDivs, onEdit: false}),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -452,13 +519,6 @@ btnEdit.addEventListener("click", function () {
 
             document.querySelector(".btn-Cancel").remove();
             btnEdit.innerText = "Редактировать";
-            fetch(`/admin/${currentValue}`, {
-                method: "put",
-                body: JSON.stringify({onEdit: false}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
         }
     }
 });
@@ -510,6 +570,23 @@ function renderTimeDivs() {
                     btnRemove.style.display = "inline-block";
                     btnEdit.style.display = "inline-block";
                     btnSand.style.display = "none";
+
+                    btnEdit.innerText = "Редактировать";
+                    let tempBtnEditCancelArr = document.querySelectorAll(".btn-Cancel");
+                    tempBtnEditCancelArr.forEach(el => {
+                        el.remove();
+                    });
+
+                    if (result[0].onEdit) {
+                        renderAlert([{text: "Расписание находится в режиме редактирования. Пожалуйста, сохраните расписание, чтобы оно стало доступно для клиентов"}]);
+                        btnEdit.innerText = "Сохранить изменения";
+                        onEdit = true;
+                        createBtnEditCancel();
+                        btnRemove.style.display = "none";
+                    } else {
+                        onEdit = false;
+                    }
+
                     getStartTime(result[0].timetable[0].time);
                     for (let i = 0; i < result[0].timetable.length; i++) {
                         let tempIsTraining = Number(result[0].timetable[i].isTraining).toString();
@@ -518,6 +595,7 @@ function renderTimeDivs() {
                     }
                 } else {
                     date1 = undefined;
+                    onEdit = true;
                     timePicker.style.display = "inline-block";
                     label.style.display = "inline-block";
                     btnSand.style.display = "inline-block";
@@ -529,6 +607,8 @@ function renderTimeDivs() {
                     renderBusyDivs()
                 } else {
                     spinner.style.display = "none";
+                    let ul = document.querySelector(".left-ul");
+                    ul.innerHTML = "";
                 }
                 getActTrainings();
             })
@@ -576,13 +656,16 @@ function renderBusyDivs() {
                             let span = document.createElement("span");
                             span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
                             span.addEventListener("click", function () {
-                                let tempRecordId = tempArr[i].recordId;
-                                fetch(`/record/${tempRecordId}`, {method : "delete"})
-                                    .then(res => res.json())
-                                    .then(res => {
-                                        renderAlert(res);
-                                        renderTimeDivs();
-                                    });
+                                let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${tempArr[i].innerText}`);
+                                if (tempConfirm) {
+                                    let tempRecordId = tempArr[i].recordId;
+                                    fetch(`/record/${tempRecordId}`, {method : "delete"})
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            renderAlert(res);
+                                            renderTimeDivs();
+                                        });
+                                }
                             });
                             li.innerHTML = `<span style="display: none">${result._id}</span><span>${tempArr[i].innerText}</span> <span>${result.name}</span> `;
                             li.appendChild(span);
@@ -637,7 +720,7 @@ function renderAlert(obj) {
         document.body.insertBefore(tempDiv,document.body.firstChild);
         setTimeout(function () {
             tempDiv.remove();
-        },10000)
+        },5000)
     });
 }
 
@@ -677,13 +760,16 @@ function getActTrainings() {
                     let span = document.createElement("span");
                     span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
                     span.addEventListener("click", function () {
-                        let tempRecordId = el._id;
-                        fetch(`/record/${tempRecordId}`, {method : "delete"})
-                            .then(res => res.json())
-                            .then(res => {
-                                renderAlert(res);
-                                renderTimeDivs();
-                            });
+                        let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${el.dateTraining} (${el.recordTime})`);
+                        if (tempConfirm) {
+                            let tempRecordId = el._id;
+                            fetch(`/record/${tempRecordId}`, {method : "delete"})
+                                .then(res => res.json())
+                                .then(res => {
+                                    renderAlert(res);
+                                    renderTimeDivs();
+                                });
+                        }
                     });
 
 

@@ -77,9 +77,10 @@
             text-align: center;
             margin-top: 15px;
         }
-        .div-add {
-            border: 2px solid #000;
-            margin-top: 2rem;
+        .div-add *{
+            /*border: 2px solid #000;*/
+            /*margin-top: 2rem;*/
+            /*display: block;*/
         }
         .left {
             flex-basis: 50%;
@@ -99,18 +100,7 @@
     <div class="container">
         <div class="btn-add"><p>+</p></div>
     </div>
-    <div class="div-add">
-        <label class="timeLabel" for="time">Время начала первого события</label>
-        <input type="time" id="time" value="09:00">
-        <br>
-        <select class="select">
-            <option value="1">Тренировка</option>
-            <option value="0">Другое</option>
-        </select>
-        <br>
-        <label for="time">Продолжительность события</label>
-        <input type="time" id="timeDuration" value="01:30">
-    </div>
+
     <br>
     <button class="btn-sand">Сохранить</button>
     <button class="btn-remove">Удалить</button>
@@ -128,6 +118,35 @@
             </ul>
         </div>
     </div>
+
+<!-- Modal Window-->
+    <div id="myModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Добавление события</h4>
+                    <button class="close" data-dismiss="modal">х</button>
+                </div>
+                <div class="modal-body">
+                    <div class="div-add">
+                        <label class="timeLabel" for="time">Время начала первого события</label>
+                        <input type="time" id="time" value="09:00">
+                        <select class="select">
+                            <option value="1">Тренировка</option>
+                            <option value="0">Другое</option>
+                        </select>
+                        <label for="time">Продолжительность события</label>
+                        <input type="time" id="timeDuration" value="01:30">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal">Отменить</button>
+                    <button class="btn btn-success" id="btn-success-modal" data-dismiss="modal">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/admin.js"></script>
 
 </body>

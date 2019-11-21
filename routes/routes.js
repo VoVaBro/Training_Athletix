@@ -61,6 +61,9 @@ router.put('/admin/:id', adminController.editTraining);
 //DElETE
 router.delete('/admin/:date',adminController.removeTraining);
 
+  // Нужно доделать!!!
+router.delete(`/recordDelAll/:date`, adminController.removeAllRec);
+
 router.get('/logout', (req, res) =>{
     req.session.destroy(err => {
         if (err) throw err

@@ -1,5 +1,6 @@
 const Training = require("../models/trainingModel");
 const User = require ('../models/Users/userModel');
+const Record = require('../models/recordModel');
 const mongoose = require('mongoose');
 
 exports.addTraining = (req,res) => {
@@ -41,14 +42,17 @@ exports.editTraining = (req, res) => {
     })
         .then(result => {
             if (req.body.onEdit !== undefined) {
-                result.onEdit = req.body.onEdit;
-                result.save();
-                res.jsonp([{text : "onEdit = true", bool : 1}]);
-            } else {
+                result.onEdit = req.body.onEdit;}
+                // result.save();
+                // res.jsonp([{text : "onEdit = true", bool : 1}]);
+
+            // else {
+            if (req.body.timetable !== undefined) {
                 result.timetable = req.body.timetable;
+            }
                 result.save();
                 res.jsonp([{text : "Расписание сохранено", bool : 1}]);
-            }
+            // }
         })
         .catch(err => {
             if (err) {
@@ -73,5 +77,19 @@ exports.loadUser = (req, res) => {
     })
         .then(result => {
             res.jsonp(result);
+        })
+};
+
+exports.removeAllRec = (req, res) => {
+    Record.deleteMany({
+       "dateTraining" : req.params.date
+    })
+    .then(result => {
+        res.jsonp(result);
+    })
+        .catch(err => {
+            if (err) {
+                res.jsonp([{text: "Произошла ошибка, повторите операцию позже", bool : 0}]);
+            }
         })
 };
