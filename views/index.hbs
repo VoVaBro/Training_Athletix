@@ -6,25 +6,155 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link  href="/css/style.css" rel="stylesheet">
-    <title>Training Athletix | Функциональная подготовка</title>
+    <link  href="/css/menu.css" rel="stylesheet">
+    <link  href="/css/signin.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Training Athletix</title>
 </head>
 <body>
+
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+
+    <div class="container">
+        <div class="menu">
+        <ul>
+
+
+
+            <div class="menu-btn" data-toggle="collapse" data-target="#profile">
+               <li class="user">
+                <a href="#" class="btn" id="myProfile">Профиль
+                    <svg class="button_svg_profile">
+                        <rect class="button_rect_profile"></rect>
+                    </svg>
+                </a>
+                   <div class="collapse" id="profile">
+                <a href="" class="btn-profile">Тренировки</a>
+                <a href="" class="btn-profile">Результаты</a>
+                <a href="" class="btn-profile">История</a>
+                <a href="" class="btn-profile">WoD</a>
+                  </div>
+               </li>
+            </div>
+
+
+            <div class="schedule-btn" data-toggle="collapse" data-target="#schedule">
+               <li class="user" id="mySchedule">
+                <a href="#" class="btn">Расписание
+                    <svg class="button_svg_schedule">
+                        <rect class="button_rect_schedule"></rect>
+                    </svg>
+                </a>
+                   <div class="collapse" id="schedule">
+                <a href="" class="btn-profile">Группы</a>
+                <a href="" class="btn-profile">Индивидуально</a>
+                  </div>
+               </li>
+            </div>
+
+            <div class="wod-btn" data-toggle="collapse" data-target="#wod">
+               <li class="user" id="myprogram">
+                <a href="#" class="btn">Программы
+                <svg class="button_svg_program">
+                        <rect class="button_rect_program"></rect>
+                    </svg>
+                </a>
+                   <div class="collapse" id="wod">
+                       <a href="" class="btn-profile">Как выполнять</a>
+                       <a href="" class="btn-profile">Best WoD</a>
+                  </div>
+               </li>
+            </div>
+
+                        <li class="signin" id="signin">
+                            <a href="#signin" class="btn" onclick="document.getElementById('id01').style.display='block'" ></p>Войти
+                                <svg class="button_svg">
+                                    <rect class="button_rect"></rect>
+                                </svg>
+                            </a>
+                        </li>
+                        </ul>
+                        </div>
+                        </div>
+                        </div>
+
+
+<div class="container-fluid">
+  <button type="button" class="btn-1" onclick="openNav()"> <span class="logo-1">TRAINING</span> <span class="logo-2">ATHLETIX</span></button>
+</div>
+
+
+<div class="container-fluid">
 <video class="main-video" autoplay loop muted>
     <source src="/img/videoplayback.mp4" type="video/mp4">
 </video>
-<header id="showcase">
-    <div class="showcase-content">
-        <p class="logo">TRAINING<span> ATHLETIX</span></p>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="/logout">Logout</a></li>
-            <li><a href="#">Shop</a></li>
-            <li><a href="/signup">Регистрация</a></li>
-            <li><a href="/signin">Авторизация</a></li>
-            <li><a href="/record">Записаться</a></li>
-        </ul>
+</div>
+
+
+<!--<button id="btnlog" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>-->
+<div id="id01" class="modal">
+
+  <div class="col-ms-6">
+  <form action="/signin" method="POST">
+    <div class="row">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="submit" value="Login">
+      </div>
+  </form>
+</div>
+<div class="bottom-container">
+  <div class="row">
+    <div class="col">
+      <a href="/signup" style="color:white" class="btn">Sign up</a>
     </div>
-</header>
+  </div>
+</div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
+</script>
 
 </body>
 </html>

@@ -14,10 +14,15 @@ body {
 }
 /* Utility Classes */
 .main-video{
-    position: relative;
-    height: 100vh;
+    position: absolute;
+    z-index: -1;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+
+
     display: block;
-    width: 100vw;
+
     -webkit-transform: scaleX(1.5);
     -moz-transform: scaleX(1.72);
 }

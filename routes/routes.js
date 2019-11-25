@@ -1,16 +1,18 @@
 const router = require ('express').Router();
 
-const { signup, signin, reset } = require ('../controllers/auth');
+const { signup, signin, firstSignin } = require ('../controllers/auth');
 
 const adminController = require("../controllers/admin");
 
 const isAuth = require ('../middleware/isAuth');
 
+const User = require ('../models/Users/userModel');
+
 
 //POST
 router.post('/signup', signup);
 router.post('/signin', signin);
-router.post('/reset', reset);
+router.post('/firstSignin', firstSignin);
 router.post('/admin', adminController.addTraining);
 
 //GET
@@ -25,17 +27,51 @@ router.get('/signup', (req, res) => {
     });
 });
 
+router.get('/signin/:secret', async (req, res) => {
+    if (!req.params.secret) {
+        req.flash('error', 'try again');
+        res.redirect('/signup')
+    }
+    try {
+        const user = await User ({
+            secret: req.params.secret
+        });
+        if (!user) return new Error('User dosent exist!');
 
-router.get('/signin',  (req, res) => {
-    if (req.session.user) {
+        res.render('signin',{
+            layout: false,
+            secret: req.params.secret,
+            userId: user._id
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+});
+
+
+
+router.get('/signin', async (req, res) => {
+    try {
+        if (req.session.user) {
         res.redirect('/');
         return
     }
-    res.render('signin', {
-        layout: false,
-        error: req.flash('error')
-    });
+        const user = await User.findOne({});
+        if (!user){
+            res.redirect('/signup')
+        } else {
+            res.render('signin', {
+                layout: false,
+                isActive: user.isActive,
+                error: req.flash('error')
+            })
+        }
+    } catch (e) {
+        console.log(e)
+    }
 });
+
 
 router.get('/reset', (req, res) =>{
     res.render('resetPass', {layout: false});

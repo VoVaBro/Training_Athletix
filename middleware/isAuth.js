@@ -6,7 +6,7 @@ module.exports = async function(req, res, next) {
     try {
         const session = req.session;
 
-        if (!session.headers['Authorization'] && !session.isAuth) {
+        if (!session.headers['Authorization']) {
             throw new Error('Authorization header not found')
         }
 
@@ -18,7 +18,6 @@ module.exports = async function(req, res, next) {
                 resolve(data);
             })
         });
-
         const { _id } = await data;
         req.session.user = _id;
         next()

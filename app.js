@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGO_URI,
     })
     .then(() => {
         console.log('DB connected');
-        app.listen(process.env.PORT, () => console.log(`server start on port ${process.env.PORT}. ${process.env.GRIT}`));
+        app.listen(process.env.PORT, () => console.log(`server start at http://localhost:${process.env.PORT}. ${process.env.GRIT}`));
     }).catch(err => console.log('Error:', err ));
 
 //body/cookie parser
@@ -48,7 +48,7 @@ const sess = {
     store: new MongoSessionStore ({ mongooseConnection: mongoose.connection }),
     cookie: {
         secret: true,
-        maxAge:  180 * 60 * 100
+        maxAge:  180 * 60 * 1000
     }
 };
 
@@ -58,5 +58,12 @@ app.use(flash());
 //Routes
 app.use('/', require('./routes/routes'));
 app.use('/record', isAuth, require("./routes/_del"));
+
+
+
+
+
+
+
 
 

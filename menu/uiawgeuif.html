@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.sidebarBtn').click(function () {
+                $('.sidebar').toggleClass('active');
+                 $('.sidebarBtn').toggleClass('toggle');
+            })
+        })
+    </script>
+
+    <title>Document</title>
+
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: Helvetica;
+            background: #fff;
+            overflow: hidden;
+            text-align: left;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -150px;
+            background: none;
+            width: 250px;
+            height: 100%;
+            transition: .5s;
+            border-radius: 0 20px 80px 0;
+            margin-left: 10px;
+            margin-top: 12%;
+        }
+        .active {
+            left: 0;
+        }
+
+        ul {
+           margin: 0;
+            padding: 20px 0;
+        }
+        ul li {
+            list-style: none;
+        }
+        ul li a {
+            padding: 10px 20px;
+            color: #fff;
+            display: block;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,.2);
+        }
+        .sidebarBtn{
+            position: absolute;
+            top: 0;
+            right: 35px;
+            width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        .sidebarBtn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: red;
+            position: absolute;
+            top: 20px;
+            transition: .1s;
+        }
+        .sidebarBtn span:before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: black;
+            transition: .5s;
+        }
+        .sidebarBtn span:after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #262626;
+            transition: .5s;
+        }
+        .sidebarBtn.toggle span{
+            background: transparent;
+        }
+        .sidebarBtn.toggle span:before{
+            top: 0;
+            transform-origin: center;
+            transform: rotate(45deg);
+
+        }
+        .sidebarBtn.toggle span:after{
+            top: 0;
+            transform-origin: center;
+            transform: rotate(-45deg);
+
+        }
+
+        .smenu{
+        background: none;
+        overflow: hidden;
+        transition: max-height 0.8s;
+        max-height: 0;
+            position: center;
+    }
+        .smenu a {
+        display: block;
+            border-radius: 10px;
+        padding: 10px 10px;
+            color: red;
+        font-size: 15px;
+        margin: 2px 0;
+            margin-left: 2px;
+            margin-bottom: 2px;
+        position: relative;
+            background: black;
+            border: none;
+            text-align: left;
+            width: 50%;
+
+    }
+        .smenu a:before{
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 100%;
+        background: #f24949;
+        left: 0;
+        top: 0;
+        transition: 0.8s;
+        opacity: 0;
+            border-radius: 8px 0 0 8px;
+    }
+    .smenu a:hover:before{
+        opacity: 1;
+    }
+        .item:hover .smenu{
+        max-height: 10em;
+    }
+        .btn {
+            display: block;
+            position: center;
+            border: none;
+            padding: 15px 15px;
+            background: none;
+            color: red;
+            margin-left: 25px;
+        }
+        .item {
+        border-top:  none;
+        overflow: hidden;
+    }
+        #traning{
+            color: red;
+            padding: 5px;
+        }
+        #athetix{
+            color: black;
+            padding: 15px;
+        }
+        .logo {
+            position: fixed;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h2 class="logo">
+    <span id="traning">TRANINING</span>
+    <br/>
+    <span id="athetix">ATHLETIX</span>
+</h2>
+
+
+<div class="sidebar">
+    <div>
+        <button class="sidebarBtn">
+            <span></span>
+        </button>
+    </div>
+
+    <ul class="menu">
+        <li class="signin" id="signin">
+        <a href="#signin" class="btn">Signin</a>
+        </li>
+
+        <li class="item" id="profile">
+            <a href="#profile" class="btn">Profile</a>
+            <div class="smenu">
+                <a href="" class="btn">My record</a>
+                <a href="" class="btn">History of records</a>
+                <a href="" class="btn">My params</a>
+                <a href="" class="btn">My WoD</a>
+             </div>
+        </li>
+
+        <li class="item" id="schedule">
+            <a href="#schedule" class="btn">Schedule</a>
+            <div class="smenu">
+                <a href="" class="btn">Group schedule</a>
+                <a href="" class="btn">Individual record</a>
+            </div>
+        </li>
+
+        <li class="item" id="settings">
+             <a href="#settings" class="btn">Settings</a>
+             <div class="smenu">
+                <a href="" class="btn">Create new profile</a>
+                <a href="" class="btn">Them</a>
+                 <a href="" class="btn">Forgot password</a>
+                 <a href="" class="btn">Logout</a>
+             </div>
+        </li>
+    </ul>
+    <div class="hidenav"></div>
+</div>
+</body>

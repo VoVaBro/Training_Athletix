@@ -1,4 +1,4 @@
-
+{{# if isActive}}
 <div class="signIn">
     <link  href="/css/signin.css" rel="stylesheet">
     <div class="card-body">Авторизация</div>
@@ -19,6 +19,7 @@
       <label for="password"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="password" required>
 
+
       <button type="submit">Login</button>
 
     </div>
@@ -32,3 +33,32 @@
 </div>
 </div>
 
+{{else}}
+
+<div class="signIn">
+    <link  href="/css/signin.css" rel="stylesheet">
+    <div class="card-body">Активация аккаунта</div>
+        <div class="err">
+        {{#if error}}
+       <p>{{error}}</p>
+        {{/if}}
+    </div>
+    <form action="/firstSignin" method="POST">
+    <div class="container">
+
+      <label  for="secretKey"><b>Key</b></label>
+      <input type="text" placeholder="Enter Key" name="secretKey" id="secretKey" required>
+
+        <input type="hidden" name="userId" value="{{userId}}">
+        <input type="hidden" name="secret" value="{{secret}}">
+
+      <button type="submit">Login</button>
+
+    </div>
+      <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="window.location.href='/'" class="cancelbtn">Cancel</button>
+    </div>
+  </form>
+    </div>
+
+{{/if}}

@@ -18,8 +18,22 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    secretMsg: String,
-    secretMsgExp: Date
+    secret: {
+        type: String,
+        trim: true,
+        unique: true,
+    },
+    secretMsgExp:{
+        type: Date
+    },
+    secretKey: {
+        type: String,
+        trim: true,
+        unique: true
+    },
+    isActive: {
+       type: Boolean
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

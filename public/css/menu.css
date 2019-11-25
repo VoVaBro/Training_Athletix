@@ -1,0 +1,312 @@
+body {
+  font-family: Verdana, sans-serif;
+  background-color: black;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  border-radius: 20px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 30px;
+  cursor: pointer;
+  background-color: #444;
+  padding: 10px 15px;
+  border: none;
+  width: 100%;
+}
+
+.openbtn:hover {
+  background-color: #111;
+}
+
+.btn-1 {
+  position: fixed;
+  background-color: #696969;
+  height: 5%;
+  width: 50%;
+  left: 25%;
+  opacity: 0.8;
+  border-radius: 0 0 50px 50px;
+}
+
+.logo-1{
+  position: absolute;
+  left: 35%;
+  top: 3px;
+  opacity: 1;
+  font-size: 20px;
+
+  font-weight: normal;
+  cursor: pointer;
+  /*text-shadow: 1px 1px red,*/
+  /*             2px 2px black;*/
+  color: red;
+  transition: all 1s;
+  }
+  /*.logo-1:hover {*/
+/*    !*text-shadow: 1px 1px black,*!*/
+/*    !*             2px 2px red;*!*/
+/*    color: black;*/
+/*}*/
+
+.logo-2{
+  position: absolute;
+  left: 50%;
+  top: 3px;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: normal;
+  cursor: pointer;
+  /*text-shadow: 1px 1px black,*/
+  /*             1px 1px black;*/
+  color: black;
+  transition: all 1s;
+  }
+  /*.logo-2:hover {*/
+    /*text-shadow: 1px 1px black,*/
+    /*             1px 1px black;*/
+/*    color: red;*/
+/*}*/
+
+.menu{
+  position: absolute;
+  text-align: center;
+}
+
+/* SIGN IN */
+.btn {
+  --width:200px;
+  --height:40px;
+  --begin:blue;
+  --end:orange;
+  /*border-radius: 20px;*/
+  position: relative;
+  display: inline-block;
+}
+.button_svg,
+.button_rect {
+  /*border-radius: 30px;*/
+  position: absolute;
+  top: 18px;
+  left: 5px;
+  width: 200px;
+  height: 45px;
+  fill: none;
+  display: inline-block;
+}
+.button_rect {
+  /*border-radius: 20px;*/
+  stroke: var(--begin);
+  stroke-width: 3px;
+  stroke-dasharray: var(--height) var(--width);
+  stroke-dashoffset: calc(
+  2 * var(--width)
+  + 2 * var(--height)
+  + var(--height) / 5
+  );
+  transition: 1s;
+}
+.btn:hover .button_rect,
+.btn:focus .button_rect {
+  /*border-radius: 20px;*/
+  stroke: orange;
+  stroke-dashoffset: 90px;
+}
+
+
+/* MY PROFILE*/
+#myProfile {
+  --width:200px;
+  --height:40px;
+  --begin:blue;
+  --end:orange;
+
+  position: relative;
+  display: inline-block;
+}
+.button_svg_profile,
+.button_rect_profile {
+  position: absolute;
+  top: 5px;
+  left: -15px;
+  width: 200px;
+  height: 45px;
+  fill: none;
+  display: inline-block;
+}
+
+.button_rect_profile {
+  stroke: var(--begin);
+  stroke-width: 3px;
+  stroke-dasharray: var(--height) var(--width);
+  stroke-dashoffset: calc(
+  2 * var(--width)
+  + 2 * var(--height)
+  + var(--height) / 4
+  );
+  transition: 1s;
+}
+.btn:hover .button_rect_profile,
+.btn:focus .button_rect_profile {
+  stroke: orange;
+  stroke-dashoffset: 95px;
+}
+
+/* MY SCHEDULE */
+
+#mySchedule {
+  --width:200px;
+  --height:40px;
+  --begin:blue;
+  --end:orange;
+
+  position: relative;
+  display: inline-block;
+}
+
+.button_svg_schedule,
+.button_rect_schedule {
+  position: absolute;
+  left: 5px;
+  width: 200px;
+  height: 45px;
+  fill: none;
+  display: inline-block;
+}
+
+.button_rect_schedule {
+  stroke: var(--begin);
+  stroke-width: 3px;
+  stroke-dasharray: var(--height) var(--width);
+  stroke-dashoffset: calc(
+  2 * var(--width)
+  + 2 * var(--height)
+  + var(--height) / 4
+  );
+  transition: 1s;
+}
+.btn:hover .button_rect_schedule,
+.btn:focus .button_rect_schedule {
+  stroke: orange;
+  stroke-dashoffset: 95px;
+}
+
+
+
+/* MY PROGRAM */
+#myprogram {
+  --width:200px;
+  --height:40px;
+  --begin:blue;
+  --end:orange;
+  position: relative;
+  display: inline-block;
+}
+.button_svg_program,
+.button_rect_program {
+  position: absolute;
+  left: 5px;
+  width: 200px;
+  height: 45px;
+  fill: none;
+  display: inline-block;
+}
+
+.button_rect_program {
+  stroke: var(--begin);
+  stroke-width: 3px;
+  stroke-dasharray: var(--height) var(--width);
+  stroke-dashoffset: calc(
+  2 * var(--width)
+  + 2 * var(--height)
+  + var(--height) / 4
+  );
+  transition: 1s;
+}
+
+.btn:hover .button_rect_program,
+.btn:focus .button_rect_program {
+  stroke: orange;
+  stroke-dashoffset: 95px;
+}
+
+
+
+
+li{
+  list-style-type: none;
+  padding: 15px;
+}
+
+.collapse {
+         transition: 0.5s;
+    }
+
+
+
+/*.menu-btn:hover #profile,*/
+/*.schedule-btn:hover #schedule,*/
+/*.wod-btn:hover #wod,*/
+/*.info-btn:hover #info*/
+/*{*/
+/*  display: block;*/
+/*  transition: 0.5s;*/
+/*}*/
+
+
+#profile a,
+#schedule a,
+#wod a,
+#info a {
+  color: #DD0900;
+}
+
+.btn-profile {
+  border: none;
+  border-inline: none;
+  left: 10px;
+  text-align: center;
+  opacity: 0.6;
+  transition: 0.5s;
+}
+.btn-profile:hover {opacity: 1}
+
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
