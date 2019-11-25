@@ -1,5 +1,5 @@
 let calendar = document.querySelector('#calendar');
-let container = document.querySelector('.container');
+let container = document.querySelector('.containerTimeDiv');
 let spinner = document.querySelector(".spinner-border");
 let btnSignUp = document.querySelector(".btn-signUp");
 let containerH1 = document.querySelector(".containerH1");
