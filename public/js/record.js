@@ -237,16 +237,16 @@ function renderAlert(obj) {
             tempDiv.classList.add("alert-danger");
         }
         tempDiv.innerText = el.text;
-        document.body.insertBefore(tempDiv,document.body.firstChild);
-        setTimeout(function () {
-            tempDiv.remove();
-        },10000)
+
+        $('#myModal').modal('show');
+        let modalBody = document.querySelector(".modal-body");
+        modalBody.appendChild(tempDiv);
     });
 }
 
 function renderBusyDivs() {
     let currentValue = calendar.value;
-
+    spinner.style.display = "none";
     fetch(`/record/${currentValue}`,{method:"get"})
         .then(res => res.json())
         .then(result => {
@@ -261,7 +261,6 @@ function renderBusyDivs() {
                 }
 
             }
-            spinner.style.display = "none";
         })
 }
 
