@@ -57,7 +57,8 @@
 
 #recordShowcase .calendar-form .form button {
     width: 100%;
-    background: #FF004D;
+    /*background: #FF004D;*/
+    background: #ff3d00;
     margin-top: auto;
     border-radius: 5px;
     padding: 10px;
@@ -66,7 +67,7 @@
 }
 
 #recordShowcase .calendar-form .form button:hover {
-    background: #cc003e;
+    background: #dd2c00;
 }
 
 #recordShowcase .schedule{

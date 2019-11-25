@@ -17,6 +17,13 @@ document.addEventListener("DOMContentLoaded",function () {
 calendar.addEventListener("change",function () {
     if (this.value!=='') {
         renderTimeDivs();
+    } else {
+        let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
+        tempArr.forEach(el => {
+            el.remove();
+        });
+        containerH1.innerText = `Пожалуйста, выберете желаемую дату для записи на тренировку`;
+        containerH1.style.display = "inline-block";
     }
 });
 
