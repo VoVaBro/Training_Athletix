@@ -1,12 +1,24 @@
 require ('dotenv').config();
-const secret = process.env.jwtSecret;
-const mongoose = require ('mongoose');
+// const secret = process.env.jwtSecret;
+// const mongoose = require ('mongoose');
 const User = require ('../models/Users/userModel');
 const bcrypt = require ('bcrypt');
 const jwt = require ('jsonwebtoken');
 const randomString = require ('randomstring');
 const mailer = require ('../helpers/sendEmail');
 const msgSignup = require ('../helpers/msgForUsers');
+const {genAccessToken, replaceRefreshToken, genRefreshToken } = require ('/helpers/refreshJwtToken');
+
+
+const updateToken = async userId => {
+
+    const accessToken = await genAccessToken(userId);
+    const refreshToken = await genRefreshToken();
+
+    return replaceRefreshToken(refreshToken.id, userId)
+        .t
+};
+
 
 
 
