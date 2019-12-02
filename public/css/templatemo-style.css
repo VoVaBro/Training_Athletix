@@ -337,7 +337,7 @@ nav {
   position: relative;
   font-size: 22px;
   text-transform: uppercase;
-  color: #fff;
+  color: orange;
   display: inline-block;
   padding-left: 20px;
   line-height: 15px;
@@ -360,11 +360,12 @@ nav {
   font-weight: 300!important;
   letter-spacing: 0.5px;
   font-size: 14px;
-  color: #fff;
+  color: orange;
   opacity: 0;
   transform: translateY(10px);
   transition: .5s ease-in-out;
   text-transform: uppercase;
+  margin: 0;
  }
 
  .full-screen-portfolio .portfolio-item {
@@ -372,6 +373,11 @@ nav {
  line-height: 150%;
  text-transform: lowercase;
  cursor: pointer;
+   opacity: 95%;
+}
+
+.full-screen-portfolio .portfolio-item:hover {
+  opacity: 100%;
 }
 
 .full-screen-portfolio .portfolio-item:hover p {
@@ -1324,27 +1330,27 @@ footer a:hover {
 }
 
 
-@media (max-width: 992px) {
+  @media (max-width: 992px) {
 
-  .blog-entries .blog-posts {
-    margin-right: 0px;
+    .blog-entries .blog-posts {
+      margin-right: 0px;
+    }
+
+    .single-blog-post {
+      margin-right: 0px;
+      margin-bottom: 80px;
+    }
+
+    .blog-entries .page-number {
+      margin-bottom: 80px;
+    }
+
+    .single-blog-post .tags-share .tags {
+      text-align: center;
+    }
+
+    .single-blog-post .tags-share .share {
+      text-align: center;
+    }
+
   }
-
-  .single-blog-post {
-    margin-right: 0px;
-    margin-bottom: 80px;
-  }
-
-  .blog-entries .page-number {
-    margin-bottom: 80px;
-  }
-
-  .single-blog-post .tags-share .tags {
-    text-align: center;
-  }
-
-  .single-blog-post .tags-share .share {
-    text-align: center;
-  }
-
-}

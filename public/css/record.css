@@ -118,10 +118,12 @@
 
 .activeTimeDiv {
     border: 2px solid red;
+
 }
 .busyTimeDiv {
-    background: #FF004D;
-    color: white;
+    /*background: #FF004D;*/
+    /*color: white;*/
+    display: none;
 }
 .btn-signUp {
     display: none;
