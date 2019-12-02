@@ -1290,67 +1290,99 @@ footer a:hover {
   opacity: 0.5;
 }
 
+/* Map */
 
-
-
-@media (max-width: 530px) {
-
-  .modal-header h3 {
-    margin-top: 15%;
-  }
-
-  .modal-body input {
-    width: 100%;
-  }
-
-  .modal-body textarea {
-    width: 100%;
-  }
-
-  .modal-content {
-    padding-bottom: 40px;
-  }
-
-  .grid-portfolio {
-    padding: 0px 0px;
-  }
-
-  .grid-portfolio .portfolio-item {
-    margin: 30px 0px;
-  }
-
-  .grid-portfolio .load-more-button {
-    padding-bottom: 30px;
-  }
-
-  .more-about-us .content {
-    padding: 60px 30px;
-  }
-
+.map {
+  display: flex;
+  flex-direction: row;
+  height: 420px;
+}
+.map .right {
+  flex-basis: 60%;
 }
 
+.map .left {
+  flex-basis: 40%;
+  background: url("/img/show.jpg") no-repeat center center/cover;
+}
+
+/*@media (max-width: 530px) {*/
+
+/*  .modal-header h3 {*/
+/*    margin-top: 15%;*/
+/*  }*/
+
+/*  .modal-body input {*/
+/*    width: 100%;*/
+/*  }*/
+
+/*  .modal-body textarea {*/
+/*    width: 100%;*/
+/*  }*/
+
+/*  .modal-content {*/
+/*    padding-bottom: 40px;*/
+/*  }*/
+
+/*  .grid-portfolio {*/
+/*    padding: 0px 0px;*/
+/*  }*/
+
+/*  .grid-portfolio .portfolio-item {*/
+/*    margin: 30px 0px;*/
+/*  }*/
+
+/*  .grid-portfolio .load-more-button {*/
+/*    padding-bottom: 30px;*/
+/*  }*/
+
+/*  .more-about-us .content {*/
+/*    padding: 60px 30px;*/
+/*  }*/
+
+/*}*/
+
+
+/*  @media (max-width: 992px) {*/
+
+/*    .blog-entries .blog-posts {*/
+/*      margin-right: 0px;*/
+/*    }*/
+
+/*    .single-blog-post {*/
+/*      margin-right: 0px;*/
+/*      margin-bottom: 80px;*/
+/*    }*/
+
+/*    .blog-entries .page-number {*/
+/*      margin-bottom: 80px;*/
+/*    }*/
+
+/*    .single-blog-post .tags-share .tags {*/
+/*      text-align: center;*/
+/*    }*/
+
+/*    .single-blog-post .tags-share .share {*/
+/*      text-align: center;*/
+/*    }*/
+/*  }*/
 
   @media (max-width: 992px) {
-
-    .blog-entries .blog-posts {
-      margin-right: 0px;
+    .inner h1 {
+      font-size: 35px!important;
     }
-
-    .single-blog-post {
-      margin-right: 0px;
-      margin-bottom: 80px;
+    .map .left {
+      display: none;
     }
-
-    .blog-entries .page-number {
-      margin-bottom: 80px;
+    .map .right {
+      flex-basis: 100%;
     }
+  }
 
-    .single-blog-post .tags-share .tags {
-      text-align: center;
+  /* Iphone SE*/
+
+  @media (max-width: 320px) {
+    .grText h1 {
+      font-size: 20px!important;
     }
-
-    .single-blog-post .tags-share .share {
-      text-align: center;
-    }
-
   }
