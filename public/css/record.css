@@ -38,7 +38,7 @@
     flex-direction: column;
     background: #f4f4f4;
     height: 58vh;
-    width: 20vw;
+    width: 290px;
     padding: 15px 25px;
     border-radius: 10px;
     opacity: 85%;
@@ -97,6 +97,7 @@
 #recordShowcase .schedule .containerTimeDiv .containerH1{
     color: white;
     font-size: 2.5rem;
+    text-align: center;
 }
 
 .timeDiv {
