@@ -25,10 +25,25 @@
 /*    color: red;*/
 /*}*/
 
+    /* NavBar*/
+
 #recordShowcase .main .navi {
-    background: #000;
+    background: #191a1f;
     display: flex;
     justify-content: center;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: #fff;
+}
+
+.navbar-custom .dropdown-menu {
+    background-color: #ff5500;
+}
+
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: gray;
 }
 
 
@@ -46,11 +61,10 @@
     flex-direction: column;
     /*background: #f4f4f4;*/
     background: rgba(244,244,244,0.5);
-    height: 85vh;
-    width: 400px;
+    height: 610px;
+    width: 380px;
     padding: 15px 25px;
     border-radius: 10px;
-    /*opacity: 85%;*/
 }
 #recordShowcase .calendar-form .form h2,
 #recordShowcase .calendar-form .form p {

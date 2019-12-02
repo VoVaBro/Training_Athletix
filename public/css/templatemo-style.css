@@ -1386,3 +1386,7 @@ footer a:hover {
       font-size: 20px!important;
     }
   }
+
+.grText p {
+  padding-bottom: 15px;
+}
