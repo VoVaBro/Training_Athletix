@@ -586,6 +586,10 @@ function renderTimeDivs() {
     tempArr.forEach(el => {
         el.remove();
     });
+    let tempBtnAddSmall = document.querySelector(".btn-add-small");
+    if (tempBtnAddSmall) {
+        tempBtnAddSmall.remove();
+    }
 
     let currentValue = calendar.value;
     if (currentValue !== "") {
