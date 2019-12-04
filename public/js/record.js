@@ -285,7 +285,7 @@ function renderBusyDivs() {
                 let tempCountBusyDivs = 0;
                 for (let j = 0;j < result[0].length; j++) {
 
-                    if (result[0][j].user === result[1]) {
+                    if (result[0][j].user._id === result[1]) {
                         tempCountUserMatch++;
                         tempRecord = result[0][j];
                         // containerH1.innerText = `${result[0][j].dateTraining} Вы записаны на ${result[0][j].recordTime}`;

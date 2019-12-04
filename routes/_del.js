@@ -24,7 +24,7 @@ router.get('/:id', (req, res) => {
     } else {
         Record.find({
             "dateTraining": req.params.id
-        })
+        }).populate('user')
             .then(result => {
                 res.jsonp([result, req.session.user]);
             })

@@ -584,7 +584,7 @@ function timeToSec (obj) {
     obj.duration = hours + min;
 }
 
-function renderTimeDivs() {
+async function renderTimeDivs() {
     let boolRenderBusy = false;
     let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
     tempArr.forEach(el => {
@@ -601,9 +601,9 @@ function renderTimeDivs() {
         btnEdit.style.display = "none";
         spinner.style.display = "inline-block";
         btnRemove.style.display = "none";
-        fetch(`/admin/${currentValue}`, {method: "get"})
-            .then(res => res.json())
-            .then(result => {
+        let result = await fetch(`/admin/${currentValue}`, {method: "get"})
+            .then(res => res.json());
+
                 btnAdd.style.display = "inline-block";
                 if (result.length > 0) {
                     boolRenderBusy = true;
@@ -640,82 +640,68 @@ function renderTimeDivs() {
                     label.style.display = "inline-block";
                     btnSand.style.display = "inline-block";
                 }
-
-            })
-            .then( () => {
+                
                 if (boolRenderBusy) {
-                    renderBusyDivs()
+                     renderBusyDivs()
                 } else {
                     spinner.style.display = "none";
                     let ul = document.querySelector(".left-ul");
                     ul.innerHTML = "";
                 }
                 getActTrainings();
-            })
+
     }
 }
 
-function renderBusyDivs() {
+async function renderBusyDivs() {
 
-        let currentValue = calendar.value;
-        fetch(`/record/${currentValue}`,{method:"get"})
-            .then(res => res.json())
-            .then(result => {
-                let tempDivs = document.querySelectorAll(".timeDiv");
+    let currentValue = calendar.value;
+    let records = await fetch(`/record/${currentValue}`,{method:"get"})
+        .then(res => res.json());
 
-                for (let j = 0;j < result[0].length; j++) {
-                    let tempTime = result[0][j].recordTime.split("-")[0].trim();
+        let tempDivs = document.querySelectorAll(".timeDiv");
+        for (let j = 0;j < records[0].length; j++) {
+            let tempTime = records[0][j].recordTime.split("-")[0].trim();
 
-                    for (let i = 0; i < tempDivs.length; i++) {
-                        if (tempDivs[i].time === tempTime) {
-                            tempDivs[i].classList.add("busyTimeDiv");
-                            tempDivs[i].userId = result[0][j].user;
-                            tempDivs[i].recordId = result[0][j]._id;
-                        }
-                    }
-
+            for (let i = 0; i < tempDivs.length; i++) {
+                if (tempDivs[i].time === tempTime) {
+                    tempDivs[i].classList.add("busyTimeDiv");
+                    tempDivs[i].innerHTML += `<br>${records[0][j].user.name}`;
+                    tempDivs[i].userId = records[0][j].user._id;
+                    tempDivs[i].userName = records[0][j].user.name;
+                    tempDivs[i].recordId = records[0][j]._id;
                 }
+            }
 
-            })
-            .then( () => {
-                let ul = document.querySelector(".left-ul");
-                ul.innerHTML = "";
+        }
 
-                spinner.style.display = "none";
-                let tempArr = document.querySelectorAll(".busyTimeDiv");
 
+            let ul = document.querySelector(".left-ul");
+            ul.innerHTML = "";
+
+            spinner.style.display = "none";
+            let tempArr = document.querySelectorAll(".busyTimeDiv");
                 for (let i=0;i<tempArr.length;i++) {
-                    let tempId = tempArr[i].userId;
-                    fetch(`/getUser/${tempId}`, {method : "get"})
-                        .then(res => res.json())
-                        .then(result => {
-                            tempArr[i].userName = result.name;
-
-                            //    Добавление в список тренировок
-                            let li = document.createElement("li");
-                            let span = document.createElement("span");
-                            span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
-                            span.addEventListener("click", function () {
-                                let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${tempArr[i].innerText}`);
-                                if (tempConfirm) {
-                                    let tempRecordId = tempArr[i].recordId;
-                                    fetch(`/record/${tempRecordId}`, {method : "delete"})
-                                        .then(res => res.json())
-                                        .then(res => {
-                                            renderAlert(res);
-                                            renderTimeDivs();
-                                        });
-                                }
-                            });
-
-                            li.innerHTML = `<span style="display: none">${result._id}</span><span>${tempArr[i].innerText}</span> <span>${result.name}</span> `;
-                            li.appendChild(span);
-                            ul.appendChild(li);
-
-                            tempArr[i].innerHTML += `<br>${result.name}`;
-                        })
+                    //    Добавление в список тренировок
+                    let li = document.createElement("li");
+                    let span = document.createElement("span");
+                    span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+                    span.addEventListener("click", function () {
+                        let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${tempArr[i].innerText}`);
+                        if (tempConfirm) {
+                            let tempRecordId = tempArr[i].recordId;
+                            fetch(`/record/${tempRecordId}`, {method : "delete"})
+                                .then(res => res.json())
+                                .then(res => {
+                                    renderAlert(res);
+                                    renderTimeDivs();
+                                });
+                        }
+                    });
+                    li.innerHTML = `<span>${tempArr[i].innerText}</span> `;
+                    li.appendChild(span);
+                    ul.appendChild(li);
                 }
-            });
 
 
 }
