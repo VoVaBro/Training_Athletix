@@ -7,6 +7,7 @@ let date1;
 let date2;
 let timeDiv;
 let startTime;
+let EditCalendar = true;
 
 
 document.addEventListener("DOMContentLoaded",function () {
@@ -14,9 +15,21 @@ document.addEventListener("DOMContentLoaded",function () {
     renderTimeDivs();
 });
 
+document.body.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("timeDiv")) {
+        let tempDiv = document.querySelector(".activeTimeDiv");
+        if (tempDiv){
+            document.querySelector(".activeTimeDiv").classList.remove("activeTimeDiv");
+        }
+    }
+});
+
 calendar.addEventListener("change",function () {
     if (this.value!=='') {
-        renderTimeDivs();
+        if (EditCalendar) {
+            calendar.disabled = true;
+            renderTimeDivs();
+        }
     } else {
         let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
         tempArr.forEach(el => {
@@ -127,6 +140,7 @@ btnSignUp.addEventListener("click", function () {
 function renderTimeDivs() {
     let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
     let boolRenderBusy = false;
+    EditCalendar = false;
     tempArr.forEach(el => {
         el.remove();
     });
@@ -152,6 +166,7 @@ function renderTimeDivs() {
                     for (let i = 0; i < result[0].timetable.length; i++) {
                         let tempIsTraining = Number(result[0].timetable[i].isTraining).toString();
                         addTimeDiv(tempIsTraining, result[0].timetable[i].duration);
+                        timeDiv.style.display = "none";
                         container.insertBefore(timeDiv, containerH1);
                     }
                     tempArr = document.querySelectorAll(".timeDiv");
@@ -174,6 +189,8 @@ function renderTimeDivs() {
                     renderBusyDivs();
                 } else {
                     spinner.style.display = "none";
+                    EditCalendar = true;
+                    calendar.disabled = false;
                 }
             })
 
@@ -181,6 +198,8 @@ function renderTimeDivs() {
         // renderAlert([{text : "Выберите актуальную дату для просмотра расписания", bool : 0}]);
         containerH1.innerText = `Выберите актуальную дату для просмотра расписания`;
         btnSignUp.style.display = "none";
+        EditCalendar = true;
+        calendar.disabled = false;
     }
 }
 
@@ -244,6 +263,7 @@ function renderAlert(obj) {
             tempDiv.classList.add("alert-danger");
         }
         tempDiv.innerText = el.text;
+        tempDiv.style.textAlign = "center";
 
         $('#myModal').modal('show');
         let modalBody = document.querySelector(".modal-body");
@@ -259,15 +279,47 @@ function renderBusyDivs() {
         .then(result => {
             let tempDivs = document.querySelectorAll(".timeDiv");
 
-            for (let j = 0;j < result[0].length; j++) {
-                let tempTime = result[0][j].recordTime.split("-")[0].trim();
-                for (let i = 0; i < tempDivs.length; i++) {
-                    if (tempDivs[i].time === tempTime) {
-                        tempDivs[i].classList.add("busyTimeDiv")
+            if (result[0].length > 0){
+                let tempCountUserMatch = 0;
+                let tempRecord;
+                let tempCountBusyDivs = 0;
+                for (let j = 0;j < result[0].length; j++) {
+
+                    if (result[0][j].user === result[1]) {
+                        tempCountUserMatch++;
+                        tempRecord = result[0][j];
+                        // containerH1.innerText = `${result[0][j].dateTraining} Вы записаны на ${result[0][j].recordTime}`;
                     }
+                        let tempTime = result[0][j].recordTime.split("-")[0].trim();
+                        for (let i = 0; i < tempDivs.length; i++) {
+                            if (tempDivs[i].time === tempTime) {
+                                // tempDivs[i].classList.add("busyTimeDiv")
+                                tempCountBusyDivs++;
+                            } else {
+                                tempDivs[i].style.display = "flex";
+                            }
+                        }
+                }
+                if (result[0].length === tempDivs.length) {
+                    containerH1.innerText = `В данный момент на  ${calendar.value} расписание укомплектовано`;
+                    btnSignUp.style.display = "none";
+                }
+                if (tempCountUserMatch > 0) {
+                    tempDivs.forEach(el => {
+                        el.remove();
+                    });
+                    containerH1.innerText = `${tempRecord.dateTraining} Вы записаны на ${tempRecord.recordTime}`;
+                    btnSignUp.style.display = "none";
                 }
 
+            } else {
+                tempDivs.forEach(el => {
+                    el.style.display = "flex";
+                });
             }
+
+            EditCalendar = true;
+            calendar.disabled = false;
         })
 }
 

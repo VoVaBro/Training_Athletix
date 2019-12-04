@@ -27,14 +27,19 @@ exports.addTraining = (req,res) => {
     }
 };
 
-exports.loadTraining = (req, res) => {
-    Training.find({
+exports.loadTraining = async (req, res) => {
+    let params = {
         "dateTraining" : req.params.id
-    })
-        .then(result => {
-            res.jsonp(result);
-        })
     };
+
+    try {
+        let trainings = await Training.getTrainings(params)
+
+        res.jsonp(trainings);
+    } catch(e) {
+        throw new Error(e)
+    }
+};
 
 exports.editTraining = (req, res) => {
     Training.findOne({

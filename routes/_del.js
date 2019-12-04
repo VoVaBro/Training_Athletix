@@ -3,13 +3,13 @@ const router = express.Router();
 const Record = require('../models/recordModel');
 const mongoose = require('mongoose');
 
-async function gta (req, res) {
-    let user;
-    await Record.find({"dateTraining": req.body.calendar}, function (err, pro) {
-        user = pro;
-    });
-    console.log(user);
-}
+// async function gta (req, res) {
+//     let user;
+//     await Record.find({"dateTraining": req.body.calendar}, function (err, pro) {
+//         user = pro;
+//     });
+//     console.log(user);
+// }
 
 router.get('/', (req,res) =>{
     res.render("record",{layout: false});
@@ -17,7 +17,7 @@ router.get('/', (req,res) =>{
 
 router.get('/:id', (req, res) => {
     if (req.params.id === "all") {
-        Record.find({})
+        Record.find({}).populate('user')
             .then(result => {
                 res.jsonp([result, req.session.user]);
             })

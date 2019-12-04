@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const recordSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
+        ref: 'User',
         required: false
     },
     recordTime: {

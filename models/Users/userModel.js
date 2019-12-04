@@ -22,6 +22,12 @@ const UserSchema = mongoose.Schema({
     secretMsgExp: Date
 });
 
-module.exports = mongoose.model('User', UserSchema);
+let model = mongoose.model('User', UserSchema);
+
+model.add = function(){
+    return 123
+}
+
+module.exports = model;
 
 

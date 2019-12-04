@@ -20,4 +20,12 @@ const trainingSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('training', trainingSchema);
+let model = mongoose.model('training', trainingSchema);
+
+model.getTrainings = async (params) => {
+    return model.find({
+        ...params
+    })
+};
+
+module.exports = model;

@@ -331,6 +331,8 @@ document.addEventListener("DOMContentLoaded",function () {
     calendar.value = getStrDate();
     timeToSec(timeDuration);
     renderTimeDivs();
+    let tempCalendarVal = calendar.value.split("-");
+    document.querySelector(".left h2").innerHTML = `Тренировки на ${tempCalendarVal[2]}-${tempCalendarVal[1]}-${tempCalendarVal[0]}`;
 });
 
 btnRemove.addEventListener("click", function () {
@@ -570,6 +572,8 @@ select.addEventListener("change", function () {
 });
 
 calendar.addEventListener("change", function () {
+    let tempCalendarVal = calendar.value.split("-");
+    document.querySelector(".left h2").innerHTML = `Тренировки на ${tempCalendarVal[2]}-${tempCalendarVal[1]}-${tempCalendarVal[0]}`;
     renderTimeDivs();
 });
 
@@ -703,6 +707,7 @@ function renderBusyDivs() {
                                         });
                                 }
                             });
+
                             li.innerHTML = `<span style="display: none">${result._id}</span><span>${tempArr[i].innerText}</span> <span>${result.name}</span> `;
                             li.appendChild(span);
                             ul.appendChild(li);
@@ -771,24 +776,24 @@ function getStrDate() {
     return today
 }
 
-function getActTrainings() {
+async function getActTrainings() {
     let ul = document.querySelector(".right-ul");
     ul.innerHTML = "";
-
-    fetch(`record/all`, {method : "get"})
-        .then(res => res.json())
-        .then(result => {
-            let tempNewDate = new Date;
+    //there
+    let result = await fetch(`record/all`, {method : "get"})
+        .then(res => res.json());
+    let tempNewDate = new Date;
             tempNewDate.setHours(0);
             tempNewDate.setMinutes(0);
             tempNewDate.setSeconds(0);
             tempNewDate.setMilliseconds(24*60*60*1000);
 
-            let tempArr = result[0].sort( (a,b) => {
+            let trainings = result[0].sort( (a,b) => {
                 return new Date (`${a.dateTraining}T${a.recordTime.split("-")[0].trim()}`).getTime() - new Date (`${b.dateTraining}T${b.recordTime.split("-")[0].trim()}`).getTime();
             });
-            tempArr.forEach(el => {
-                let tempDate = new Date(`${el.dateTraining}T${el.recordTime.split("-")[0].trim()}`);
+
+            trainings.map(training => {
+                let tempDate = new Date(`${training.dateTraining}T${training.recordTime.split("-")[0].trim()}`);
                 if ((tempDate.getTime() - tempNewDate) > 0) {
 
                     //    Добавление в список тренировок
@@ -796,10 +801,10 @@ function getActTrainings() {
                     let span = document.createElement("span");
                     span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
                     span.addEventListener("click", function () {
-                        let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${el.dateTraining} (${el.recordTime})`);
+                        let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${training.dateTraining} (${training.recordTime})`);
                         if (tempConfirm) {
-                            let tempRecordId = el._id;
-                            fetch(`/record/${tempRecordId}`, {method : "delete"})
+                            let tempRecordId = training._id;
+                            fetch(`/record/${tempRecordId}`, {method: "delete"})
                                 .then(res => res.json())
                                 .then(res => {
                                     renderAlert(res);
@@ -809,20 +814,12 @@ function getActTrainings() {
                     });
 
 
-                    let tempId = el.user;
-                    fetch(`/getUser/${tempId}`, {method : "get"})
-                        .then(res => res.json())
-                        .then(result => {
-                            li.innerHTML = `<span>${el.dateTraining}</span> <span>${el.recordTime}</span> <span class="userId">${result.name}</span> `;
-                            li.appendChild(span);
-                            ul.appendChild(li);
-                        });
-
-
-
+                    let user = training.user;
+                    li.innerHTML = `<span>${training.dateTraining}</span> <span>${training.recordTime}</span> <span class="userId">${user.name}</span> `;
+                    li.appendChild(span);
+                    ul.appendChild(li);
                 }
-                })
-            });
+            })
 
 
 }

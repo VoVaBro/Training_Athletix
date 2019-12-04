@@ -8,6 +8,7 @@
 
 #recordShowcase .main {
     height: 123vh;
+    background: url("../img/recordMobile.png") no-repeat center center/cover;
 }
 
 @media (max-width: 320px), (max-height: 667px) {
