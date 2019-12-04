@@ -160,7 +160,6 @@ function renderTimeDivs() {
             .then(res => res.json())
             .then(result => {
                 if (result.length > 0 && result[0].onEdit === false) {
-                    btnSignUp.style.display = "inline-block";
                     boolRenderBusy = true;
                     getStartTime(result[0].timetable[0].time);
                     for (let i = 0; i < result[0].timetable.length; i++) {
@@ -191,6 +190,7 @@ function renderTimeDivs() {
                     spinner.style.display = "none";
                     EditCalendar = true;
                     calendar.disabled = false;
+                    btnSignUp.style.display = "inline-block";
                 }
             })
 
@@ -300,6 +300,7 @@ function renderBusyDivs() {
                             }
                         }
                 }
+                btnSignUp.style.display = "inline-block";
                 if (result[0].length === tempDivs.length) {
                     containerH1.innerText = `В данный момент на  ${calendar.value} расписание укомплектовано`;
                     btnSignUp.style.display = "none";
@@ -316,6 +317,7 @@ function renderBusyDivs() {
                 tempDivs.forEach(el => {
                     el.style.display = "flex";
                 });
+                btnSignUp.style.display = "inline-block";
             }
 
             EditCalendar = true;

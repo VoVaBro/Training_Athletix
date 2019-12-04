@@ -640,7 +640,7 @@ async function renderTimeDivs() {
                     label.style.display = "inline-block";
                     btnSand.style.display = "inline-block";
                 }
-                
+
                 if (boolRenderBusy) {
                      renderBusyDivs()
                 } else {
