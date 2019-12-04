@@ -137,7 +137,7 @@ btnSignUp.addEventListener("click", function () {
     }
 });
 
-function renderTimeDivs() {
+async function renderTimeDivs() {
     let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
     let boolRenderBusy = false;
     EditCalendar = false;
@@ -156,9 +156,8 @@ function renderTimeDivs() {
         btnSignUp.style.display = "none";
         containerH1.innerText = "";
 
-        fetch(`/admin/${currentValue}`, {method: "get"})
-            .then(res => res.json())
-            .then(result => {
+        let result = await fetch(`/admin/${currentValue}`, {method: "get"})
+            .then(res => res.json());
                 if (result.length > 0 && result[0].onEdit === false) {
                     boolRenderBusy = true;
                     getStartTime(result[0].timetable[0].time);
@@ -174,7 +173,15 @@ function renderTimeDivs() {
                             el.remove();
                         }
                     });
+
+                    if (boolRenderBusy) {
+                       await renderBusyDivs();
+                    }
                 } else {
+                    btnSignUp.style.display = "none";
+                    spinner.style.display = "none";
+                    EditCalendar = true;
+                    calendar.disabled = false;
                     if (result.length > 0 && result[0].onEdit === true) {
                         containerH1.innerText = `Расписание на ${currentValue} в данный момент редакитуется, пожалуйста проверьте расписание позже`;
                     } else {
@@ -182,17 +189,7 @@ function renderTimeDivs() {
                     }
                 }
 
-            })
-            .then( () => {
-                if (boolRenderBusy) {
-                    renderBusyDivs();
-                } else {
-                    spinner.style.display = "none";
-                    EditCalendar = true;
-                    calendar.disabled = false;
-                    btnSignUp.style.display = "inline-block";
-                }
-            })
+
 
     } else {
         // renderAlert([{text : "Выберите актуальную дату для просмотра расписания", bool : 0}]);
@@ -271,12 +268,12 @@ function renderAlert(obj) {
     });
 }
 
-function renderBusyDivs() {
+async function renderBusyDivs() {
     let currentValue = calendar.value;
+    let result = await fetch(`/record/${currentValue}`,{method:"get"})
+        .then(res => res.json());
     spinner.style.display = "none";
-    fetch(`/record/${currentValue}`,{method:"get"})
-        .then(res => res.json())
-        .then(result => {
+
             let tempDivs = document.querySelectorAll(".timeDiv");
 
             if (result[0].length > 0){
@@ -322,7 +319,7 @@ function renderBusyDivs() {
 
             EditCalendar = true;
             calendar.disabled = false;
-        })
+
 }
 
 function getStrDate() {
