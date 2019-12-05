@@ -1,3 +1,4 @@
+
 require ('dotenv').config();
 const jwt = require ('jsonwebtoken');
 const { tokens, accessSecret, refreshJwtSecret} = require('./tokenConfig').jwt;
@@ -28,6 +29,7 @@ exports.genRefreshToken = (userId) => {
 exports.replaceToken = userId =>{
   Token.findOneAndRemove({tokenId: userId})
 };
+
 
 
 

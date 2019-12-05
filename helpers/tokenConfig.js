@@ -1,3 +1,4 @@
+
 require ('dotenv').config();
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
             refresh: {
                 type: 'refresh',
                 expiresIn: '20s'
+
             }
         }
     }
