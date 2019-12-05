@@ -51,12 +51,26 @@ router.post('/', (req, res) => {
 
     });
 
-router.delete('/:id', (req, res) => {
-    Record.deleteOne({
-        "_id" : req.params.id
-    })
+// router.delete('/:id', (req, res) => {
+//     Record.deleteOne({
+//         "_id" : req.params.id
+//     })
+//         .then( () => {
+//             res.jsonp([{text : "Расписание на тренировку удалено", bool : 1}]);
+//         })
+//         .catch(err => {
+//             if (err){
+//                 res.jsonp([{text : "Ошибка, обновите страницу и попробуйте удалить запись", bool : 0}]);
+//             }
+//         })
+//
+// });
+
+router.delete('/many', (req, res) => {
+    let { ids } = req.body;
+    Record.deleteMany({ _id : { $in: ids} })
         .then( () => {
-            res.jsonp([{text : "Расписание на тренировку удалено", bool : 1}]);
+            res.jsonp([{text : "ssss", bool : 1}]);
         })
         .catch(err => {
             if (err){
@@ -80,5 +94,6 @@ router.put(`/:id`, (req,res) => {
             }
         })
 });
+
 
 module.exports = router;

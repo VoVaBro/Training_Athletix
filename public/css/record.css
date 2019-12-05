@@ -99,21 +99,21 @@
     align-self: center;
 }
 
-#recordShowcase .schedule{
-    height: 20vh;
-    width: 100vw;
-    margin-top: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-/* Overlay */
-    position: absolute;
-    top: 0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-}
+/*#recordShowcase .schedule{*/
+/*    height: 20vh;*/
+/*    width: 100vw;*/
+/*    margin-top: auto;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*!* Overlay *!*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left:0;*/
+/*    right: 0;*/
+/*    bottom: 0;*/
+/*    background-color: rgba(0,0,0,0.5);*/
+/*}*/
 
 .containerTimeDiv {
     height: 20vh;

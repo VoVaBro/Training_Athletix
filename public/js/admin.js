@@ -1,5 +1,6 @@
 let calendar = document.querySelector('#calendar');
-let container = document.querySelector('.container');
+let container = document.querySelector('.containerTime');
+let btnsDiv = document.querySelector('.btns');
 let btnAdd = document.querySelector('.btn-add');
 let select = document.querySelector(".select");
 let label = document.querySelector(".timeLabel");
@@ -336,34 +337,9 @@ document.addEventListener("DOMContentLoaded",function () {
 });
 
 btnRemove.addEventListener("click", function () {
-    let currentValue = calendar.value;
-    if (currentValue !== "") {
-        fetch(`/admin/${currentValue}`, {
-            method : "delete"
-        })
-            .then(res => res.json())
-            .then(res => {
-                    renderAlert(res);
-            })
-            .catch(err => {
-                if (err) {
-                    renderAlert([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
-                }
-            })
-            .then( () => {
-                fetch(`/recordDelAll/${currentValue}`, {
-                    method : "delete"
-                })
-                    .then(res => res.json())
-                    .then( () => {
-                        renderTimeDivs();
-                    })
-                    .catch(err => {
-                        if (err) {
-                            renderAlert([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
-                        }
-                    })
-            })
+    let tempConfirm = confirm("Вы действительно хотите удалить расписание?");
+    if (tempConfirm) {
+        removeTraining();
     }
 });
 
@@ -455,10 +431,10 @@ function createBtnEditCancel() {
                 onEdit = false;
             });
     });
-    document.body.insertBefore(btnCancel, btnEdit);
+    btnsDiv.insertBefore(btnCancel, btnEdit);
 }
 
-btnEdit.addEventListener("click", function () {
+btnEdit.addEventListener("click", async function () {
     let currentValue = calendar.value;
 
     if (btnEdit.innerText === "Редактировать") {
@@ -483,17 +459,21 @@ btnEdit.addEventListener("click", function () {
         let errorArr = [];
 
         if (errorArr.length === 0) {
-
             //Удаление тренировок
-            delArr.forEach(el => {
-                fetch(`/record/${el}`, {method : "delete"})
+               await fetch(`/record/many`, {
+                   method : "delete",
+                   body: JSON.stringify({ ids: delArr }),
+                   headers: {
+                       'Content-Type': 'application/json'
+                   }
+               })
                     .then(res => res.json())
                     .then(res => {
                         renderAlert(res);
                     });
-            });
 
             //Перенос тренеровок
+
             let tempArr = document.querySelectorAll(".busyTimeDiv");
             if (tempArr.length > 0){
                 tempArr.forEach(el => {
@@ -513,6 +493,7 @@ btnEdit.addEventListener("click", function () {
                             })
                     }
                 });
+
             }
 
             //Сохранение результата
@@ -521,7 +502,7 @@ btnEdit.addEventListener("click", function () {
             if (tempArrTimetable.length < 1){
                 let tempConfirm = confirm("Вы действительно хотите удалить расписание?");
                 if (tempConfirm) {
-                    btnRemove.click();
+                    removeTraining();
                 } else {
                     renderTimeDivs();
                 }
@@ -808,4 +789,36 @@ async function getActTrainings() {
             })
 
 
+}
+
+function removeTraining() {
+    let currentValue = calendar.value;
+    if (currentValue !== "") {
+        fetch(`/admin/${currentValue}`, {
+            method : "delete"
+        })
+            .then(res => res.json())
+            .then(res => {
+                renderAlert(res);
+            })
+            .catch(err => {
+                if (err) {
+                    renderAlert([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+                }
+            })
+            .then( () => {
+                fetch(`/recordDelAll/${currentValue}`, {
+                    method : "delete"
+                })
+                    .then(res => res.json())
+                    .then( () => {
+                        renderTimeDivs();
+                    })
+                    .catch(err => {
+                        if (err) {
+                            renderAlert([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+                        }
+                    })
+            })
+    }
 }
