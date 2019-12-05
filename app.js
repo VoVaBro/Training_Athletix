@@ -14,17 +14,17 @@ const app = express();
 
 
 
-
 //DB
 mongoose.connect(process.env.MONGO_URI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        useFindAndModify:true
     })
     .then(() => {
         console.log('DB connected');
-        app.listen(process.env.PORT, () => console.log(`server start on port ${process.env.PORT}. ${process.env.GRIT}`));
+        app.listen(process.env.PORT, () => console.log(`server start at http://localhost:${process.env.PORT}. ${process.env.GRIT}`));
     }).catch(err => console.log('Error:', err ));
 
 //body/cookie parser
@@ -49,7 +49,7 @@ const sess = {
     store: new MongoSessionStore ({ mongooseConnection: mongoose.connection }),
     cookie: {
         secret: true,
-        maxAge:  null /*180 * 60 * 100*/
+        maxAge:  180 * 60 * 1000
     }
 };
 

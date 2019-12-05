@@ -1,30 +1,62 @@
 require ('dotenv').config();
 const jwt = require ('jsonwebtoken');
-const secret = process.env.jwtSecret;
+const { accessSecret, refreshSecret } = require('../helpers/tokenConfig').jwt;
+const { genNewAccessToken } = require ('../helpers/genNewAccessToken');
+const Token = require ('../models/tokenModel');
+
+const { genAccessToken } = require ('../helpers/refreshJwtToken');
 
 module.exports = async function(req, res, next) {
-    try {
         const session = req.session;
-
-        if (!session.headers['Authorization'] && !session.isAuth) {
-            throw new Error('Authorization header not found')
-        }
 
         const token = session.headers['Authorization'];
 
-        let data = new Promise((resolve, reject) => {
-            jwt.verify(token, secret, {}, (err, data) => {
-                if (err) return reject(err);
-                resolve(data);
-            })
-        });
+        if (!token) {
+            return  new Error('Authorization header not found')
+        }
 
-        const { _id } = await data;
-        req.session.user = _id;
+        let userId = req.session.userId
+
+        let isValid = await verify(token, accessSecret)
+
+        if (isValid) {
+            next()
+            return
+        }
+
+        let tokens = await Token.findOne({ tokenId: userId });
+
+        if (!tokens) {
+            throw new Error('Token not found')
+        }
+
+        let refreshToken = tokens.token;
+        isValid = await verify(refreshToken, refreshSecret)
+
+
+        // console.log(1232, isValid)
+        if (!isValid) {
+            return res.sendStatus(403);
+        }
+
+        const newToken = await genAccessToken(userId);
+        req.session.headers = {};
+        // console.log(newToken)
+        req.session.headers['Authorization'] = newToken;
+        await req.session.save(err => {
+            if (err) throw err
+        });
         next()
-    } catch(err) {
-        console.log(err);
-        return res.sendStatus(403);
-    }
 };
+
+async function verify(token, secret) {
+    try {
+        await jwt.verify(token, secret);
+        return true
+    } catch(e) {
+        console.log(e)
+        return false
+    }
+
+}
 

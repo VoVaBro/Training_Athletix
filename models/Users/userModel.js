@@ -1,5 +1,4 @@
 const mongoose = require ('mongoose');
-const ObjectId = require ('mongoose').ObjectId;
 
 
 const UserSchema = mongoose.Schema({
@@ -16,10 +15,25 @@ const UserSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
-    secretMsg: String,
-    secretMsgExp: Date
+    secret: {
+        type: String,
+        trim: true,
+        unique: true,
+    },
+    secretMsgExp:{
+        type: Date
+    },
+    secretKey: {
+        type: String,
+        trim: true,
+        unique: true
+    },
+    isActive: {
+       type: Boolean
+    }
 });
 
 let model = mongoose.model('User', UserSchema);

@@ -1,15 +1,24 @@
 require ('dotenv').config();
-const secret = process.env.jwtSecret;
-const mongoose = require ('mongoose');
+
+const mongoose = require('mongoose');
 const User = require ('../models/Users/userModel');
+const Token = require ('../models/tokenModel');
 const bcrypt = require ('bcrypt');
 const jwt = require ('jsonwebtoken');
-// const crypto = require ('crypto-random-string');
 const randomString = require ('randomstring');
+const mailer = require ('../helpers/sendEmail');
+const msgSignup = require ('../helpers/msgForUsers');
+const { refreshJwtSecret } = require ('../helpers/tokenConfig').jwt;
+
+const {genAccessToken, genRefreshToken } = require ('../helpers/refreshJwtToken');
+
+
 
 
 exports.signup = async (req, res) => {
     try {
+        const key = await randomString.generate(6).toUpperCase();
+        const secret = await randomString.generate();
         const user = await User.findOne({email: req.body.email});
         if (user){
             req.flash('error', 'Такой email уже используется');
@@ -20,16 +29,51 @@ exports.signup = async (req, res) => {
                 const newUser = new User({
                     name: req.body.name,
                     email: req.body.email,
-                    password: hash
+                    password: hash,
+                    secret: secret,
+                    secretMsgExp: Date.now() + 60 * 60 * 1000,
+                    secretKey: key,
+                    isActive: false
             });
-                newUser.save().then(() => console.log('user saved')).catch(err => console.log(err));
-               res.redirect('/signin')
-            });
+                newUser
+                    .save()
+                    .then((validNewUser) => {
+                        const validEmail = msgSignup(validNewUser);
+                        mailer(validEmail);
+                        res.redirect('/')
+                    }).catch(err => console.log(err));
+           });
         }
     }catch (e) {
         console.log(e)
     }
 };
+
+exports.verifyEmail =  async (req, res) => {
+  try {
+      const user = await User.findOne({
+          secretKey: req.body.secretKey,
+          secret: req.body.secret,
+          secretMsgExp: {$gt: Date.now()}
+      });
+      if (!user){
+         req.flash('error', 'token invalid');
+         res.redirect ('/signin')
+      }
+      if (!user.secretKey === req.body.secretKey && !user.secret === req.body.secret){
+          req.flash('error', 'Error');
+          res.redirect('/')
+      } else {
+          User.updateOne({ _id: user._id }, {isActive: true})
+              .then(() => {
+             res.redirect('/signin')
+          })
+      }
+  } catch (e) {
+      console.log(e)
+  }
+};
+
 
 exports.signin = async (req, res) => {
     try {
@@ -43,15 +87,32 @@ exports.signin = async (req, res) => {
                 req.flash('error', 'Неверный пароль');
                 res.redirect('/signin')
             } else {
-                const token = jwt.sign ({_id:user.id}, secret , {expiresIn: "3h"});
+
+                const token = await genAccessToken(user._id);
+                const refreshToken = await genRefreshToken(user._id);
+
+                const newToken = new Token({
+                    token: refreshToken.token,
+                    tokenId: refreshToken.tokenId
+                });
+
+               delete user.secret;
+               delete user.secretKey;
+               delete user.secretMsgExp;
+
+               await user.save();
+
                 req.session.headers = {};
                 req.session.headers['Authorization'] = token;
-                req.session.isAuthenticated = true;
-                req.session.save(err => {
+                // req.session.id = user._id;
+                req.session.userId = user._id;
+                await req.session.save(err => {
                     if (err) throw err
                 });
-                console.log('авторизаци прошла успешно');
-                res.redirect('/');
+                await newToken.save()
+                    .then(() => {
+                    res.redirect('/');
+                });
             }
         }
     } catch (e) {
@@ -59,46 +120,18 @@ exports.signin = async (req, res) => {
     }
 };
 
-exports.reset = async (req, res) => {
-     try {
-        const secret = await randomString.generate();
-        const user = await User.findOne({email: req.body.email});
+exports.refreshToken = async (req, res) => {
 
-        if (!user) {
-            req.flash('error', 'Пользователь не найден');
-            res.redirect('/reset')
-        } else {
-                user.secretMsg = secret;
-                user.secretMsgExp = Date.now() + 60 * 60 * 1000;
-                await user.save()
-        }
+    try {
 
-
+        const refreshToken = await Token.findOne({tokenId: req.session.id});
+        if(!refreshToken) return res.status(403).redirect('/signin');
+        const decoded = await jwt.verify(refreshToken, refreshJwtSecret);
+        if (!decoded) res.status(401).redirect('/signin');
+        return await genAccessToken(decoded);
 
     } catch (e) {
-        if (e) {
-            throw e
-        }
+        if (e) throw e
     }
-    // try {
-    //     crypto.randomBytes(32, async (err, buffer) => {
-    //         if (err){
-    //             throw err
-    //         }
-    //         const secret = buffer.toString('hash');
-    //         const candidate =  await User.findOne({email: req.body.email});
-    //
-    //         if (!candidate){
-    //             req.flash('error', 'Пользователь не найден, попробуйте ввести email снова');
-    //             res.redirect ('/reset')
-    //         } else {
-    //             candidate.secretMsg = secret;
-    //             candidate.secretMsgExp = Date.now() + 60 * 60 * 1000;
-    //             await candidate.save()
-    //             //send msg on email
-    //         }
-    //     })
-    // } catch (err) {
-    //     if (err) throw err;
-    // }
 };
+
