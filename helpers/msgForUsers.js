@@ -1,10 +1,6 @@
 module.exports = function (user) {
     return {
-
-        from: 'johann.stokes@ethereal.email',
-
-        from: 'rowland.sawayn76@ethereal.email',
-
+        from: 'hattie.wolf67@ethereal.email',
         to: user.email,
         subject: 'Привет, новый атлет!',
         html:`

@@ -1,6 +1,6 @@
 const router = require ('express').Router();
 
-const { signup, signin, verifyEmail, refreshToken } = require ('../controllers/auth');
+const { signup, signin, verifyEmail } = require ('../controllers/auth');
 
 const adminController = require("../controllers/admin");
 
@@ -16,7 +16,7 @@ router.post('/signup', signup);
 router.post('/verifyEmail', verifyEmail);
 router.post('/signin',  signin);
 router.post('/admin', adminController.addTraining);
-router.post('/refreshToken', refreshToken);
+
 
 
 

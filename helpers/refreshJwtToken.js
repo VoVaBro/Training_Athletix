@@ -26,10 +26,6 @@ exports.genRefreshToken = (userId) => {
     }
 };
 
-exports.replaceToken = userId =>{
-  Token.findOneAndRemove({tokenId: userId})
-};
-
 
 
 

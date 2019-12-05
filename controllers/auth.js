@@ -96,15 +96,14 @@ exports.signin = async (req, res) => {
                     tokenId: refreshToken.tokenId
                 });
 
-               delete user.secret;
-               delete user.secretKey;
-               delete user.secretMsgExp;
+                user.secret = undefined;
+                user.secretKey = undefined;
+                user.secretMsgExp = undefined;
 
                await user.save();
 
                 req.session.headers = {};
                 req.session.headers['Authorization'] = token;
-                // req.session.id = user._id;
                 req.session.userId = user._id;
                 await req.session.save(err => {
                     if (err) throw err
@@ -120,18 +119,5 @@ exports.signin = async (req, res) => {
     }
 };
 
-exports.refreshToken = async (req, res) => {
 
-    try {
-
-        const refreshToken = await Token.findOne({tokenId: req.session.id});
-        if(!refreshToken) return res.status(403).redirect('/signin');
-        const decoded = await jwt.verify(refreshToken, refreshJwtSecret);
-        if (!decoded) res.status(401).redirect('/signin');
-        return await genAccessToken(decoded);
-
-    } catch (e) {
-        if (e) throw e
-    }
-};
 
