@@ -1,7 +1,7 @@
 
 require ('dotenv').config();
 const jwt = require ('jsonwebtoken');
-const { tokens, accessSecret, refreshJwtSecret} = require('./tokenConfig').jwt;
+const { tokens, accessSecret, refreshSecret} = require('./tokenConfig').jwt;
 const Token = require ('../models/tokenModel');
 
 exports.genAccessToken = userId => {
@@ -21,7 +21,7 @@ exports.genRefreshToken = (userId) => {
     const options = { expiresIn: tokens.refresh.expiresIn };
 
     return {
-        token: jwt.sign(payload, refreshJwtSecret, options),
+        token: jwt.sign(payload, refreshSecret, options),
         tokenId: payload.id
     }
 };

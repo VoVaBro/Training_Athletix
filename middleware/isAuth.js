@@ -30,7 +30,6 @@ module.exports = async function(req, res, next) {
         }
 
         let refreshToken = tokens.token;
-        console.log(refreshToken, refreshSecret)
         isValid = await verify(refreshToken, refreshSecret);
 
         if (!isValid) {
