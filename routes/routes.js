@@ -1,6 +1,6 @@
 const router = require ('express').Router();
 
-const { signup, signin, firstSignin } = require ('../controllers/auth');
+const { signup, signin, verifyEmail, refreshToken } = require ('../controllers/auth');
 
 const adminController = require("../controllers/admin");
 
@@ -8,12 +8,17 @@ const isAuth = require ('../middleware/isAuth');
 
 const User = require ('../models/Users/userModel');
 
+const mongoose = require ('mongoose');
+
 
 //POST
 router.post('/signup', signup);
-router.post('/signin', signin);
-router.post('/firstSignin', firstSignin);
+router.post('/verifyEmail', verifyEmail);
+router.post('/signin',  signin);
 router.post('/admin', adminController.addTraining);
+router.post('/refreshToken', refreshToken);
+
+
 
 //GET
 router.get('/signup', (req, res) => {
@@ -33,7 +38,7 @@ router.get('/signin/:secret', async (req, res) => {
         res.redirect('/signup')
     }
     try {
-        const user = await User ({
+        const user = await User.findOne ({
             secret: req.params.secret
         });
         if (!user) return new Error('User dosent exist!');
@@ -42,7 +47,7 @@ router.get('/signin/:secret', async (req, res) => {
             layout: false,
             secret: req.params.secret,
             userId: user._id
-        })
+        });
     } catch (e) {
         console.log(e)
     }
@@ -73,9 +78,9 @@ router.get('/signin', async (req, res) => {
 });
 
 
-router.get('/reset', (req, res) =>{
-    res.render('resetPass', {layout: false});
-});
+// router.get('/reset', (req, res) =>{
+//     res.render('resetPass', {layout: false});
+// });
 
 router.get('/', (req, res) =>{
     res.render("index",{layout: false});
@@ -95,6 +100,7 @@ router.put('/admin/:id', adminController.editTraining);
 router.delete('/admin/:date',adminController.removeTraining);
 
 router.get('/logout', (req, res) =>{
+    //стереть токен в БД
     req.session.destroy(err => {
         if (err) throw err
     });

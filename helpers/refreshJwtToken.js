@@ -1,39 +1,35 @@
 require ('dotenv').config();
 const jwt = require ('jsonwebtoken');
-const { tokens, secret } = require ('/helpers/tokenConfig').jwt;
-const Token = require ('/models/tokenModel');
+const { tokens, accessSecret, refreshJwtSecret} = require('./tokenConfig').jwt;
+const Token = require ('../models/tokenModel');
 
-const genAccessToken = userId => {
+exports.genAccessToken = userId => {
     const payload = {
-        userId,
+        id: userId,
         type: tokens.access.type
     };
     const options = { expiresIn: tokens.access.expiresIn };
-
-    return jwt.sign(payload, secret, options)
+    return jwt.sign(payload, accessSecret, options)
 };
 
-const genRefreshToken = () => {
+exports.genRefreshToken = (userId) => {
     const payload = {
-        id: req.session.user,
+        id: userId,
         type: tokens.refresh.type
     };
     const options = { expiresIn: tokens.refresh.expiresIn };
 
     return {
-        token: jwt.sign(payload, secret, options),
-        id: payload.id
+        token: jwt.sign(payload, refreshJwtSecret, options),
+        tokenId: payload.id
     }
 };
 
-const replaceRefreshToken = (tokenId, userId) => {
-    Token.findOneAndRemove({userId})
-        .exec()
-        .then(() => Token.create({tokenId, userId}))
+exports.replaceToken = userId =>{
+  Token.findOneAndRemove({tokenId: userId})
 };
 
-module.exports = {
-    genAccessToken,
-    genRefreshToken,
-    replaceRefreshToken
-};
+
+
+
+
