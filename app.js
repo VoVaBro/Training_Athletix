@@ -61,10 +61,3 @@ app.use('/', require('./routes/routes'));
 app.use('/record', isAuth, require("./routes/_del"));
 
 
-
-
-
-
-
-
-

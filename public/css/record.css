@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding: 0;
+}
+
+#recordShowcase .main {
+    background: url("../img/recordshowcase.jpg") no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    /*flex-direction: column;*/
+    flex-wrap: wrap;
+    font-family: "Raleway",sans-serif;
+}
+
+#recordShowcase .main-message {
+    flex-basis: 50%;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#recordShowcase .main-message h2 {
+    color: red;
+}
+
+#recordShowcase .calendar-form {
+    display: flex;
+    flex-basis: 50%;
+    /*text-align: center;*/
+    justify-content: center;
+    align-items: center;
+}
+
+#recordShowcase .calendar-form .form {
+    margin-top: -20vh;
+    display: flex;
+    flex-direction: column;
+    background: #f4f4f4;
+    height: 58vh;
+    width: 20vw;
+    padding: 15px 25px;
+    border-radius: 10px;
+    opacity: 85%;
+}
+#recordShowcase .calendar-form .form h2,
+#recordShowcase .calendar-form .form p {
+    text-align: center;
+}
+#recordShowcase .calendar-form .form input {
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 5px;
+    padding: 7px;
+    border: 1px solid #ddd;
+}
+
+#recordShowcase .calendar-form .form button {
+    width: 100%;
+    /*background: #FF004D;*/
+    background: #ff3d00;
+    margin-top: auto;
+    border-radius: 5px;
+    padding: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+
+#recordShowcase .calendar-form .form button:hover {
+    background: #dd2c00;
+}
+
+#recordShowcase .schedule{
+    height: 20vh;
+    width: 100vw;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+/* Overlay */
+    position: absolute;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+
+#recordShowcase .schedule .containerTimeDiv {
+    height: 20vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#recordShowcase .schedule .containerTimeDiv .containerH1{
+    color: white;
+    font-size: 2.5rem;
+}
+
+.timeDiv {
+    background: gray;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: 58px;
+    width: 140px;
+    margin: 8px;
+    border-radius: 5px;
+    font-family: Arial,sans-serif;
+    font-size: 22px;
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.activeTimeDiv {
+    border: 2px solid red;
+}
+.busyTimeDiv {
+    background: #FF004D;
+    color: white;
+}
+.btn-signUp {
+    display: none;
+}

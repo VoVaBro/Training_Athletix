@@ -16,44 +16,69 @@ router.get('/', (req,res) =>{
 });
 
 router.get('/:id', (req, res) => {
-    Record.find({
-        "dateTraining" : req.params.id
+    if (req.params.id === "all") {
+        Record.find({})
+            .then(result => {
+                res.jsonp([result, req.session.user]);
+            })
+    } else {
+        Record.find({
+            "dateTraining": req.params.id
+        })
+            .then(result => {
+                res.jsonp([result, req.session.user]);
+            })
+    }
+});
+
+router.post('/', (req, res) => {
+     const newRecord = {
+                //pull user id
+                user: req.session.user,
+                recordTime: req.body.recordTime,
+                dateTraining: req.body.dateTraining
+            };
+            new Record(newRecord)
+                .save()
+                .then( () => {
+                    res.jsonp([{text : "Спасибо что записались на тренировку!", bool : 1}]);
+                })
+                .catch( err => {
+                    if (err) {
+                        res.jsonp([{text : "Возникли проблемы с записью на тренировку. Пожалуйста повторите операцию позже", bool : 0}]);
+                    }
+                });
+
+    });
+
+router.delete('/:id', (req, res) => {
+    Record.deleteOne({
+        "_id" : req.params.id
     })
-        .then(result => {
-            res.jsonp(result);
+        .then( () => {
+            res.jsonp([{text : "Расписание на тренировку удалено", bool : 1}]);
+        })
+        .catch(err => {
+            if (err){
+                res.jsonp([{text : "Ошибка, обновите страницу и попробуйте удалить запись", bool : 0}]);
+            }
         })
 
 });
 
-router.post('/', (req, res) => {
-    let errors = [];
-    if (!req.body.recordTime){
-        errors.push({text:"Пожалуйста выберете время для записи на тренировку"});
-    }
-    if (!req.body.calendar){
-        errors.push({text:"Пожалуйста выберете дату для записи на тренировку"});
-    }
-
-    if (errors.length > 0) {
-        res.render("record",{
-            layout: false,
-            errors:errors
+router.put(`/:id`, (req,res) => {
+    Record.findOne({
+        "_id" : req.params.id
+    })
+        .then(result => {
+                result.recordTime = req.body.recordTime;
+                result.save();
         })
-    } else {
-            const newRecord = {
-                //pull user id
-                user: req.session.user,
-                recordTime: req.body.recordTime,
-                dateTraining: req.body.calendar
-            };
-            new Record(newRecord)
-                .save()
-                .then(idea => {
-                    res.redirect("/record");
-                });
-        }
-    });
-
-
+        .catch(err => {
+            if (err) {
+                res.jsonp([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+            }
+        })
+});
 
 module.exports = router;

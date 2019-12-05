@@ -93,11 +93,17 @@ router.get('/admin', isAuth, (req, res) =>{
 
 router.get('/admin/:id', adminController.loadTraining);
 
+router.get('/getUser/:id', adminController.loadUser);
+
+
 //PUT
 router.put('/admin/:id', adminController.editTraining);
 
 //DElETE
 router.delete('/admin/:date',adminController.removeTraining);
+
+  // Нужно доделать!!!
+router.delete(`/recordDelAll/:date`, adminController.removeAllRec);
 
 router.get('/logout', (req, res) =>{
     //стереть токен в БД
