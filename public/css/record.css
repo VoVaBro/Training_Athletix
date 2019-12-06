@@ -158,3 +158,14 @@
 .btn-signUp {
     display: none;
 }
+
+/* wideScreen */
+
+@media (min-height: 700px) {
+
+    #recordShowcase .calendar-form .form {
+        height: 610px;
+
+    }
+
+}

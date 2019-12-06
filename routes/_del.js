@@ -19,14 +19,14 @@ router.get('/:id', (req, res) => {
     if (req.params.id === "all") {
         Record.find({}).populate('user')
             .then(result => {
-                res.jsonp([result, req.session.user]);
+                res.jsonp([result, req.session.userId]);
             })
     } else {
         Record.find({
             "dateTraining": req.params.id
         }).populate('user')
             .then(result => {
-                res.jsonp([result, req.session.user]);
+                res.jsonp([result, req.session.userId]);
             })
     }
 });
@@ -34,11 +34,11 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
      const newRecord = {
                 //pull user id
-                user: req.session.user,
+                user: req.session.userId,
                 recordTime: req.body.recordTime,
                 dateTraining: req.body.dateTraining
             };
-            new Record(newRecord)
+    new Record(newRecord)
                 .save()
                 .then( () => {
                     res.jsonp([{text : "Спасибо что записались на тренировку!", bool : 1}]);
