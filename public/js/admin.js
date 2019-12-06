@@ -646,11 +646,13 @@ async function renderBusyDivs() {
 
             for (let i = 0; i < tempDivs.length; i++) {
                 if (tempDivs[i].time === tempTime) {
-                    tempDivs[i].classList.add("busyTimeDiv");
-                    tempDivs[i].innerHTML += `<br>${records[0][j].user.name}`;
-                    tempDivs[i].userId = records[0][j].user._id;
-                    tempDivs[i].userName = records[0][j].user.name;
-                    tempDivs[i].recordId = records[0][j]._id;
+                    if (records[0][j].user) {
+                        tempDivs[i].classList.add("busyTimeDiv");
+                        tempDivs[i].innerHTML += `<br>${records[0][j].user.name}`;
+                        tempDivs[i].userId = records[0][j].user._id;
+                        tempDivs[i].userName = records[0][j].user.name;
+                        tempDivs[i].recordId = records[0][j]._id;
+                    }
                 }
             }
 
@@ -760,31 +762,33 @@ async function getActTrainings() {
             });
 
             trainings.map(training => {
-                let tempDate = new Date(`${training.dateTraining}T${training.recordTime.split("-")[0].trim()}`);
-                if ((tempDate.getTime() - tempNewDate) > 0) {
+                if (training.user){
+                    let tempDate = new Date(`${training.dateTraining}T${training.recordTime.split("-")[0].trim()}`);
+                    if ((tempDate.getTime() - tempNewDate) > 0) {
 
-                    //    Добавление в список тренировок
-                    let li = document.createElement("li");
-                    let span = document.createElement("span");
-                    span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
-                    span.addEventListener("click", function () {
-                        let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${training.dateTraining} (${training.recordTime})`);
-                        if (tempConfirm) {
-                            let tempRecordId = training._id;
-                            fetch(`/record/${tempRecordId}`, {method: "delete"})
-                                .then(res => res.json())
-                                .then(res => {
-                                    renderAlert(res);
-                                    renderTimeDivs();
-                                });
-                        }
-                    });
+                        //    Добавление в список тренировок
+                        let li = document.createElement("li");
+                        let span = document.createElement("span");
+                        span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+                        span.addEventListener("click", function () {
+                            let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${training.dateTraining} (${training.recordTime})`);
+                            if (tempConfirm) {
+                                let tempRecordId = training._id;
+                                fetch(`/record/${tempRecordId}`, {method: "delete"})
+                                    .then(res => res.json())
+                                    .then(res => {
+                                        renderAlert(res);
+                                        renderTimeDivs();
+                                    });
+                            }
+                        });
 
 
-                    let user = training.user;
-                    li.innerHTML = `<span>${training.dateTraining}</span> <span>${training.recordTime}</span> <span class="userId">${user.name}</span> `;
-                    li.appendChild(span);
-                    ul.appendChild(li);
+                        let user = training.user;
+                        li.innerHTML = `<span>${training.dateTraining}</span> <span>${training.recordTime}</span> <span class="userId">${user.name}</span> `;
+                        li.appendChild(span);
+                        ul.appendChild(li);
+                    }
                 }
             })
 
