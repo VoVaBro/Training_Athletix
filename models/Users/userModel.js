@@ -8,6 +8,19 @@ const UserSchema = mongoose.Schema({
         required: true,
         maxlength: 16
     },
+    secondName: {
+        type: String,
+        trim: true,
+        required: true,
+        maxlength: 16
+    },
+    phoneNum: {
+        type: String,
+        trim: true,
+        required: true,
+        unique: true
+        // match: /^((\+7|7|8)+([0-9]){10})$/
+    },
     email: {
         type: String,
         required: true,
@@ -38,9 +51,7 @@ const UserSchema = mongoose.Schema({
 
 let model = mongoose.model('User', UserSchema);
 
-model.add = function(){
-    return 123
-}
+
 
 module.exports = model;
 

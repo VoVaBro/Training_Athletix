@@ -10,20 +10,21 @@
  <section class="user">
 
   <div class="user_options-container">
-
     <div class="user_options-forms" id="user_options-forms">
       <div class="user_forms-login">
-        <h2 class="forms_title">Стать участником</h2>
-        <form class="forms_form" action="/signin" method="POST">
+        <h2 class="forms_title">Подтверждение аккаунта</h2>
+        <form class="forms_form" action="/verifyEmail" method="POST">
           <fieldset class="forms_fieldset">
+              <div class="hidden-params">
+                  <input type="hidden" name="secret" value="{{secret}}">
+                  <input type="hidden" name="_id" value="{{userId}}">
+              </div>
             <div class="forms_field">
-              <input type="email" placeholder="Email" class="forms_field-input" name="email" required autofocus />
-            </div>
-            <div class="forms_field">
-              <input type="password" placeholder="Пароль" class="forms_field-input" name="password" required />
+              <input type="text" placeholder="Код активации" class="forms_field-input" name="secretKey" required autofocus />
             </div>
           </fieldset>
           <div class="forms_buttons">
+            <button type="button" class="forms_buttons-forgot">Прислать код <br>повторно</br> </button>
             <input type="submit" value="Далее" class="forms_buttons-action">
           </div>
         </form>
@@ -31,7 +32,7 @@
     </div>
   </div>
 </section>
-
+  
     <script  src="js/index.js"></script>
 
 </body>

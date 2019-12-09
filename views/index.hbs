@@ -238,9 +238,16 @@
                     <li>
                         <a href="/record">Программы</a>
                     </li>
-                    <li>
-                        <a href="/signin">Войти</a>
-                    </li>
+                    {{#if isActive}}
+                        <li>
+                            <a href="/sign">Войти</a>
+                        </li>
+                    {{else}}
+                        <li>
+                            <a href="/logout">Выйти</a>
+                        </li>
+                    {{/if}}
+
 <!--                    <li>-->
 <!--                        <a href="blog.html">Blog Entries</a>-->
 <!--                    </li>-->

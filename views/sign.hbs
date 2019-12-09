@@ -1,0 +1,93 @@
+
+<body>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300, 400, 500" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="css/signup_in.css">
+  <!--
+  This was created based on the Dribble shot by Deepak Yadav that you can find at https://goo.gl/XRALsw
+  I am @hurickkrugner on Twitter or @hk95 on GitHub. Feel free to message me anytime.
+-->
+
+  <div class="menu-btn">
+      <button class="btn" onclick="window.location.href='/'">Назад</button>
+  </div>
+
+
+       {{#if error}}
+        <p>{{error}}</p>
+        {{/if}}
+
+<section class="user">
+  <div class="user_options-container">
+    <div class="user_options-text">
+      <div class="user_options-unregistered">
+        <h2 class="user_unregistered-title">Нет аккаунта?</h2>
+        <p class="user_unregistered-text">Регистрируйся на нашем сайте и стань участником сообщества Training Athletix!</p>
+        <button class="user_unregistered-signup" id="signup-button">Регистрация</button>
+      </div>
+
+      <div class="user_options-registered">
+        <h2 class="user_registered-title">Ты уже в нашей команде?</h2>
+        <p class="user_registered-text">Тогда заходи и записывайся на тренировки, а также составляй свой тренировочный план</p>
+        <button class="user_registered-login" id="login-button">Войти</button>
+      </div>
+    </div>
+    
+    <div class="user_options-forms" id="user_options-forms">
+      <div class="user_forms-login">
+        <h2 class="forms_title">Войти</h2>
+            {{#if error}}
+            <p>{{error}}</p>
+            {{/if}}
+        <form class="forms_form" action="/signin" method="POST">
+          <fieldset class="forms_fieldset">
+            <div class="forms_field">
+              <input type="email" placeholder="Email" class="forms_field-input" name="email" required autofocus />
+            </div>
+            <div class="forms_field">
+              <input type="password" placeholder="Пароль" class="forms_field-input" name="password" required />
+            </div>
+          </fieldset>
+          <div class="forms_buttons">
+            <button type="button" class="forms_buttons-forgot">Забыли пароль?</button>
+            <input type="submit" value="Далее" class="forms_buttons-action">
+          </div>
+        </form>
+      </div>
+      <div class="user_forms-signup">
+        <h2 class="forms_title">Новый атлет</h2>
+            {{#if error}}
+            <p>{{error}}</p>
+            {{/if}}
+        <form class="forms_form" action="/signup" method="POST">
+          <fieldset class="forms_fieldset">
+            <div class="forms_field">
+              <input type="text" placeholder="Имя" class="forms_field-input" name="name" required />
+            </div>
+            <div class="forms_field">
+              <input type="text" placeholder="Фамилия" class="forms_field-input" name="secondName" required />
+            </div>
+            <div class="forms_field">
+              <input type="text" placeholder="Контактный номер" class="forms_field-input" name="phoneNum" required />
+            </div>
+            <div class="forms_field">
+              <input type="email" placeholder="Email" class="forms_field-input" name="email" required />
+            </div>
+            <div class="forms_field">
+              <input type="password" placeholder="Пароль" class="forms_field-input" name="password" required />
+            </div>
+          </fieldset>
+          <div class="forms_buttons">
+            <input type="submit" value="Создать" class="forms_buttons-action">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <script  src="js/sign.js"></script>
+
+</body>
+

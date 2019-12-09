@@ -8,13 +8,14 @@ const { genAccessToken } = require ('../helpers/refreshJwtToken');
 module.exports = async function(req, res, next) {
 
         const session = req.session;
+
         const token = session.headers['Authorization'];
 
         if (!token) {
             return  new Error('Authorization header not found')
         }
 
-        let userId = req.session.userId;
+        let userId = session.userId;
 
         let isValid = await verify(token, accessSecret);
 
@@ -26,14 +27,22 @@ module.exports = async function(req, res, next) {
         let tokens = await Token.findOne({ tokenId: userId });
 
         if (!tokens) {
-            throw new Error('Token not found')
+            res.redirect('/sign')
         }
 
         let refreshToken = tokens.token;
-        isValid = await verify(refreshToken, refreshSecret);
+        let validRefreshToken = await verify(refreshToken, refreshSecret);
 
-        if (!isValid) {
-            return res.sendStatus(403);
+        if (!validRefreshToken) {
+            try {
+                await Token.findOneAndDelete({tokenId: userId});
+                session.destroy(err => {
+                    if (err) throw err
+                });
+                res.redirect('/')
+            } catch (e) {
+                console.log(e)
+            }
         }
 
         const newToken = await genAccessToken(userId);
@@ -45,14 +54,14 @@ module.exports = async function(req, res, next) {
         next()
 };
 
+
 async function verify(token, secret) {
     try {
         await jwt.verify(token, secret);
         return true
     } catch(e) {
-        console.log(e)
+        console.log(e);
         return false
     }
-
 }
 

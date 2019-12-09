@@ -2,7 +2,7 @@
 require ('dotenv').config();
 const jwt = require ('jsonwebtoken');
 const { tokens, accessSecret, refreshSecret} = require('./tokenConfig').jwt;
-const Token = require ('../models/tokenModel');
+
 
 exports.genAccessToken = userId => {
     const payload = {
