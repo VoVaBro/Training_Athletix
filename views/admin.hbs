@@ -22,62 +22,69 @@
 {{else}}
 
 {{/each}}
-    <div class="main">
-        <div class="overlay">
-            <div class="navi">
-                <nav class="navbar navbar-expand-sm navbar-custom">
-                    <!--                    <a href="/" class="navbar-brand">Custom</a>-->
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCustom">
-                        <i class="fa fa-bars fa-lg py-1 text-white"></i>
-                    </button>
-                    <div class="navbar-collapse collapse" id="navbarCustom">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Домашняя</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Индивидуальные занятия</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Групповые занятия</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Программы</a>
-                            </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Профиль</a>
-                            </li>
-                        </ul>
-                        <!--                        <span class="ml-auto navbar-text">Text</span>-->
+
+    <div class="navi">
+        <nav class="navbar navbar-expand-sm navbar-custom">
+            <!--                    <a href="/" class="navbar-brand">Custom</a>-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCustom">
+                <i class="fa fa-bars fa-lg py-1 text-white"></i>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarCustom">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Домашняя</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Индивидуальные занятия</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Групповые занятия</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Программы</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Профиль</a>
+                    </li>
+                </ul>
+                <!--                        <span class="ml-auto navbar-text">Text</span>-->
+            </div>
+        </nav>
+    </div>
+    <div class="container1">
+        <div class="main">
+            <div class="leftM">
+                <div class="side1">
+                    <div class="calendar">
+                        <input type="date" id="calendar" name="calendar">
                     </div>
-                </nav>
+                    <div class="btns hidden">
+                        <button class="btn-sand">Сохранить</button>
+                        <button class="btn-remove">Удалить</button>
+                        <button class="btn-edit">Редактировать</button>
+                    </div>
+                </div>
+                <div class="side2">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem; display: none" role="status"></div>
+                    <div class="containerTime hidden">
+                        <div class="btn-add"><p>+</p></div>
+                    </div>
+                </div>
+                <!--            <div class="calendar-form">-->
+                <!--            </div>-->
             </div>
-            <div class="calendar-form">
-                <div class="calendar">
-                    <input type="date" id="calendar" name="calendar">
-                </div>
-                <div class="spinner-border" style="width: 3rem; height: 3rem; display: none" role="status"></div>
-                <div class="containerTime">
-                    <div class="btn-add"><p>+</p></div>
-                </div>
-                <div class="btns">
-                    <button class="btn-sand">Сохранить</button>
-                    <button class="btn-remove">Удалить</button>
-                    <button class="btn-edit">Редактировать</button>
-                </div>
-
-            </div>
-
-            <div class="containerUl">
-                <div class="left">
-                    <h2>Тренировки на сегодня:</h2>
-                    <ul class="left-ul">
-                    </ul>
-                </div>
-                <div class="right">
-                    <h2>Актуальные тренировки:</h2>
-                    <ul class="right-ul">
-                    </ul>
+            <div class="rightM">
+                <div class="containerUl">
+                    <div class="left">
+                        <h2>Тренировки на сегодня:</h2>
+                        <ul class="left-ul hidden">
+                        </ul>
+                    </div>
+                    <div class="right">
+                        <h2>Актуальные тренировки:</h2>
+                        <ul class="right-ul hidden">
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
