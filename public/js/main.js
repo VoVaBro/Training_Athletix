@@ -3,7 +3,11 @@ jQuery(document).ready(function($) {
 	'use strict';
 
         $(function() {
-  
+          if(window.innerWidth <= 1025) {
+            document.querySelector("video").setAttribute("src", "");
+            document.querySelector("#video-container .mobImg ").style.display = "inline-block";
+          }
+
           // Vars
           var modBtn  = $('#modBtn'),
               modal   = $('#modal'),

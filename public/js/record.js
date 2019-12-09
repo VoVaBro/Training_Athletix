@@ -65,7 +65,7 @@ btnSignUp.addEventListener("click", function () {
                 let tempIsBusy = false;
                 // let tempTime = recordTime.split("-")[0].trim();
                 result[0].forEach(el => {
-                    if (el.recordTime === recordTime) {
+                    if (el.recordTime === recordTime && el.user !== null) {
                         tempCounter++;
                     }
                     if (el.user === result[1]) {
@@ -279,23 +279,25 @@ async function renderBusyDivs() {
             if (result[0].length > 0){
                 let tempCountUserMatch = 0;
                 let tempRecord;
-                let tempCountBusyDivs = 0;
+                // let tempCountBusyDivs = 0;
                 for (let j = 0;j < result[0].length; j++) {
-
-                    if (result[0][j].user._id === result[1]) {
-                        tempCountUserMatch++;
-                        tempRecord = result[0][j];
-                        // containerH1.innerText = `${result[0][j].dateTraining} Вы записаны на ${result[0][j].recordTime}`;
+                    if (result[0][j].user) {
+                        if (result[0][j].user._id === result[1]) {
+                            tempCountUserMatch++;
+                            tempRecord = result[0][j];
+                            // containerH1.innerText = `${result[0][j].dateTraining} Вы записаны на ${result[0][j].recordTime}`;
+                        }
                     }
                         let tempTime = result[0][j].recordTime.split("-")[0].trim();
                         for (let i = 0; i < tempDivs.length; i++) {
-                            if (tempDivs[i].time === tempTime) {
+                            if (tempDivs[i].time === tempTime && result[0][j].user) {
                                 // tempDivs[i].classList.add("busyTimeDiv")
-                                tempCountBusyDivs++;
+                                // tempCountBusyDivs++;
                             } else {
                                 tempDivs[i].style.display = "flex";
                             }
                         }
+
                 }
                 btnSignUp.style.display = "inline-block";
                 if (result[0].length === tempDivs.length) {

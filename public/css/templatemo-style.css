@@ -241,6 +241,10 @@ nav {
   overflow: hidden;
   z-index: 1;
 }
+#video-container .mobImg {
+  height: 100vh;
+  display: none;
+}
 
 #video-container video,
 .video-overlay {
@@ -1290,20 +1294,34 @@ footer a:hover {
   opacity: 0.5;
 }
 
-/* Map */
+/* info */
 
-.map {
+.info {
   display: flex;
-  flex-direction: row;
-  height: 420px;
-}
-.map .right {
-  flex-basis: 60%;
+  justify-content: center;
+  /*background: lightgray;*/
+  background: #333333;
+  color: #fff;
 }
 
-.map .left {
-  flex-basis: 40%;
-  background: url("/img/show.jpg") no-repeat center center/cover;
+.info div {
+  /*background: red;*/
+  /*border: 1px solid gray;*/
+  height: 250px;
+  width: 270px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}
+
+.info div i {
+  color: orange;
+}
+.info div p {
+  font-size: 16px;
 }
 
 /*@media (max-width: 530px) {*/
@@ -1367,16 +1385,28 @@ footer a:hover {
 /*    }*/
 /*  }*/
 
+@media (max-width: 530px) {
+  .info {
+    flex-direction: column;
+
+  }
+  .info div {
+    margin: 0;
+    width: 100vw;
+    border-bottom: 2px dotted black;
+  }
+}
+
   @media (max-width: 992px) {
     .inner h1 {
       font-size: 35px!important;
     }
-    .map .left {
-      display: none;
-    }
-    .map .right {
-      flex-basis: 100%;
-    }
+    /*.map .left {*/
+    /*  display: none;*/
+    /*}*/
+    /*.map .right {*/
+    /*  flex-basis: 100%;*/
+    /*}*/
   }
 
   /* Iphone SE*/
