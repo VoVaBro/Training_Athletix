@@ -3,20 +3,21 @@
     margin:0;
     padding: 0;
 }
- .main {
-    /*background: url("../img/recordshowcase.jpg") no-repeat center center/cover;*/
-    height: 100vh;
-    display: flex;
-    /*justify-content: center;*/
-    flex-direction: column;
-    /*flex-wrap: wrap;*/
-    font-family: "Raleway",sans-serif;
-}
 
-.main .navi {
+body {
+    /*background: url("../img/recordshowcase.jpg") no-repeat center center/cover;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+    /* NavBar*/
+
+.navi {
     background: #191a1f;
     display: flex;
     justify-content: center;
+    width: 100vw;
+    margin-bottom: 10px;
 }
 
 .navbar-custom .navbar-nav .nav-link {
@@ -32,38 +33,82 @@
     color: gray;
 }
 
-.calendar-form {
-    width: 100%;
+.container1 {
+    width: 1200px;
+    display: flex;
+    justify-content: center;
+}
+
+    /* Main */
+
+ .main {
+    height: 100vh;
+    display: flex;
+     /*background: rgba(255,255,255,0.7);*/
+    /*justify-content: center;*/
+    /*flex-wrap: wrap;*/
+    font-family: "Raleway",sans-serif;
+}
+
+.main .leftM {
+    flex-basis: 60%;
+    /*background: green;*/
+    border-right: 2px solid black;
+    display: flex;
+}
+.main .rightM {
+    flex-basis: 40%;
+    margin-left: 20px;
+    width: 500px;
+    /*background: yellow;*/
+}
+.main .leftM .side1 {
+    align-items: center;
+    margin-right: 20px;
+}
+
+.main .leftM .side1 .calendar input{
+        width: 100%;
+        margin-top: 7px;
+        border-radius: 5px;
+        padding: 7px;
+        border: 1px solid #ddd;
+}
+
+.main .leftM .side1 .btns {
     display: flex;
     flex-direction: column;
-    /*flex-basis: 50%;*/
-    /*text-align: center;*/
-    justify-content: center;
-    align-items: center;
 }
-.calendar-form .calendar input {
-    width: 100%;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    padding: 7px;
-    border: 1px solid #ddd;
+
+.main .leftM .side1 .btns button {
+    margin: 7px;
+    font-size: 14px;
+    height: 45px;
+    width: 170px;
+}
+
+.main .leftM .side2 {
+    /*background: red;*/
+    margin-left: auto;
+    margin-right: 18px;
+    width: 310px;
 }
 
 .containerTime {
-    width: 100%;
+    /*width: 100%;*/
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    margin: 0;
+    /*margin: 0;*/
     justify-content: center;
-    /*border: 1px solid lightgray;*/
+    align-items: center;
 }
 
 .btns {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin-top: 10px;
     justify-content: center;
 }
 .btns button {
@@ -80,15 +125,31 @@
     background: #dd2c00;
 }
 
+.containerUl .delSpan i {
+    color: #ff3d00;
+    cursor: pointer;
+}
+
+.containerUl .delSpan i:hover {
+    color: #dd2c00;
+}
 /**/
 
 .containerUl {
     display: flex;
-    margin-top: 20px;
+    flex-direction: column;
 }
 
-.overlay {
-    /*background: rgba(255,255,255,0.7);*/
+.containerUl .left {
+    height: 50vh;
+}
+
+.containerUl li {
+    list-style-type: none;
+}
+
+.containerUl h2 {
+    font-size: 25px;
 }
 
 .timeDiv {
@@ -97,10 +158,10 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 300px;
     margin: 5px;
-    border-radius: 10%;
+    border-radius: 10px;
 }
 .timeDivOther {
     background: yellow;
@@ -116,34 +177,46 @@
     border-radius: 50%;
     background: black;
     color: #fff;
-    height: 100px;
-    width: 100px;
-    font-size: 4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-left: 10px;
-}
-.btn-add-small {
-    border-radius: 50%;
-    background: black;
-    color: #fff;
-    height: 70px;
-    width: 70px;
+    height: 50px;
+    width: 50px;
     font-size: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 15px;
+    margin-left: 10px;
+    display: none;
+    cursor: pointer;
 }
-.div-add *{
-    /*border: 2px solid #000;*/
-    /*margin-top: 2rem;*/
-    /*display: block;*/
+.btn-add-small {
+    border-radius: 50%;
+    background: black;
+    color: #fff;
+    height: 50px;
+    width: 50px;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    /*margin-top: 15px;*/
 }
-.left {
-    flex-basis: 50%;
-    padding-left: 1rem;
+
+.renderAlert {
+    display : flex;
+    position : absolute;
+    opacity : 95%;
+    z-index : 100;
+    width : 100vw;
+    margin-top: 5px;
+}
+
+.renderAlert span {
+     margin-left: auto;
+     cursor: pointer;
+}
+
+.hidden {
+    visibility: hidden;
 }

@@ -19,6 +19,7 @@ let timeDiv;
 let startTime;
 let delArr = [];
 let onEdit = false;
+let tempInnerTxt;
 
 //modal
 let modalEl;
@@ -64,6 +65,26 @@ btnAdd.addEventListener("click",function () {
     }
 });
 
+function divOver(event) {
+    if (onEdit){
+        let y = event.offsetY === undefined?event.layerY:event.offsetY;
+        if (y <= 10) {
+            event.target.innerHTML = "<i class=\"fas fa-arrow-alt-circle-up fa-2x\"></i>";
+        } else if (y > 10 && y < 40) {
+            event.target.innerHTML = "<i class=\"fas fa-trash-alt fa-2x\"></i>";
+        } else {
+            event.target.innerHTML = "<i class=\"fas fa-arrow-alt-circle-down fa-2x\"></i>";
+        }
+    }
+
+}
+
+function divOut(event) {
+    if (onEdit) {
+        event.target.innerHTML = tempInnerTxt;
+    }
+}
+
 function addTimeDiv (isTraining,duration) {
     timeDiv = document.createElement("div");
     timeDiv.classList.add("timeDiv");
@@ -79,9 +100,19 @@ function addTimeDiv (isTraining,duration) {
         timeDiv.firstTime = timeDiv.time;
         date1.setMilliseconds(duration);
 
+    timeDiv.addEventListener("mousemove", function () {
+        divOver(event);
+    } );
+    timeDiv.addEventListener("mouseover", function () {
+        tempInnerTxt = event.target.innerHTML;
+    } );
+    timeDiv.addEventListener("mouseout", function () {
+        divOut(event);
+    } );
+
 
     timeDiv.addEventListener("click",function (e) {
-        let x = e.offsetX === undefined?e.layerX:e.offsetX;
+        let y = event.offsetY === undefined?event.layerY:event.offsetY;
         let tempArr = document.querySelectorAll(".btn-add-small");
         if (tempArr.length < 1) {
             let btnAddSmall = document.createElement("div");
@@ -98,7 +129,7 @@ function addTimeDiv (isTraining,duration) {
             //     this.remove();
             // });
 
-            if (x <= (this.clientWidth / 4)) {
+            if (y <= 10) {
                 container.insertBefore(btnAddSmall, this);
 
                 let tempCurrent = this;
@@ -172,7 +203,7 @@ function addTimeDiv (isTraining,duration) {
                     }
                 });
 
-            } else if (x >= (this.clientWidth-(this.clientWidth / 4))) {
+            } else if (y >= 40) {
                 container.insertBefore(btnAddSmall, this.nextElementSibling);
 
                 let tempCurrent = this;
@@ -329,11 +360,12 @@ function addTimeDiv (isTraining,duration) {
 
 
 document.addEventListener("DOMContentLoaded",function () {
+    calendar.disabled = true;
     calendar.value = getStrDate();
     timeToSec(timeDuration);
     renderTimeDivs();
     let tempCalendarVal = calendar.value.split("-");
-    document.querySelector(".left h2").innerHTML = `Тренировки на ${tempCalendarVal[2]}-${tempCalendarVal[1]}-${tempCalendarVal[0]}`;
+    document.querySelector(".left h2").innerHTML = `Тренировки на ${tempCalendarVal[2]}-${tempCalendarVal[1]}-${tempCalendarVal[0]}:`;
 });
 
 btnRemove.addEventListener("click", function () {
@@ -428,6 +460,7 @@ function createBtnEditCancel() {
                 renderTimeDivs();
                 this.remove();
                 btnEdit.innerText = "Редактировать";
+                renderAlert([{ text : "Изменения не были применены", bool : 1 }]);
                 onEdit = false;
             });
     });
@@ -459,18 +492,21 @@ btnEdit.addEventListener("click", async function () {
         let errorArr = [];
 
         if (errorArr.length === 0) {
+
             //Удаление тренировок
-               await fetch(`/record/many`, {
-                   method : "delete",
-                   body: JSON.stringify({ ids: delArr }),
-                   headers: {
-                       'Content-Type': 'application/json'
-                   }
-               })
+            if ( delArr.length > 0 ) {
+                await fetch(`/record/many`, {
+                    method : "delete",
+                    body: JSON.stringify({ ids: delArr }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                     .then(res => res.json())
                     .then(res => {
                         renderAlert(res);
                     });
+            }
 
             //Перенос тренеровок
 
@@ -555,7 +591,12 @@ select.addEventListener("change", function () {
 calendar.addEventListener("change", function () {
     let tempCalendarVal = calendar.value.split("-");
     document.querySelector(".left h2").innerHTML = `Тренировки на ${tempCalendarVal[2]}-${tempCalendarVal[1]}-${tempCalendarVal[0]}`;
+    calendar.disabled = true;
     renderTimeDivs();
+    btnsDiv.classList.add("hidden");
+    document.querySelector(".containerTime").classList.add("hidden");
+    document.querySelector(".left-ul").classList.add("hidden");
+    document.querySelector(".right-ul").classList.add("hidden");
 });
 
 function timeToSec (obj) {
@@ -566,6 +607,7 @@ function timeToSec (obj) {
 }
 
 async function renderTimeDivs() {
+    calendar.disabled = true;
     let boolRenderBusy = false;
     let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
     tempArr.forEach(el => {
@@ -623,13 +665,14 @@ async function renderTimeDivs() {
                 }
 
                 if (boolRenderBusy) {
-                     renderBusyDivs()
+                    await renderBusyDivs()
                 } else {
                     spinner.style.display = "none";
                     let ul = document.querySelector(".left-ul");
                     ul.innerHTML = "";
                 }
-                getActTrainings();
+                await getActTrainings();
+                calendar.disabled = false;
 
     }
 }
@@ -648,45 +691,16 @@ async function renderBusyDivs() {
                 if (tempDivs[i].time === tempTime) {
                     if (records[0][j].user) {
                         tempDivs[i].classList.add("busyTimeDiv");
-                        tempDivs[i].innerHTML += `<br>${records[0][j].user.name}`;
+                        tempDivs[i].innerHTML += `<br>${records[0][j].user.name} ${records[0][j].user.secondName}`;
                         tempDivs[i].userId = records[0][j].user._id;
                         tempDivs[i].userName = records[0][j].user.name;
+                        tempDivs[i].userFone = records[0][j].user.phoneNum;
                         tempDivs[i].recordId = records[0][j]._id;
                     }
                 }
             }
 
         }
-
-
-            let ul = document.querySelector(".left-ul");
-            ul.innerHTML = "";
-
-            spinner.style.display = "none";
-            let tempArr = document.querySelectorAll(".busyTimeDiv");
-                for (let i=0;i<tempArr.length;i++) {
-                    //    Добавление в список тренировок
-                    let li = document.createElement("li");
-                    let span = document.createElement("span");
-                    span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
-                    span.addEventListener("click", function () {
-                        let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${tempArr[i].innerText}`);
-                        if (tempConfirm) {
-                            let tempRecordId = tempArr[i].recordId;
-                            fetch(`/record/${tempRecordId}`, {method : "delete"})
-                                .then(res => res.json())
-                                .then(res => {
-                                    renderAlert(res);
-                                    renderTimeDivs();
-                                });
-                        }
-                    });
-                    li.innerHTML = `<span>${tempArr[i].innerText}</span> `;
-                    li.appendChild(span);
-                    ul.appendChild(li);
-                }
-
-
 }
 
 
@@ -714,8 +728,16 @@ function getStartTime(startValue) {
 
 function renderAlert(obj) {
     let tempArr = document.querySelectorAll(".alert");
+    let tempCountAlerts = 0;
     tempArr.forEach(el => {
-        el.remove();
+        // el.remove();
+        if (el.classList.contains("alert-success")) {
+            el.classList.remove("alert-success");
+        } else {
+            el.classList.remove("alert-danger");
+        }
+        el.style.backgroundColor = "gray";
+        tempCountAlerts++;
     });
 
     obj.forEach(el => {
@@ -727,9 +749,27 @@ function renderAlert(obj) {
             tempDiv.classList.add("alert-danger");
         }
         tempDiv.innerText = el.text;
+        tempDiv.classList.add("renderAlert");
+
+        tempDiv.style.top = (tempCountAlerts * 55).toString() + "px";
+
+        let removeBtn = document.createElement("span");
+        removeBtn.innerText = "x";
+        removeBtn.addEventListener("click", function () {
+            this.parentElement.remove();
+        });
+        tempDiv.appendChild(removeBtn);
+
         document.body.insertBefore(tempDiv,document.body.firstChild);
+
         setTimeout(function () {
             tempDiv.remove();
+            let tempArr = document.querySelectorAll(".alert");
+            tempArr.forEach(el => {
+                let tempElTop = parseInt(el.style.top);
+                tempElTop -= 50;
+                el.style.top = tempElTop + "px";
+            });
         },5000)
     });
 }
@@ -741,14 +781,13 @@ function getStrDate() {
     let year = date.getFullYear();
     if (month < 10) month = "0" + month;
     if (day < 10) day = "0" + day;
-    let today = year + "-" + month + "-" + day;
-    return today
+    return year + "-" + month + "-" + day;
 }
 
 async function getActTrainings() {
     let ul = document.querySelector(".right-ul");
     ul.innerHTML = "";
-    //there
+
     let result = await fetch(`record/all`, {method : "get"})
         .then(res => res.json());
     let tempNewDate = new Date;
@@ -769,9 +808,11 @@ async function getActTrainings() {
                         //    Добавление в список тренировок
                         let li = document.createElement("li");
                         let span = document.createElement("span");
+                        let tempDateTraining = training.dateTraining.split("-");
                         span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+                        span.classList.add("delSpan");
                         span.addEventListener("click", function () {
-                            let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${training.dateTraining} (${training.recordTime})`);
+                            let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${tempDateTraining[2]}-${tempDateTraining[1]}-${tempDateTraining[0]} (${training.recordTime})`);
                             if (tempConfirm) {
                                 let tempRecordId = training._id;
                                 fetch(`/record/${tempRecordId}`, {method: "delete"})
@@ -785,13 +826,19 @@ async function getActTrainings() {
 
 
                         let user = training.user;
-                        li.innerHTML = `<span>${training.dateTraining}</span> <span>${training.recordTime}</span> <span class="userId">${user.name}</span> `;
+                        li.innerHTML = `<span>${tempDateTraining[2]}-${tempDateTraining[1]}-${tempDateTraining[0]}</span> <span>${training.recordTime}</span> <span>${user.name} ${user.secondName}</span> `;
                         li.appendChild(span);
                         ul.appendChild(li);
                     }
                 }
-            })
+            });
 
+            btnsDiv.classList.remove("hidden");
+            document.querySelector(".containerTime").classList.remove("hidden");
+            document.querySelector(".left-ul").classList.remove("hidden");
+            document.querySelector(".right-ul").classList.remove("hidden");
+
+            renderTodayTrainings();
 
 }
 
@@ -824,5 +871,46 @@ function removeTraining() {
                         }
                     })
             })
+    }
+}
+
+function renderTodayTrainings() {
+
+    let ul = document.querySelector(".left-ul");
+    ul.innerHTML = "";
+
+    spinner.style.display = "none";
+    let tempArr = document.querySelectorAll(".busyTimeDiv");
+    for (let i=0;i<tempArr.length;i++) {
+        //    Добавление в список тренировок
+        let li = document.createElement("li");
+        let span = document.createElement("span");
+        span.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+        span.classList.add("delSpan");
+        span.addEventListener("click", function () {
+            let tempConfirm = confirm(`Вы действительно хотите удалить тренировку на ${tempArr[i].innerText}`);
+            if (tempConfirm) {
+                let tempRecordId = tempArr[i].recordId;
+                fetch(`/record/${tempRecordId}`, {method : "delete"})
+                    .then(res => res.json())
+                    .then(res => {
+                        renderAlert(res);
+                        renderTimeDivs();
+                    });
+            }
+        });
+        li.innerHTML = `<span class="LiInf">${tempArr[i].innerText}</span> <span class="LiPhone">${tempArr[i].userFone}</span> `;
+
+        // li.addEventListener("mousemove", function (e) {
+        //     this.querySelector(".LiInf").style.display = "none";
+        //     this.querySelector(".LiPhone").style.display = "inline-block";
+        // });
+        // li.addEventListener("mouseout", function (e) {
+        //     this.querySelector(".LiInf").style.display = "inline-block";
+        //     this.querySelector(".LiPhone").style.display = "none";
+        // });
+
+        li.appendChild(span);
+        ul.appendChild(li);
     }
 }
