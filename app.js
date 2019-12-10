@@ -1,4 +1,5 @@
 require('dotenv').config();
+const pid = process.pid;
 const express = require ('express');
 const path = require('path');
 const bodyParser = require ('body-parser');
@@ -24,6 +25,7 @@ mongoose.connect(process.env.MONGO_URI,
     })
     .then(() => {
         console.log('DB connected');
+        console.log(pid);
         app.listen(process.env.PORT, () => console.log(`server start at http://localhost:${process.env.PORT}. ${process.env.GRIT}`));
     }).catch(err => console.log('Error:', err ));
 

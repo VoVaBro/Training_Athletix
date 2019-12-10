@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/VoVaBro/Training_Atrhletix#readme",
   "dependencies": {
+    "autocannon": "^4.4.1",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
