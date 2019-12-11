@@ -3,13 +3,6 @@ const router = express.Router();
 const Record = require('../models/recordModel');
 const mongoose = require('mongoose');
 
-// async function gta (req, res) {
-//     let user;
-//     await Record.find({"dateTraining": req.body.calendar}, function (err, pro) {
-//         user = pro;
-//     });
-//     console.log(user);
-// }
 
 router.get('/', (req,res) =>{
     res.render("record",{layout: false});
@@ -79,34 +72,24 @@ router.delete('/:id', (req, res) => {
 
 });
 
-// router.delete('/many', (req, res) => {
-//     let { ids } = req.body;
-//     Record.deleteMany({ _id : { $in: ids} })
-//         .then( () => {
-//             res.jsonp([{text : "ssss", bool : 1}]);
-//         })
-//         .catch(err => {
-//             if (err){
-//                 res.jsonp([{text : "Ошибка, обновите страницу и попробуйте удалить запись", bool : 0}]);
-//             }
-//         })
-//
-// });
-
-router.put(`/:id`, (req,res) => {
-    Record.findOne({
-        "_id" : req.params.id
-    })
-        .then(result => {
-                result.recordTime = req.body.recordTime;
-                result.save();
-        })
-        .catch(err => {
-            if (err) {
-                res.jsonp([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
-            }
-        })
+router.put(`/:id`, async (req,res) => {
+    try {
+        await Record.updateOne({ _id : req.params.id }, { recordTime: req.body.recordTime });
+    } catch (e) {
+        console.log(e);
+    }
+    // Record.findOne({
+    //     "_id" : req.params.id
+    // })
+    //     .then(result => {
+    //             result.recordTime = req.body.recordTime;
+    //             result.save();
+    //     })
+    //     .catch(err => {
+    //         if (err) {
+    //             res.jsonp([{text : "Произошла ошибка, попробуйте позже", bool : 0}]);
+    //         }
+    //     })
 });
-
 
 module.exports = router;
