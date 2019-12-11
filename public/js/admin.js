@@ -66,23 +66,14 @@ btnAdd.addEventListener("click",function () {
 });
 
 function divOver(event) {
-    if (onEdit){
-        let y = event.offsetY === undefined?event.layerY:event.offsetY;
-        if (y <= 10) {
-            event.target.innerHTML = "<i class=\"fas fa-arrow-alt-circle-up fa-2x\"></i>";
-        } else if (y > 10 && y < 40) {
-            event.target.innerHTML = "<i class=\"fas fa-trash-alt fa-2x\"></i>";
-        } else {
-            event.target.innerHTML = "<i class=\"fas fa-arrow-alt-circle-down fa-2x\"></i>";
-        }
-    }
+
 
 }
 
 function divOut(event) {
-    if (onEdit) {
-        event.target.innerHTML = tempInnerTxt;
-    }
+    // if (onEdit) {
+    //     event.target.innerHTML = tempInnerTxt;
+    // }
 }
 
 function addTimeDiv (isTraining,duration) {
@@ -98,261 +89,318 @@ function addTimeDiv (isTraining,duration) {
         timeDiv.time=`${date1.getHours()<10?`0${date1.getHours()}`:`${date1.getHours()}`}:${date1.getMinutes()<10?`0${date1.getMinutes()}`:`${date1.getMinutes()}`}`;
         timeDiv.duration = duration;
         timeDiv.firstTime = timeDiv.time;
+        timeDiv.onEdit = false;
         date1.setMilliseconds(duration);
 
-    timeDiv.addEventListener("mousemove", function () {
-        divOver(event);
-    } );
-    timeDiv.addEventListener("mouseover", function () {
-        tempInnerTxt = event.target.innerHTML;
-    } );
-    timeDiv.addEventListener("mouseout", function () {
-        divOut(event);
-    } );
+    // timeDiv.addEventListener("mousemove", function () {
+    //     divOver(event);
+    // } );
+    // timeDiv.addEventListener("mouseover", function () {
+    //     tempInnerTxt = event.target.innerHTML;
+    // } );
+    // timeDiv.addEventListener("mouseout", function () {
+    //     divOut(event);
+    // } );
 
 
     timeDiv.addEventListener("click",function (e) {
-        let y = event.offsetY === undefined?event.layerY:event.offsetY;
-        let tempArr = document.querySelectorAll(".btn-add-small");
-        if (tempArr.length < 1) {
-            let btnAddSmall = document.createElement("div");
-            btnAddSmall.classList.add("btn-add-small");
-            btnAddSmall.innerText = "+";
-            clearTimeout(timerBtnAddSmall);
-            timerBtnAddSmall = setTimeout(function () {
-                btnAddSmall.remove();
-            }, 1500);
-            btnAddSmall.addEventListener("mouseover", function () {
-                clearTimeout(timerBtnAddSmall);
-            });
-            // btnAddSmall.addEventListener("mouseout", function () {
-            //     this.remove();
-            // });
 
-            if (y <= 10) {
-                container.insertBefore(btnAddSmall, this);
+        if (onEdit){
+            let arrTimeDivs = document.querySelectorAll(".timeDiv");
 
+
+            if (!this.onEdit) {
+
+                arrTimeDivs.forEach( div => {
+                    if ( div.onEdit && !e.target.onEdit ) {
+                        div.innerHTML = tempInnerTxt;
+                        div.onEdit = false;
+                    }
+                });
+
+                tempInnerTxt = event.target.innerHTML;
+
+                event.target.innerHTML = "<i class=\"fas fa-arrow-alt-circle-up fa-2x\"></i>";
+                event.target.innerHTML += "<i class=\"fas fa-trash-alt fa-2x\"></i>";
+                event.target.innerHTML += "<i class=\"fas fa-arrow-alt-circle-down fa-2x\"></i>";
+                let icons = this.querySelectorAll("i");
                 let tempCurrent = this;
-                btnAddSmall.addEventListener("click", function () {
-                    if (onEdit) {
-                        if (modalOpen) {
-                            $('#myModal').modal('show');
-                        }
-                        //Проверка на перенос тренировок
-                        let tempUserArr = [];
-                        let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
-                        let tempStartPos = tempArr.indexOf(tempCurrent);
+                icons[0].addEventListener("click", function () {
+                    let tempArr = document.querySelectorAll(".btn-add-small");
+                    if (tempArr.length < 1) {
+                        let btnAddSmall = document.createElement("div");
+                        btnAddSmall.classList.add("btn-add-small");
+                        btnAddSmall.innerText = "+";
+                        clearTimeout(timerBtnAddSmall);
+                        timerBtnAddSmall = setTimeout(function () {
+                            btnAddSmall.remove();
+                        }, 1500);
+                        btnAddSmall.addEventListener("mouseover", function () {
+                            clearTimeout(timerBtnAddSmall);
+                        });
+                        // btnAddSmall.addEventListener("mouseout", function () {
+                        //     this.remove();
+                        // });
 
-                        for (let i = tempStartPos; i < tempArr.length; i++) {
-                            if (tempArr[i].userId !== undefined) {
-                                tempUserArr.push(tempArr[i].userName);
-                            }
-                        }
-                        if (tempUserArr.length > 0) {
-                            labelInfo.innerText = `При добавлении нового события произойдет перенос тренеровок, продолжить?`;
-                            labelInfo.style.display = "inline-block";
-                        }
-                        if (!modalOpen) {
-                            addTimeDiv(select.value, timeDuration.duration);
-                            container.insertBefore(timeDiv, this);
+                        container.insertBefore(btnAddSmall, tempCurrent);
+
+                            btnAddSmall.addEventListener("click", function () {
+                                if (onEdit) {
+                                    if (modalOpen) {
+                                        $('#myModal').modal('show');
+                                    }
+                                    //Проверка на перенос тренировок
+                                    let tempUserArr = [];
+                                    let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
+                                    let tempStartPos = tempArr.indexOf(tempCurrent);
+
+                                    for (let i = tempStartPos; i < tempArr.length; i++) {
+                                        if (tempArr[i].userId !== undefined) {
+                                            tempUserArr.push(tempArr[i].userName);
+                                        }
+                                    }
+                                    if (tempUserArr.length > 0) {
+                                        labelInfo.innerText = `При добавлении нового события произойдет перенос тренеровок, продолжить?`;
+                                        labelInfo.style.display = "inline-block";
+                                    }
+                                    if (!modalOpen) {
+                                        addTimeDiv(select.value, timeDuration.duration);
+                                        container.insertBefore(timeDiv, this);
 
 
-                            tempArr = Array.from(document.querySelectorAll(".timeDiv"));
-                            tempStartPos = tempArr.indexOf(tempCurrent) - 1;
+                                        tempArr = Array.from(document.querySelectorAll(".timeDiv"));
+                                        tempStartPos = tempArr.indexOf(tempCurrent) - 1;
 
-                            for (let i = tempStartPos; i < tempArr.length; i++) {
+                                        for (let i = tempStartPos; i < tempArr.length; i++) {
 
-                                let tempStartTime;
-                                if (tempArr[i - 1] === undefined) {
-                                    tempStartTime = startTime.split(":");
+                                            let tempStartTime;
+                                            if (tempArr[i - 1] === undefined) {
+                                                tempStartTime = startTime.split(":");
+                                            } else {
+                                                tempStartTime = tempArr[i - 1].time.split(":");
+                                            }
+
+                                            let tempDate = new Date();
+
+                                            let hours = Number(tempStartTime[0]);
+                                            let min = Number(tempStartTime[1]);
+
+                                            tempDate.setHours(hours);
+                                            tempDate.setMinutes(min);
+                                            tempDate.setSeconds(0);
+                                            tempDate.setMilliseconds(0);
+
+                                            if (i !== 0) {
+                                                tempDate.setMilliseconds(tempArr[i - 1].duration);
+                                            }
+
+                                            let tempDate1 = new Date();
+                                            tempDate1.setTime(tempDate.getTime());
+                                            tempDate1.setMilliseconds(tempArr[i].duration);
+
+                                            tempArr[i].innerText = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`} - ${tempDate1.getHours() < 10 ? `0${tempDate1.getHours()}` : `${tempDate1.getHours()}`}:${tempDate1.getMinutes() < 10 ? `0${tempDate1.getMinutes()}` : `${tempDate1.getMinutes()}`}`;
+                                            tempArr[i].time = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`}`;
+                                            if (tempArr[i].userName !== undefined) {
+                                                tempArr[i].innerHTML += `<br>${tempArr[i].userName}`;
+                                            }
+                                        }
+
+                                    }
+                                    //modal
+                                    modalEl = this;
+                                    modalOpen = true;
                                 } else {
-                                    tempStartTime = tempArr[i - 1].time.split(":");
+                                    renderAlert([{text: "Для добавления событий, пожалуйста, войдите в режим редактирования"}]);
                                 }
-
-                                let tempDate = new Date();
-
-                                let hours = Number(tempStartTime[0]);
-                                let min = Number(tempStartTime[1]);
-
-                                tempDate.setHours(hours);
-                                tempDate.setMinutes(min);
-                                tempDate.setSeconds(0);
-                                tempDate.setMilliseconds(0);
-
-                                if (i !== 0) {
-                                    tempDate.setMilliseconds(tempArr[i - 1].duration);
-                                }
-
-                                let tempDate1 = new Date();
-                                tempDate1.setTime(tempDate.getTime());
-                                tempDate1.setMilliseconds(tempArr[i].duration);
-
-                                tempArr[i].innerText = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`} - ${tempDate1.getHours() < 10 ? `0${tempDate1.getHours()}` : `${tempDate1.getHours()}`}:${tempDate1.getMinutes() < 10 ? `0${tempDate1.getMinutes()}` : `${tempDate1.getMinutes()}`}`;
-                                tempArr[i].time = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`}`;
-                                if (tempArr[i].userName !== undefined) {
-                                    tempArr[i].innerHTML += `<br>${tempArr[i].userName}`;
-                                }
-                            }
-
-                        }
-                        //modal
-                        modalEl = this;
-                        modalOpen = true;
+                            });
                     } else {
-                        renderAlert([{text: "Для добавления событий, пожалуйста, войдите в режим редактирования"}]);
+                        let tempBtnAddSmall = document.querySelector(".btn-add-small");
+                        if (tempBtnAddSmall) {
+                            tempBtnAddSmall.remove();
+                        }
                     }
                 });
+                icons[1].addEventListener("click", function () {
 
-            } else if (y >= 40) {
-                container.insertBefore(btnAddSmall, this.nextElementSibling);
-
-                let tempCurrent = this;
-
-
-                btnAddSmall.addEventListener("click", function () {
-                    if (onEdit) {
-                        if (modalOpen) {
-                            $('#myModal').modal('show');
+                        let delPrompt = true;
+                        if (tempCurrent.userName !== undefined) {
+                            delPrompt = confirm(`Вы действительно хотите удалить тренировку с ${tempCurrent.userName} ?`);
+                            delArr.push(tempCurrent.recordId);
                         }
-                        //Проверка на перенос тренировок
-                        let tempUserArr = [];
-                        let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
-                        let tempStartPos = tempArr.indexOf(tempCurrent);
-
-                        for (let i = tempStartPos + 1; i < tempArr.length; i++) {
-                            if (tempArr[i].userId !== undefined) {
-                                tempUserArr.push(tempArr[i].userName);
-                            }
-                        }
-                        if (tempUserArr.length > 0) {
-                            labelInfo.innerHTML = `При добавлении нового события произойдет перенос тренеровок, продолжить?`;
-                            labelInfo.style.display = "inline-block";
-                        }
-                        if (!modalOpen) {
-                            addTimeDiv(select.value, timeDuration.duration);
-                            container.insertBefore(timeDiv, this);
-
+                        if (delPrompt) {
                             let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
-                            let tempStartPos = tempArr.indexOf(tempCurrent);
+                            let tempThis = tempCurrent;
+                            if (tempArr.length === 1) {
+                                tempThis.remove();
+                                date1 = undefined;
+                                timePicker.style.display = "inline-block";
+                                label.style.display = "inline-block";
+                            } else {
+                                if (onEdit) {
+                                    // Проверка на перенос тренеровок
+                                    let tempUserArr = [];
+                                    let tempStartPos = tempArr.indexOf(tempThis) + 1;
+                                    tempArr = Array.from(document.querySelectorAll(".timeDiv"));
+                                    for (let i = tempStartPos; i < tempArr.length; i++) {
+                                        if (tempArr[i].userId !== undefined) {
+                                            tempUserArr.push(tempArr[i].userName);
+                                        }
+                                    }
+                                    let tempConfirm = true;
+                                    if (tempUserArr.length > 0) {
+                                        tempConfirm = confirm(`При удалении данного события произойдет перенос тренеровок, продолжить?`)
+                                    }
+                                    if (tempConfirm) {
 
+                                        //Возврат времени к нормальному
+                                        date1.setMilliseconds(-tempThis.duration);
+                                        date2.setTime(date1.getTime());
 
-                            for (let i = tempStartPos + 1; i < tempArr.length; i++) {
+                                        tempStartPos = tempArr.indexOf(tempThis);
+                                        tempThis.remove();
 
-                                let tempStartTime = tempArr[i - 1].time.split(":");
-                                let tempDate = new Date();
+                                        tempArr = Array.from(document.querySelectorAll(".timeDiv"));
+                                        for (let i = tempStartPos; i < tempArr.length; i++) {
 
-                                let hours = Number(tempStartTime[0]);
-                                let min = Number(tempStartTime[1]);
+                                            let tempStartTime;
+                                            if (tempArr[i - 1] === undefined) {
+                                                tempStartTime = startTime.split(":");
+                                            } else {
+                                                tempStartTime = tempArr[i - 1].time.split(":");
+                                            }
 
-                                tempDate.setHours(hours);
-                                tempDate.setMinutes(min);
-                                tempDate.setSeconds(0);
-                                tempDate.setMilliseconds(0);
-                                tempDate.setMilliseconds(tempArr[i - 1].duration);
+                                            let tempDate = new Date();
 
-                                let tempDate1 = new Date();
-                                tempDate1.setTime(tempDate.getTime());
-                                tempDate1.setMilliseconds(tempArr[i].duration);
+                                            let hours = Number(tempStartTime[0]);
+                                            let min = Number(tempStartTime[1]);
 
-                                tempArr[i].innerText = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`} - ${tempDate1.getHours() < 10 ? `0${tempDate1.getHours()}` : `${tempDate1.getHours()}`}:${tempDate1.getMinutes() < 10 ? `0${tempDate1.getMinutes()}` : `${tempDate1.getMinutes()}`}`;
-                                tempArr[i].time = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`}`;
-                                if (tempArr[i].userName !== undefined) {
-                                    tempArr[i].innerHTML += `<br>${tempArr[i].userName}`;
+                                            tempDate.setHours(hours);
+                                            tempDate.setMinutes(min);
+                                            tempDate.setSeconds(0);
+                                            tempDate.setMilliseconds(0);
+
+                                            if (i !== 0) {
+                                                tempDate.setMilliseconds(tempArr[i - 1].duration);
+                                            }
+
+                                            let tempDate1 = new Date();
+                                            tempDate1.setTime(tempDate.getTime());
+                                            tempDate1.setMilliseconds(tempArr[i].duration);
+
+                                            tempArr[i].innerText = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`} - ${tempDate1.getHours() < 10 ? `0${tempDate1.getHours()}` : `${tempDate1.getHours()}`}:${tempDate1.getMinutes() < 10 ? `0${tempDate1.getMinutes()}` : `${tempDate1.getMinutes()}`}`;
+                                            tempArr[i].time = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`}`;
+                                            if (tempArr[i].userName !== undefined) {
+                                                tempArr[i].innerHTML += `<br>${tempArr[i].userName}`;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    renderAlert([{text: "Для удаления событий, пожалуйста, войдите в режим редактирования"}]);
                                 }
                             }
-
                         }
-                        //modal
-                        modalEl = this;
-                        modalOpen = true;
+
+                        let tempBtnAddSmall = document.querySelector(".btn-add-small");
+                        if (tempBtnAddSmall) {
+                            tempBtnAddSmall.remove();
+                        }
+
+                });
+                icons[2].addEventListener("click", function () {
+                    let tempArr = document.querySelectorAll(".btn-add-small");
+                    if (tempArr.length < 1) {
+                        let btnAddSmall = document.createElement("div");
+                        btnAddSmall.classList.add("btn-add-small");
+                        btnAddSmall.innerText = "+";
+                        clearTimeout(timerBtnAddSmall);
+                        timerBtnAddSmall = setTimeout(function () {
+                            btnAddSmall.remove();
+                        }, 1500);
+                        btnAddSmall.addEventListener("mouseover", function () {
+                            clearTimeout(timerBtnAddSmall);
+                        });
+                        // btnAddSmall.addEventListener("mouseout", function () {
+                        //     this.remove();
+                        // });
+
+                        container.insertBefore(btnAddSmall, tempCurrent.nextElementSibling);
+
+                        btnAddSmall.addEventListener("click", function () {
+                            if (onEdit) {
+                                            if (modalOpen) {
+                                                $('#myModal').modal('show');
+                                            }
+                                            //Проверка на перенос тренировок
+                                            let tempUserArr = [];
+                                            let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
+                                            let tempStartPos = tempArr.indexOf(tempCurrent);
+
+                                            for (let i = tempStartPos + 1; i < tempArr.length; i++) {
+                                                if (tempArr[i].userId !== undefined) {
+                                                    tempUserArr.push(tempArr[i].userName);
+                                                }
+                                            }
+                                            if (tempUserArr.length > 0) {
+                                                labelInfo.innerHTML = `При добавлении нового события произойдет перенос тренеровок, продолжить?`;
+                                                labelInfo.style.display = "inline-block";
+                                            }
+                                            if (!modalOpen) {
+                                                addTimeDiv(select.value, timeDuration.duration);
+                                                container.insertBefore(timeDiv, this);
+
+                                                let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
+                                                let tempStartPos = tempArr.indexOf(tempCurrent);
+
+
+                                                for (let i = tempStartPos + 1; i < tempArr.length; i++) {
+
+                                                    let tempStartTime = tempArr[i - 1].time.split(":");
+                                                    let tempDate = new Date();
+
+                                                    let hours = Number(tempStartTime[0]);
+                                                    let min = Number(tempStartTime[1]);
+
+                                                    tempDate.setHours(hours);
+                                                    tempDate.setMinutes(min);
+                                                    tempDate.setSeconds(0);
+                                                    tempDate.setMilliseconds(0);
+                                                    tempDate.setMilliseconds(tempArr[i - 1].duration);
+
+                                                    let tempDate1 = new Date();
+                                                    tempDate1.setTime(tempDate.getTime());
+                                                    tempDate1.setMilliseconds(tempArr[i].duration);
+
+                                                    tempArr[i].innerText = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`} - ${tempDate1.getHours() < 10 ? `0${tempDate1.getHours()}` : `${tempDate1.getHours()}`}:${tempDate1.getMinutes() < 10 ? `0${tempDate1.getMinutes()}` : `${tempDate1.getMinutes()}`}`;
+                                                    tempArr[i].time = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`}`;
+                                                    if (tempArr[i].userName !== undefined) {
+                                                        tempArr[i].innerHTML += `<br>${tempArr[i].userName}`;
+                                                    }
+                                                }
+
+                                            }
+                                            //modal
+                                            modalEl = this;
+                                            modalOpen = true;
+                                        } else {
+                                            renderAlert([{text: "Для добавления событий, пожалуйста, войдите в режим редактирования"}]);
+                                        }
+
+
+                        });
+
                     } else {
-                        renderAlert([{text: "Для добавления событий, пожалуйста, войдите в режим редактирования"}]);
+                        let tempBtnAddSmall = document.querySelector(".btn-add-small");
+                        if (tempBtnAddSmall) {
+                            tempBtnAddSmall.remove();
+                        }
                     }
                 });
+                this.onEdit = true;
             } else {
-                //
-                let delPrompt =true;
-                if (this.userName !== undefined) {
-                    delPrompt = confirm(`Вы действительно хотите удалить тренировку с ${this.userName} ?`);
-                    delArr.push(this.recordId);
-                }
-                if (delPrompt) {
-                    let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
-                    let tempThis = this;
-                    if (tempArr.length === 1) {
-                        tempThis.remove();
-                        date1 = undefined;
-                        timePicker.style.display = "inline-block";
-                        label.style.display = "inline-block";
-                    } else {
-                        if (onEdit) {
-                            // Проверка на перенос тренеровок
-                            let tempUserArr = [];
-                            let tempStartPos = tempArr.indexOf(tempThis) + 1;
-                            tempArr = Array.from(document.querySelectorAll(".timeDiv"));
-                            for (let i = tempStartPos; i < tempArr.length; i++) {
-                                if (tempArr[i].userId !== undefined) {
-                                    tempUserArr.push(tempArr[i].userName);
-                                }
-                            }
-                            let tempConfirm = true;
-                            if (tempUserArr.length > 0) {
-                                tempConfirm = confirm(`При удалении данного события произойдет перенос тренеровок, продолжить?`)
-                            }
-                            if (tempConfirm) {
-
-                                //Возврат времени к нормальному
-                                date1.setMilliseconds(-tempThis.duration);
-                                date2.setTime(date1.getTime());
-
-                                tempStartPos = tempArr.indexOf(tempThis);
-                                tempThis.remove();
-                                tempArr = Array.from(document.querySelectorAll(".timeDiv"));
-                                for (let i = tempStartPos; i < tempArr.length; i++) {
-
-                                    let tempStartTime;
-                                    if (tempArr[i - 1] === undefined) {
-                                        tempStartTime = startTime.split(":");
-                                    } else {
-                                        tempStartTime = tempArr[i - 1].time.split(":");
-                                    }
-
-                                    let tempDate = new Date();
-
-                                    let hours = Number(tempStartTime[0]);
-                                    let min = Number(tempStartTime[1]);
-
-                                    tempDate.setHours(hours);
-                                    tempDate.setMinutes(min);
-                                    tempDate.setSeconds(0);
-                                    tempDate.setMilliseconds(0);
-
-                                    if (i !== 0) {
-                                        tempDate.setMilliseconds(tempArr[i - 1].duration);
-                                    }
-
-                                    let tempDate1 = new Date();
-                                    tempDate1.setTime(tempDate.getTime());
-                                    tempDate1.setMilliseconds(tempArr[i].duration);
-
-                                    tempArr[i].innerText = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`} - ${tempDate1.getHours() < 10 ? `0${tempDate1.getHours()}` : `${tempDate1.getHours()}`}:${tempDate1.getMinutes() < 10 ? `0${tempDate1.getMinutes()}` : `${tempDate1.getMinutes()}`}`;
-                                    tempArr[i].time = `${tempDate.getHours() < 10 ? `0${tempDate.getHours()}` : `${tempDate.getHours()}`}:${tempDate.getMinutes() < 10 ? `0${tempDate.getMinutes()}` : `${tempDate.getMinutes()}`}`;
-                                    if (tempArr[i].userName !== undefined) {
-                                        tempArr[i].innerHTML += `<br>${tempArr[i].userName}`;
-                                    }
-                                }
-                            }
-                        } else {
-                            renderAlert([{text: "Для удаления событий, пожалуйста, войдите в режим редактирования"}]);
-                        }
-                    }
-                }
+                this.innerHTML = tempInnerTxt;
+                this.onEdit = false;
             }
-        } else {
-            let tempBtnAddSmall = document.querySelector(".btn-add-small");
-            if (tempBtnAddSmall) {
-                tempBtnAddSmall.remove();
-            }
+                // event.target.style.justifyContent = "space-between";
         }
 
     });
@@ -491,7 +539,15 @@ btnEdit.addEventListener("click", async function () {
     } else if (btnEdit.innerText === "Сохранить изменения") {
         let errorArr = [];
 
+        let arrTimeDivs = document.querySelectorAll(".timeDiv");
+        arrTimeDivs.forEach( div => {
+            if (div.onEdit) {
+                div.innerHTML = tempInnerTxt;
+                div.onEdit = false;
+            }
+        });
         if (errorArr.length === 0) {
+
 
             //Удаление тренировок
             if ( delArr.length > 0 ) {
