@@ -46,6 +46,9 @@ const UserSchema = mongoose.Schema({
     },
     isActive: {
        type: Boolean
+    },
+    isConfirm: {
+        type: Boolean
     }
 });
 

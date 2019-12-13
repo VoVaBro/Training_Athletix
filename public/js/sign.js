@@ -4,6 +4,7 @@ var signupButton = document.getElementById('signup-button'),
     userForms = document.getElementById('user_options-forms');
 
 
+
 // Add event listener to the "Sign Up" button
 signupButton.addEventListener('click', () => {
   userForms.classList.remove('login-click');
@@ -16,3 +17,4 @@ loginButton.addEventListener('click', () => {
   userForms.classList.remove('signup-click');
   userForms.classList.add('login-click')
 }, false);
+

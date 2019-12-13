@@ -1,39 +1,42 @@
 
-<body>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300, 400, 500" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="/css/activeuser.css">
+<!--<body>-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Montserrat:300, 400, 500" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">-->
+<!--    <link rel="stylesheet" href="/css/activeuser.css">-->
 
-    <div class="menu-btn">
-        <button class="btn" onclick="window.location.href='/'">Назад</button>
-    </div>
- <section class="user">
+<!--    <div class="menu-btn">-->
+<!--        <button class="btn" onclick="window.location.href='/verifyEmail'">Назад</button>-->
+<!--    </div>-->
+<!-- <section class="user">-->
 
-  <div class="user_options-container">
-    <div class="user_options-forms" id="user_options-forms">
-      <div class="user_forms-login">
-        <h2 class="forms_title">Подтверждение аккаунта</h2>
-        <form class="forms_form" action="/verifyEmail" method="POST">
-          <fieldset class="forms_fieldset">
-              <div class="hidden-params">
-                  <input type="hidden" name="secret" value="{{secret}}">
-                  <input type="hidden" name="_id" value="{{userId}}">
-              </div>
-            <div class="forms_field">
-              <input type="text" placeholder="Код активации" class="forms_field-input" name="secretKey" required autofocus />
-            </div>
-          </fieldset>
-          <div class="forms_buttons">
-            <button type="button" class="forms_buttons-forgot">Прислать код <br>повторно</br> </button>
-            <input type="submit" value="Далее" class="forms_buttons-action">
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-  
-    <script  src="js/index.js"></script>
+<!--  <div class="user_options-container">-->
 
-</body>
+<!--    <div class="user_options-forms" id="user_options-forms">-->
+<!--      <div class="user_forms-login">-->
+<!--        <h2 class="forms_title">Стать участником</h2>-->
+<!--        <form class="forms_form" action="/signin" method="POST">-->
+<!--          <fieldset class="forms_fieldset">-->
+<!--            <div class="forms_field">-->
+<!--              <input type="email" placeholder="Email" class="forms_field-input" name="email" required autofocus />-->
+<!--            </div>-->
+<!--            <div class="forms_field">-->
+<!--              <input type="password" placeholder="Пароль" class="forms_field-input" name="password" required />-->
+<!--            </div>-->
+<!--               <div class="hidden-params">-->
+<!--                  <input type="hidden" name="secret" value="{{secret}}">-->
+<!--                  <input type="hidden" name="_id" value="{{userId}}">-->
+<!--              </div>-->
+<!--          </fieldset>-->
+<!--          <div class="forms_buttons">-->
+<!--            <input type="submit" value="Далее" class="forms_buttons-action">-->
+<!--          </div>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
+<!--    <script  src="js/index.js"></script>-->
+
+<!--</body>-->
 

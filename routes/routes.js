@@ -1,6 +1,6 @@
 const router = require ('express').Router();
 
-const { signup, signin, verifyEmail } = require ('../controllers/auth');
+const { signup, signin, resetPass, newPass } = require ('../controllers/auth');
 
 const adminController = require("../controllers/admin");
 
@@ -14,8 +14,9 @@ const mongoose = require ('mongoose');
 
 //POST
 router.post('/signup', signup);
-router.post('/verifyEmail', verifyEmail);
+router.post('/newPass', newPass);
 router.post('/signin',  signin);
+router.post('/resetPass', resetPass);
 router.post('/admin', adminController.addTraining);
 
 
@@ -37,17 +38,41 @@ router.get('/signin', async (req, res) => {
     })
 });
 
-router.get('/verifyEmail/:secret', async (req, res) => {
+router.get('/verifyEmail/:secretKey/:secret', async (req, res) => {
     try {
-        let user = await User.findOne({secret: req.params.secret});
+        let user = await User.findOne({
+            secret: req.params.secret,
+            secretKey: req.params.secretKey,
+            secretMsgExp: {$gt: Date.now()}
+        });
         if (!user) return new Error('user not found');
 
-        res.render('verifyEmail', {
+        res.render('signin', {
             layout: false,
-            secret: user.secret,
-            userId: user._id,
             error: req.flash('error')
-        })
+        });
+    } catch (e) {
+        console.log(e)
+    }
+});
+
+router.get('/resetPass',  (req, res) => {
+    res.render('resetpass', {
+        layout: false,
+        error: req.flash('error')
+    })
+});
+router.get('/resetPass/:secret', async (req, res) => {
+    try {
+        let user = await User.findOne({secret: req.params.secret});
+        if (!user){
+            res.render("resetpass", {layout: false});
+        } else {
+            res.render("resetpass", {
+            isConfirm: user.isConfirm,
+            layout: false,
+            });
+        }
     } catch (e) {
         console.log(e)
     }
