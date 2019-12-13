@@ -147,11 +147,12 @@ exports.newPass =  async (req, res) => {
         } else {
             let hash = await bcrypt.hash(req.body.newPassword, 10);
             await User.updateOne({ _id: user._id }, {password: hash});
-               await user.save()
-                   .then(() => {
                     user.secret = undefined;
                     user.secretKey = undefined;
                     user.secretMsgExp = undefined;
+
+                    await user.save()
+                   .then(() => {
                     res.redirect('/')
                 })
             }
