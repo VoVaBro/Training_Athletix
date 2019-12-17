@@ -44,7 +44,7 @@ node_modules/
 
 # End of https://www.gitignore.io/api/osx,macos
 *.json
-.env
-.env.example
-.env.local
-.env.staging
+#.env
+#.env.example
+#.env.local
+#.env.staging
