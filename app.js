@@ -41,7 +41,7 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs');
 
 //Static folders
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(__dirname));
 
 //Sessions
 const sess = {
