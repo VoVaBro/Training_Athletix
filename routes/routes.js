@@ -80,12 +80,13 @@ router.get('/resetPass/:secret', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        let user = await User.findOne({id: req.session.userId});
+        let user = await User.findOne({_id: req.session.userId});
+        console.log(user);
         if (!user){
-            res.render("index", {layout: false});
+            res.render("index", {isActive: true, layout: false});
         } else {
             res.render("index", {
-            isActive: user.isActive,
+            isActive: false,
             layout: false,
             });
         }
