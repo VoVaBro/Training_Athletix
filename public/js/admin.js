@@ -749,7 +749,7 @@ async function renderBusyDivs() {
                         tempDivs[i].classList.add("busyTimeDiv");
                         tempDivs[i].innerHTML += `<br>${records[0][j].user.name} ${records[0][j].user.secondName}`;
                         tempDivs[i].userId = records[0][j].user._id;
-                        tempDivs[i].userName = records[0][j].user.name;
+                        tempDivs[i].userName = records[0][j].user.name + " " + records[0][j].user.secondName;
                         tempDivs[i].userFone = records[0][j].user.phoneNum;
                         tempDivs[i].recordId = records[0][j]._id;
                     }
