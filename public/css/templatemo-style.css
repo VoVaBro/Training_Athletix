@@ -243,6 +243,7 @@ nav {
 }
 #video-container .mobImg {
   height: 100vh;
+  width: 100vw;
   display: none;
 }
 
@@ -1304,7 +1305,7 @@ footer a:hover {
   color: #fff;
 }
 
-.info div {
+.info .info-div {
   /*background: red;*/
   /*border: 1px solid gray;*/
   height: 180px;
@@ -1317,8 +1318,11 @@ footer a:hover {
   text-align: center;
 }
 
-.info div i {
+.info .info-div i {
   color: orange;
+}
+.info .mail .social i {
+  color: #1871FF;
 }
 .info div p {
   font-size: 14px;
@@ -1326,74 +1330,22 @@ footer a:hover {
 .info div h2 {
   font-size: 24px;
 }
-
-/*@media (max-width: 530px) {*/
-
-/*  .modal-header h3 {*/
-/*    margin-top: 15%;*/
-/*  }*/
-
-/*  .modal-body input {*/
-/*    width: 100%;*/
-/*  }*/
-
-/*  .modal-body textarea {*/
-/*    width: 100%;*/
-/*  }*/
-
-/*  .modal-content {*/
-/*    padding-bottom: 40px;*/
-/*  }*/
-
-/*  .grid-portfolio {*/
-/*    padding: 0px 0px;*/
-/*  }*/
-
-/*  .grid-portfolio .portfolio-item {*/
-/*    margin: 30px 0px;*/
-/*  }*/
-
-/*  .grid-portfolio .load-more-button {*/
-/*    padding-bottom: 30px;*/
-/*  }*/
-
-/*  .more-about-us .content {*/
-/*    padding: 60px 30px;*/
-/*  }*/
-
-/*}*/
-
-
-/*  @media (max-width: 992px) {*/
-
-/*    .blog-entries .blog-posts {*/
-/*      margin-right: 0px;*/
-/*    }*/
-
-/*    .single-blog-post {*/
-/*      margin-right: 0px;*/
-/*      margin-bottom: 80px;*/
-/*    }*/
-
-/*    .blog-entries .page-number {*/
-/*      margin-bottom: 80px;*/
-/*    }*/
-
-/*    .single-blog-post .tags-share .tags {*/
-/*      text-align: center;*/
-/*    }*/
-
-/*    .single-blog-post .tags-share .share {*/
-/*      text-align: center;*/
-/*    }*/
-/*  }*/
+.info .social {
+  justify-content: center;
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+}
+.info .social i {
+  margin-left: 15px;
+}
 
 @media (max-width: 530px) {
   .info {
     flex-direction: column;
 
   }
-  .info div {
+  .info .info-div {
     margin: 0;
     width: 100vw;
     border-bottom: 2px dotted black;
@@ -1404,12 +1356,6 @@ footer a:hover {
     .inner h1 {
       font-size: 35px!important;
     }
-    /*.map .left {*/
-    /*  display: none;*/
-    /*}*/
-    /*.map .right {*/
-    /*  flex-basis: 100%;*/
-    /*}*/
   }
 
   /* Iphone SE*/
