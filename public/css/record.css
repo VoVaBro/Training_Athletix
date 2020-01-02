@@ -8,22 +8,9 @@
     background: url("../img/recordshowcase.jpg") no-repeat center center/cover;
     height: 100vh;
     display: flex;
-    /*justify-content: center;*/
     flex-direction: column;
-    /*flex-wrap: wrap;*/
     font-family: "Raleway",sans-serif;
 }
-
-/*#recordShowcase .main-message {*/
-/*    flex-basis: 50%;*/
-/*    align-self: center;*/
-/*    justify-content: center;*/
-/*    text-align: center;*/
-/*}*/
-
-/*#recordShowcase .main-message h2 {*/
-/*    color: red;*/
-/*}*/
 
     /* NavBar*/
 
@@ -99,21 +86,9 @@
     align-self: center;
 }
 
-/*#recordShowcase .schedule{*/
-/*    height: 20vh;*/
-/*    width: 100vw;*/
-/*    margin-top: auto;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*!* Overlay *!*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    left:0;*/
-/*    right: 0;*/
-/*    bottom: 0;*/
-/*    background-color: rgba(0,0,0,0.5);*/
-/*}*/
+#calendar {
+    font-size: 20px;
+}
 
 .containerTimeDiv {
     height: 20vh;
@@ -157,6 +132,10 @@
 }
 .btn-signUp {
     display: none;
+}
+
+.alert {
+    font-size: 18px;
 }
 
 /* wideScreen */

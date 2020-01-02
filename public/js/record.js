@@ -137,6 +137,14 @@ btnSignUp.addEventListener("click", function () {
     }
 });
 
+function splitDate (date) {
+    if (typeof(date) === "string") {
+       return  date.split("-").reverse().join("-");
+    } else {
+        return date
+    }
+}
+
 async function renderTimeDivs() {
     let tempArr = Array.from(document.querySelectorAll(".timeDiv"));
     let boolRenderBusy = false;
@@ -183,9 +191,9 @@ async function renderTimeDivs() {
                     EditCalendar = true;
                     calendar.disabled = false;
                     if (result.length > 0 && result[0].onEdit === true) {
-                        containerH1.innerText = `Расписание на ${currentValue} в данный момент редакитуется, пожалуйста проверьте расписание позже`;
+                        containerH1.innerText = `Расписание на ${splitDate(currentValue)} в данный момент редакитуется, пожалуйста проверьте расписание позже`;
                     } else {
-                        containerH1.innerText = `На ${currentValue} расписания нет`;
+                        containerH1.innerText = `На ${splitDate(currentValue)} расписания нет`;
                     }
                 }
 
@@ -301,14 +309,14 @@ async function renderBusyDivs() {
                 }
                 btnSignUp.style.display = "inline-block";
                 if (result[0].length === tempDivs.length) {
-                    containerH1.innerText = `В данный момент на  ${calendar.value} расписание укомплектовано`;
+                    containerH1.innerText = `В данный момент на  ${splitDate(calendar.value)} расписание укомплектовано`;
                     btnSignUp.style.display = "none";
                 }
                 if (tempCountUserMatch > 0) {
                     tempDivs.forEach(el => {
                         el.remove();
                     });
-                    containerH1.innerText = `${tempRecord.dateTraining} Вы записаны на ${tempRecord.recordTime}`;
+                    containerH1.innerText = `${splitDate(tempRecord.dateTraining)} Вы записаны на ${tempRecord.recordTime}`;
                     btnSignUp.style.display = "none";
                 }
 
