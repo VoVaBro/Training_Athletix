@@ -18,6 +18,7 @@ body {
     justify-content: center;
     width: 100vw;
     margin-bottom: 10px;
+    font-family: "Raleway",sans-serif;
 }
 
 .navbar-custom .navbar-nav .nav-link {

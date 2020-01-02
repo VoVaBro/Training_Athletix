@@ -95,6 +95,10 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/programs', (req, res) =>{
+    res.render("programs",{layout: false});
+});
+
 router.get('/admin', isAuth, (req, res) =>{
     res.render("admin",{layout: false});
 });

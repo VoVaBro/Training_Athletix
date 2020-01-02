@@ -1324,6 +1324,9 @@ footer a:hover {
 .info .mail .social i {
   color: #1871FF;
 }
+.info .mail .social i:hover {
+  color: #6BA4FF;
+}
 .info div p {
   font-size: 14px;
 }
